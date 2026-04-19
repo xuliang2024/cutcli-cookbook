@@ -1,0 +1,11 @@
+[
+  {
+    "text": "Hello, cutcli",
+    "start": 0,
+    "end": 5000000,
+    "inAnimation": "渐显",
+    "outAnimation": "渐隐",
+    "inAnimationDuration": 500000,
+    "outAnimationDuration": 500000
+  }
+]

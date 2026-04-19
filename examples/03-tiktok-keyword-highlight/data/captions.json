@@ -1,0 +1,31 @@
+[
+  {
+    "text": "今天教大家一个秘密",
+    "start": 0,
+    "end": 2000000,
+    "keyword": "秘密",
+    "keywordColor": "#FFD600",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 300000
+  },
+  {
+    "text": "用这个方法效率翻倍",
+    "start": 2000000,
+    "end": 4000000,
+    "keyword": "翻倍",
+    "keywordColor": "#FF3A6E",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 300000
+  },
+  {
+    "text": "记得点赞收藏",
+    "start": 4000000,
+    "end": 6000000,
+    "keyword": "点赞收藏",
+    "keywordColor": "#FF6600",
+    "inAnimation": "弹入跳动",
+    "inAnimationDuration": 400000,
+    "outAnimation": "渐隐",
+    "outAnimationDuration": 300000
+  }
+]

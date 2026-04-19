@@ -1,0 +1,17 @@
+{
+  "name": "docs-cutcli-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Worker that reverse-proxies cutcli-docs R2 bucket with SPA fallback for docs.cutcli.com",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "r2:create": "wrangler r2 bucket create cutcli-docs",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "typescript": "^5.4.0",
+    "wrangler": "^3.99.0"
+  }
+}

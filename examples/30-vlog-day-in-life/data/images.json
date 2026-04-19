@@ -1,0 +1,31 @@
+[
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-01.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 0,
+    "end": 10000000,
+    "inAnimation": "渐显",
+    "inAnimationDuration": 600000,
+    "transition": "向右擦除",
+    "transitionDuration": 500000
+  },
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-02.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 10000000,
+    "end": 20000000,
+    "transition": "向右擦除",
+    "transitionDuration": 500000
+  },
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-03.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 20000000,
+    "end": 30000000,
+    "outAnimation": "渐隐",
+    "outAnimationDuration": 600000
+  }
+]

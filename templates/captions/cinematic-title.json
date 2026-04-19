@@ -1,0 +1,12 @@
+[
+  {
+    "_comment": "电影感开场标题：白色加粗、缓慢渐显、居中、停留 4s 后渐隐",
+    "text": "Your Cinematic Title",
+    "start": 0,
+    "end": 5000000,
+    "inAnimation": "渐显",
+    "outAnimation": "渐隐",
+    "inAnimationDuration": 800000,
+    "outAnimationDuration": 600000
+  }
+]

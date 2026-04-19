@@ -1,0 +1,40 @@
+name: Scheduled examples smoke
+
+on:
+  schedule:
+    - cron: '0 18 * * *'  # 02:00 UTC+8 daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  smoke:
+    name: Validate every example
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint:cases
+
+  open-issue-on-failure:
+    if: failure()
+    needs: smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Nightly examples smoke failed on ${today}`,
+              body: 'Some examples failed validation in nightly smoke. See workflow run for details.',
+              labels: ['bug', 'ci-failure'],
+            });

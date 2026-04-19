@@ -1,0 +1,63 @@
+[
+  {
+    "_comment": "故障感快切：3 秒内位置抖动 + 缩放跳变。把 segmentId 全部替换。",
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "position_x",
+    "offset": 0,
+    "value": 0
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "position_x",
+    "offset": 100000,
+    "value": -0.05
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "position_x",
+    "offset": 200000,
+    "value": 0.05
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "position_x",
+    "offset": 300000,
+    "value": 0
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_x",
+    "offset": 0,
+    "value": 1.0
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_x",
+    "offset": 200000,
+    "value": 1.15
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_x",
+    "offset": 400000,
+    "value": 1.0
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_y",
+    "offset": 0,
+    "value": 1.0
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_y",
+    "offset": 200000,
+    "value": 1.15
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_y",
+    "offset": 400000,
+    "value": 1.0
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "_comment": "图片缓慢推近 (Ken Burns)。把 segmentId 替换为 cutcli images list 查到的真实 ID。",
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_x",
+    "offset": 0,
+    "value": 1.0
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_x",
+    "offset": 5000000,
+    "value": 1.3
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_y",
+    "offset": 0,
+    "value": 1.0
+  },
+  {
+    "segmentId": "REPLACE_WITH_REAL_ID",
+    "property": "scale_y",
+    "offset": 5000000,
+    "value": 1.3
+  }
+]

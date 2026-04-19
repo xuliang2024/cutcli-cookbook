@@ -1,0 +1,47 @@
+[
+  {
+    "text": "我的一天",
+    "start": 0,
+    "end": 2000000,
+    "fontSize": 12,
+    "inAnimation": "渐显",
+    "inAnimationDuration": 500000,
+    "outAnimation": "渐隐",
+    "outAnimationDuration": 400000
+  },
+  {
+    "text": "AM 7:00 · 早咖啡",
+    "start": 2000000,
+    "end": 10000000,
+    "keyword": "早咖啡",
+    "keywordColor": "#FFD600",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 400000
+  },
+  {
+    "text": "PM 1:00 · 午餐时光",
+    "start": 10000000,
+    "end": 20000000,
+    "keyword": "午餐时光",
+    "keywordColor": "#FF6600",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 400000
+  },
+  {
+    "text": "PM 8:00 · 晚风散步",
+    "start": 20000000,
+    "end": 28000000,
+    "keyword": "晚风散步",
+    "keywordColor": "#FF3A6E",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 400000
+  },
+  {
+    "text": "明天见 ✨",
+    "start": 28000000,
+    "end": 30000000,
+    "fontSize": 11,
+    "inAnimation": "弹入跳动",
+    "inAnimationDuration": 400000
+  }
+]

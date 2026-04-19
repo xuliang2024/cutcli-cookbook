@@ -1,0 +1,56 @@
+[
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-01.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 0,
+    "end": 3000000,
+    "inAnimation": "渐显",
+    "inAnimationDuration": 600000,
+    "transition": "叠化",
+    "transitionDuration": 500000
+  },
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-02.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 3000000,
+    "end": 6000000,
+    "transition": "叠化",
+    "transitionDuration": 500000
+  },
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-03.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 6000000,
+    "end": 9000000,
+    "transition": "叠化",
+    "transitionDuration": 500000
+  },
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-01.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 9000000,
+    "end": 12000000,
+    "transition": "叠化",
+    "transitionDuration": 500000
+  },
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-02.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 12000000,
+    "end": 24000000
+  },
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-03.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 24000000,
+    "end": 30000000,
+    "outAnimation": "渐隐",
+    "outAnimationDuration": 600000
+  }
+]

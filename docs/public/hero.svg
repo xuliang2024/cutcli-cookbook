@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff7a3a"/>
+      <stop offset="100%" stop-color="#ff3a6e"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0.75"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="36" fill="url(#bg)"/>
+  <g transform="translate(40,52)">
+    <rect width="240" height="216" rx="20" fill="url(#card)"/>
+    <text x="22" y="48" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#222">$ cutcli draft create</text>
+    <text x="22" y="78" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#222">$ cutcli captions add</text>
+    <text x="22" y="108" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#222">$ cutcli images add</text>
+    <text x="22" y="138" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#222">$ cutcli audios add</text>
+    <rect x="22" y="158" width="196" height="12" rx="6" fill="#ff5a36" opacity="0.85"/>
+    <rect x="22" y="178" width="124" height="12" rx="6" fill="#ff3a6e" opacity="0.7"/>
+  </g>
+</svg>

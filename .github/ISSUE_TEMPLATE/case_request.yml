@@ -1,0 +1,40 @@
+name: 案例需求
+description: 你想看到一个什么样的 cutcli 案例
+title: "[Case Request] "
+labels: ["case-request", "good-first-issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提出一个你希望被加入 cookbook 的案例。社区 / 维护者会按热度认领。
+  - type: input
+    id: title
+    attributes:
+      label: 案例名称
+      placeholder: 抖音风格的关键词高亮字幕
+    validations:
+      required: true
+  - type: textarea
+    id: scene
+    attributes:
+      label: 适用场景
+      placeholder: 用一句话说清楚谁会用、用在哪里
+    validations:
+      required: true
+  - type: textarea
+    id: effect
+    attributes:
+      label: 期望效果（可贴参考视频/截图链接）
+    validations:
+      required: true
+  - type: textarea
+    id: cutcli-features
+    attributes:
+      label: 涉及的 cutcli 能力（可多选）
+      description: 比如 captions / images / videos / effects / filters / keyframes / masks / stickers / transitions
+  - type: input
+    id: priority-vote
+    attributes:
+      label: 紧迫度（可选）
+      description: 1-5，5 = 我急需，1 = 锦上添花
+      placeholder: "3"

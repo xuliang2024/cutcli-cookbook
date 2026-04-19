@@ -1,0 +1,11 @@
+{
+  "id": "05-keyframe-zoom-in",
+  "title": "Keyframe Zoom-in (Ken Burns)",
+  "tags": ["keyframes", "images", "animation"],
+  "author": "m007",
+  "duration": 5,
+  "resolution": "1080x1920",
+  "gif": "preview.gif",
+  "description": "图片 + 关键帧 scale_x/scale_y，5 秒内从 1.0 缓慢放大到 1.3，经典 Ken Burns 效果。",
+  "level": 2
+}

@@ -1,0 +1,44 @@
+name: Showcase 投稿
+description: 投稿你用 cutcli 做的作品到月度 showcase
+title: "[Showcase] "
+labels: ["showcase"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        把你用 cutcli 做的作品分享给社区！每月精选 5-10 个会被收录到 [showcase/](../../tree/main/showcase)。
+  - type: input
+    id: title
+    attributes:
+      label: 作品标题
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: 作品链接
+      description: 视频 / 文章 / 抖音 / B 站 / Twitter 都可以
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: 作者署名
+      description: 显示在 showcase 里的名字 + 链接（GitHub / 个人主页）
+      placeholder: "@yourhandle (https://github.com/yourhandle)"
+    validations:
+      required: true
+  - type: textarea
+    id: how
+    attributes:
+      label: 制作过程简介
+      description: 用了哪些 cutcli 命令？用了 cookbook 里的哪个案例做基础？
+    validations:
+      required: true
+  - type: checkboxes
+    id: license
+    attributes:
+      label: 授权
+      options:
+        - label: 我同意将作品截图/封面以 CC-BY 4.0 授权 cutcli-cookbook 仓库展示，原始作品版权仍归我所有
+          required: true

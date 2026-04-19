@@ -1,0 +1,11 @@
+{
+  "id": "your-case-slug",
+  "title": "Your Case Title",
+  "tags": ["tag1", "tag2"],
+  "author": "your-github-handle",
+  "duration": 5,
+  "resolution": "1080x1920",
+  "gif": "preview.gif",
+  "description": "一句话描述",
+  "level": 1
+}

@@ -1,0 +1,49 @@
+[
+  {
+    "text": "全新 cutcli Pro",
+    "start": 0,
+    "end": 3000000,
+    "fontSize": 12,
+    "inAnimation": "渐显",
+    "inAnimationDuration": 600000,
+    "outAnimation": "渐隐",
+    "outAnimationDuration": 400000
+  },
+  {
+    "text": "效率翻倍",
+    "start": 12000000,
+    "end": 16000000,
+    "keyword": "翻倍",
+    "keywordColor": "#FFD600",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 350000
+  },
+  {
+    "text": "操作极简",
+    "start": 16000000,
+    "end": 20000000,
+    "keyword": "极简",
+    "keywordColor": "#FFD600",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 350000
+  },
+  {
+    "text": "AI 加持",
+    "start": 20000000,
+    "end": 24000000,
+    "keyword": "AI",
+    "keywordColor": "#FF3A6E",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 350000
+  },
+  {
+    "text": "立即了解 → cutcli.com",
+    "start": 24000000,
+    "end": 30000000,
+    "fontSize": 11,
+    "keyword": "cutcli.com",
+    "keywordColor": "#FFD600",
+    "inAnimation": "弹入跳动",
+    "inAnimationDuration": 500000
+  }
+]

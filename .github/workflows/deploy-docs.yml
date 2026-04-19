@@ -1,0 +1,75 @@
+name: Deploy docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'worker/**'
+      - 'scripts/upload-r2.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy-docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build + R2 upload + Worker deploy
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install root deps
+        run: npm ci
+
+      - name: Install worker deps
+        run: npm ci
+        working-directory: worker
+
+      - name: Build VitePress
+        run: npm run docs:build
+
+      - name: Upload changed files to R2 (incremental)
+        run: node scripts/upload-r2.mjs
+
+      - name: Deploy worker
+        if: contains(github.event.head_commit.modified, 'worker/') || contains(github.event.head_commit.added, 'worker/') || github.event_name == 'workflow_dispatch'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          command: deploy
+
+      - name: Smoke test
+        run: |
+          set -e
+          for path in / /guide/installation /guide/installation.html /reference/cli; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://docs.cutcli.com${path}")
+            echo "GET ${path} -> ${code}"
+            if [ "$code" != "200" ]; then
+              echo "Smoke test failed for ${path}"
+              exit 1
+            fi
+          done
+          code=$(curl -s -o /dev/null -w "%{http_code}" "https://docs.cutcli.com/should-be-404")
+          echo "GET /should-be-404 -> ${code}"
+          if [ "$code" != "404" ]; then
+            echo "404 fallback not working"
+            exit 1
+          fi

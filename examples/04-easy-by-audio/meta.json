@@ -1,0 +1,11 @@
+{
+  "id": "04-easy-by-audio",
+  "title": "Easy by Audio Duration",
+  "tags": ["easy", "audio", "starter"],
+  "author": "m007",
+  "duration": 9,
+  "resolution": "1080x1920",
+  "gif": "preview.gif",
+  "description": "用 cutcli draft easy 一行命令自动按音频时长铺图片+字幕+BGM。",
+  "level": 1
+}

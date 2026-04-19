@@ -1,0 +1,19 @@
+name = "docs-cutcli"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[[r2_buckets]]
+binding = "DOCS"
+bucket_name = "cutcli-docs"
+
+[[routes]]
+pattern = "docs.cutcli.com/*"
+zone_name = "cutcli.com"
+
+[[routes]]
+pattern = "docs.cutcli.com"
+zone_name = "cutcli.com"
+
+[observability]
+enabled = true

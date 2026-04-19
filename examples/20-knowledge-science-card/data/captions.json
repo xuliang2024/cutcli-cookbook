@@ -1,0 +1,49 @@
+[
+  {
+    "text": "3 分钟讲懂：cutcli 是什么",
+    "start": 0,
+    "end": 2000000,
+    "fontSize": 11,
+    "keyword": "cutcli",
+    "keywordColor": "#FFD600",
+    "inAnimation": "渐显",
+    "inAnimationDuration": 400000
+  },
+  {
+    "text": "1. 一行命令安装",
+    "start": 2000000,
+    "end": 12000000,
+    "keyword": "一行命令",
+    "keywordColor": "#FFD600",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 350000
+  },
+  {
+    "text": "2. 自动生成剪映草稿",
+    "start": 12000000,
+    "end": 30000000,
+    "keyword": "剪映草稿",
+    "keywordColor": "#FF3A6E",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 350000
+  },
+  {
+    "text": "3. 字幕 / 动画 / 音乐 全部脚本化",
+    "start": 30000000,
+    "end": 50000000,
+    "keyword": "全部脚本化",
+    "keywordColor": "#FFD600",
+    "inAnimation": "向上滑入",
+    "inAnimationDuration": 350000
+  },
+  {
+    "text": "立即试 → cutcli.com",
+    "start": 50000000,
+    "end": 60000000,
+    "fontSize": 11,
+    "keyword": "cutcli.com",
+    "keywordColor": "#FFD600",
+    "inAnimation": "弹入跳动",
+    "inAnimationDuration": 500000
+  }
+]

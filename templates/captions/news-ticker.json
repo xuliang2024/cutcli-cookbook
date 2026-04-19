@@ -1,0 +1,10 @@
+[
+  {
+    "_comment": "新闻底部滚动条：单条字幕、向左循环滑入、底部居中",
+    "text": "突发：cutcli 1.0 正式发布，剪映用户欢呼雀跃    |    更多详情请访问 cutcli.com    |    今晚 8 点直播预告",
+    "start": 0,
+    "end": 30000000,
+    "loopAnimation": "向左滚动",
+    "loopAnimationDuration": 8000000
+  }
+]

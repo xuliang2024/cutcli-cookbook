@@ -1,0 +1,11 @@
+{
+  "id": "02-image-slideshow-bgm",
+  "title": "Image Slideshow with BGM",
+  "tags": ["images", "transitions", "audio", "starter"],
+  "author": "m007",
+  "duration": 9,
+  "resolution": "1080x1920",
+  "gif": "preview.gif",
+  "description": "3 张图竖屏轮播，每张 3 秒，叠化/推移转场，配 9 秒背景音乐。",
+  "level": 1
+}
