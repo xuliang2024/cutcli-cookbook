@@ -15,7 +15,8 @@ alwaysApply: false
 
 ```text
 examples/<id>-<slug>/
-├── README.md         # 必填：5 段
+├── README.md         # 必填：英文版（5 段，英文 H2 标题）
+├── README.zh.md      # 必填：中文版（5 段，中文 H2 标题）
 ├── run.sh            # 必填：可执行 + set -euo pipefail
 ├── meta.json         # 必填：通过 schema 校验
 ├── data/             # 复杂 JSON 拆这里
@@ -61,9 +62,23 @@ examples/<id>-<slug>/
 | `resolution` | string | `^[0-9]+x[0-9]+$` |
 | `level` | int | 1-5（推荐难度） |
 
-## README.md 必有 5 个 H2 章节
+## README.md（英文）+ README.zh.md（中文）必有 5 个 H2 章节
 
-CI 校验严格匹配以下标题：
+主 `README.md` 必须用英文章节（CI 严格匹配）：
+
+```markdown
+## When to use
+
+## Run it
+
+## Key parameters
+
+## Customize
+
+## cutcli features used
+```
+
+如果存在 `README.zh.md`（强烈推荐 + `lint:i18n` 强制成对），中文章节必须是：
 
 ```markdown
 ## 适用场景
@@ -77,7 +92,11 @@ CI 校验严格匹配以下标题：
 ## 用到的 cutcli 能力
 ```
 
-第一段必须包含 `![preview](preview.gif)`（即使 gif 还没录，也要占位）。
+第一段必须包含 `![preview](preview.gif)`（即使 gif 还没录，也要占位）。两个 README 顶部都要有双语切换链接：
+
+```markdown
+[English](README.md) · [简体中文](README.zh.md)
+```
 
 ## run.sh 必有要素
 
@@ -178,9 +197,10 @@ bash examples/<your-case>/run.sh    # 实际跑一遍，剪映打开看效果
 校验项：
 
 - [ ] `run.sh` / `README.md` / `meta.json` 存在
+- [ ] `README.zh.md` 存在（`npm run lint:i18n` 强制中英成对）
 - [ ] `run.sh` chmod +x、有 shebang、有 `set -euo pipefail`
-- [ ] `meta.json` 通过 ajv schema
-- [ ] `README.md` 5 个章节齐全
+- [ ] `meta.json` 通过 ajv schema（`description` 英文，可选 `description_zh` 中文）
+- [ ] `README.md` 5 个英文章节齐全；`README.zh.md` 5 个中文章节齐全
 - [ ] `data/*.json` 都是合法 JSON
 - [ ] 所有 URL 在白名单内
 - [ ] README 不含本地路径 `/Users/...`
@@ -190,8 +210,10 @@ bash examples/<your-case>/run.sh    # 实际跑一遍，剪映打开看效果
 ```bash
 node scripts/new-example.mjs my-case-slug
 # 按提示输入 author / title / tags / duration / resolution / description
-# 自动生成 examples/99-community/<author>/my-case-slug/{README.md,run.sh,meta.json,data/}
+# 自动生成 examples/99-community/<author>/my-case-slug/{README.md,README.zh.md,run.sh,meta.json,data/}
 ```
+
+脚手架生成的 `README.md` 是英文骨架（5 段英文 H2），`README.zh.md` 是中文骨架（5 段中文 H2）。两者都已经填好双语切换链接。
 
 ## 最后
 

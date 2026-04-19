@@ -109,12 +109,37 @@ CI 用 `scripts/check-links.mjs` 校验内部链接，不通过 fail。
 
 ## 国际化（i18n）
 
-目前中文为主。英文优先级：
+**英文为默认 locale**，中文是第二语言。
 
-1. `README.en.md`（仓库门面英文）
-2. 英文文档站可以放 `docs/en/...`，再在 config.mts 里加 `locales`
+| 内容 | 英文（root） | 中文 |
+|---|---|---|
+| 文档站 | `docs/<section>/*.md` | `docs/zh/<section>/*.md` |
+| 仓库门面 | `README.md` | `README.zh.md` |
+| 治理文档 | `CONTRIBUTING.md` / `CHANGELOG.md` | `CONTRIBUTING.zh.md` / `CHANGELOG.zh.md` |
+| 子目录 README | `templates/README.md` 等 | `templates/README.zh.md` 等 |
+| 案例 README | `examples/<id>/README.md` | `examples/<id>/README.zh.md` |
+| 提示词 | `prompts/system/cutcli-expert.md` | `prompts/system/cutcli-expert.zh.md` |
+| GitHub Issue / PR 模板 | 单文件双语（English / 中文 同行写） | 同左 |
+| 维护者文档 | — | `.github/RELEASE_GUIDE.md`、`showcase/launch.md`、`.cursor/rules/*` 都保留中文 |
 
-不要为了英文化删掉中文版。
+VitePress `locales`：
+
+```typescript
+locales: {
+  root: { label: 'English', lang: 'en-US', themeConfig: { ... } },
+  zh:   { label: '简体中文', lang: 'zh-CN', link: '/zh/', themeConfig: { ... } },
+}
+```
+
+新建任何面向用户的 markdown，**默认要写英文 + 一份中文 .zh.md**。`scripts/check-i18n-pairs.mjs` 会扫成对存在；`npm run lint:i18n` 失败时不能合并。
+
+`docs/reference/{cli,api,concepts}.md` 由闭源仓 `jy_cli/scripts/sync-to-cookbook.mjs` 写入，因此暂时跳过 i18n-pairs 检查；闭源仓同步脚本升级后会双语输出（详见 `.cursor/rules/open-source-boundary.mdc`）。
+
+每个 README / docs / prompts 的顶部加双语切换链接：
+
+```markdown
+[English](README.md) · [简体中文](README.zh.md)
+```
 
 ## 静态资源
 

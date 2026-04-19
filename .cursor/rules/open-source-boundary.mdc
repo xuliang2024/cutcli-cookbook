@@ -40,11 +40,13 @@ alwaysApply: true
 ### 3. 闭源 → 公开的内容流动**只有一条路径**
 
 ```text
-jy_cli/docs/cli.md, api.md, README.md
+jy_cli/docs/cli.md, api.md, README.md          (中文源)
+jy_cli/docs/cli.en.md, api.en.md, README.en.md (英文源；TODO 待补)
             ↓
-jy_cli/scripts/sync-to-cookbook.mjs (单向 + sanitizer)
+jy_cli/scripts/sync-to-cookbook.mjs (单向 + sanitizer + 双输出)
             ↓
-cutcli-cookbook/docs/reference/{cli,api,concepts}.md
+cutcli-cookbook/docs/reference/{cli,api,concepts}.md      ← 英文
+cutcli-cookbook/docs/zh/reference/{cli,api,concepts}.md   ← 中文
 ```
 
 详见 `jy_cli/scripts/sync.config.json`。所有同步都过：
@@ -53,6 +55,21 @@ cutcli-cookbook/docs/reference/{cli,api,concepts}.md
 - `stripBlocks`：删除 `<!-- TODO-internal: ... -->` 单行
 - `replacements`：`cut <subcommand>` → `cutcli <subcommand>`
 - `replacements`：`npm install -g cut_cli` → `curl -s https://cutcli.com/cli | bash`
+
+#### 当前过渡态（cookbook 仓 i18n 已上线、闭源 sync 待升级）
+
+闭源 sync 脚本目前**只有中文输出**。在它升级成双输出之前，本仓采取保底措施：
+
+- `docs/reference/{cli,api,concepts}.md`：暂时仍是中文，等闭源仓产出英文源后由 sync 覆盖
+- `docs/zh/reference/{cli,api,concepts}.md`：直接是中文（PR 1 时从 root 复制过来）
+- `scripts/check-i18n-pairs.mjs` 把这三个文件加入 `SYNC_GENERATED` 白名单，跳过强制成对
+
+闭源仓升级后：
+
+1. `jy_cli/docs/` 增加 `cli.en.md` / `api.en.md` / `README.en.md` 三份英文源
+2. `jy_cli/scripts/sync-to-cookbook.mjs` 改成双输出，sync.test.mjs 增加双语用例
+3. 跑 `node scripts/sync-to-cookbook.mjs` 同时覆盖 cookbook 的 root 与 zh
+4. 公开仓侧：把 `SYNC_GENERATED` 白名单从 `check-i18n-pairs.mjs` 移除（双语都强制存在）
 
 ### 4. 命令名严格用 `cutcli`，不是 `cut`
 
