@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 02-image-slideshow-bgm: 3 张图轮播 + 转场 + 背景音乐
+# 02-image-slideshow-bgm: 3-image slideshow + transitions + BGM
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -24,6 +24,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Open CapCut/Jianying — draft "image-slideshow-bgm".
+Done. Open CapCut / Jianying — draft "image-slideshow-bgm".
 Draft ID: $DRAFT_ID
 EOF

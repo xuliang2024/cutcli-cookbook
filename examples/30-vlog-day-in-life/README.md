@@ -1,54 +1,56 @@
 # 30 · Vlog: A Day in My Life (30s)
 
-> 30 秒 Vlog "我的一天" 模板：早 → 午 → 晚 三段，配时间标签字幕。
+> 30-second vlog "a day in my life" template: morning → noon → evening, each with a time-stamped caption.
+
+[English](README.md) · [简体中文](README.zh.md)
 
 ![preview](preview.gif)
 
-> `preview.gif` 暂未提交，CI 会强制要求。
+> `preview.gif` is not committed yet — CI will require it.
 
-## 适用场景
+## When to use
 
-- 个人 Vlog "我的一天 / 我的一周" 系列
-- 旅行 / 美食日常
-- 任何"按时间线串场景"的内容
+- Personal vlog "a day in my life / a week in my life" series
+- Travel / food daily series
+- Any timeline-driven scene chain
 
-## 一行运行
+## Run it
 
 ```bash
 bash run.sh
 ```
 
-## 关键参数解释
+## Key parameters
 
-| 参数 | 值 | 为什么 |
+| Parameter | Value | Why |
 |---|---|---|
-| 三段时间标签 | `AM 7:00 / PM 1:00 / PM 8:00` | Vlog 经典节奏：早 → 午 → 晚 |
-| 转场 `向右擦除` | 替代叠化 | 给 Vlog 加一点节奏感，类似翻页 |
-| 第一段 Ken Burns 1.0 → 1.1 | 10s 内 | 开场画面有动感 |
-| 字幕 `--transform-y -0.7` | 偏下 70% | 比短视频字幕更靠下，留出画面欣赏空间 |
-| 关键词色 黄/橙/粉 | 跟早/午/晚气氛 | 早=黄(暖)、午=橙(活力)、晚=粉(柔) |
+| Three time-stamped captions | `AM 7:00 / PM 1:00 / PM 8:00` | Classic vlog rhythm: morning → noon → evening |
+| Transition `wipe right` | Replaces crossfade | Adds page-turn rhythm to the vlog |
+| First segment Ken Burns 1.0 → 1.1 over 10 s | Dynamic opening | Movement at the very beginning |
+| Caption `--transform-y -0.7` | 70 % below center | Lower than short-video captions, leaves more room for the visual |
+| Highlight colors yellow / orange / pink | Match the time-of-day mood | Morning = yellow (warm), noon = orange (vital), evening = pink (soft) |
 
-## 进阶改造
+## Customize
 
-### 全部三段都加 Ken Burns
+### Apply Ken Burns to all three segments
 
-把 `run.sh` 中的 `SEG_FIRST` 替换为 for 循环，对每个 segmentId 都加关键帧（参考 [`20-knowledge-science-card`](../20-knowledge-science-card/) 的写法）。
+Replace `SEG_FIRST` in `run.sh` with a `for` loop over every segmentId (see [`20-knowledge-science-card`](../20-knowledge-science-card/) for the pattern).
 
-### 加节拍贴纸 / 装饰
+### Add tempo stickers / decoration
 
 ```bash
-cutcli query stickers --action search --keyword "时钟" --pretty
+cutcli query stickers --action search --keyword "clock" --pretty
 cutcli sticker add "$DRAFT_ID" --sticker-id "<id>" --start 0 --end 30000000 --scale 0.6
 ```
 
-### 一键多版
+### Multiple themes from one script
 
-把 run.sh 复制成 `run-summer.sh` / `run-winter.sh`，只换 `data/images.json` 中的素材 URL，结构完全复用。
+Copy `run.sh` to `run-summer.sh` / `run-winter.sh` and only swap the asset URLs in `data/images.json` — same structure throughout.
 
-## 用到的 cutcli 能力
+## cutcli features used
 
-- `cutcli draft create` — 竖屏
-- `cutcli images add` — 多图 + 擦除转场
-- `cutcli keyframes add` — Ken Burns 推近
-- `cutcli captions add` — 时间标签 + 关键词高亮
+- `cutcli draft create` — portrait canvas
+- `cutcli images add` — multiple images + wipe transitions
+- `cutcli keyframes add` — Ken Burns push-in
+- `cutcli captions add` — time-stamp captions + keyword highlight
 - `cutcli audios add` — BGM

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# 30-vlog-day-in-life: 30 秒 Vlog "我的一天"
-#   场景化：早 → 中 → 晚 三段，每段配标签字幕和环境音/旁白节奏
+# 30-vlog-day-in-life: 30-second vlog "a day in my life"
+#   Three scenes (morning → noon → evening), each with a time-stamped caption and ambient pacing
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -20,7 +20,7 @@ echo "Draft created: $DRAFT_ID"
 
 cutcli images add "$DRAFT_ID" --image-infos "@$HERE/data/images.json"
 
-# 全局轻微推近，让画面有呼吸感
+# A subtle push-in on the first image so the opening breathes
 SEG_FIRST=$(cutcli images list "$DRAFT_ID" | jq -r '.[0].segmentId')
 cutcli keyframes add "$DRAFT_ID" --keyframes "[
   {\"segmentId\":\"$SEG_FIRST\",\"property\":\"scale_x\",\"offset\":0,\"value\":1.0},
@@ -40,6 +40,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Draft "vlog-day-in-life" 已生成 (30s, 竖屏).
+Done. Draft "vlog-day-in-life" generated (30 s, portrait).
 Draft ID: $DRAFT_ID
 EOF

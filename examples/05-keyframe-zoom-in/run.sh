@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 05-keyframe-zoom-in: 图片 + 关键帧缩放 (Ken Burns 效果)
+# 05-keyframe-zoom-in: image + keyframe scaling (Ken Burns effect)
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -19,11 +19,11 @@ echo "Draft created: $DRAFT_ID"
 
 cutcli images add "$DRAFT_ID" --image-infos "@$HERE/data/images.json"
 
-# 拿到刚才那张图的 segmentId
+# Fetch the segmentId of the image we just added
 SEG_ID=$(cutcli images list "$DRAFT_ID" | jq -r '.[0].segmentId')
 echo "Segment ID: $SEG_ID"
 
-# 用 jq 把模板里的 __SEG_ID__ 替换成真实 ID 后传给 cutcli
+# Use jq to replace __SEG_ID__ in the template with the real ID, then hand to cutcli
 KEYFRAMES=$(jq --arg seg "$SEG_ID" \
   '[.[] | .segmentId = $seg]' \
   "$HERE/data/keyframes.template.json")
@@ -34,6 +34,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Draft "keyframe-zoom-in" 已生成。打开剪映可看到 5 秒内从 1.0 缓慢放大到 1.3。
+Done. Draft "keyframe-zoom-in" generated. Open CapCut / Jianying — the image slowly zooms from 1.0 to 1.3 over 5 s.
 Draft ID: $DRAFT_ID
 EOF

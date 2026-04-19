@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 03-tiktok-keyword-highlight: 多条字幕 + 关键词高亮
+# 03-tiktok-keyword-highlight: multiple captions + keyword highlight
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -30,6 +30,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Draft "tiktok-keyword-highlight" 已生成。
+Done. Draft "tiktok-keyword-highlight" generated.
 Draft ID: $DRAFT_ID
 EOF

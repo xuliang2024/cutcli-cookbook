@@ -6,6 +6,7 @@
   "duration": 60,
   "resolution": "1080x1920",
   "gif": "preview.gif",
-  "description": "60 秒竖屏知识科普视频：标题 + 3 要点 + 总结，每段配图 Ken Burns 推近、字幕带半透明背景卡。",
+  "description": "60-second portrait knowledge video: title + 3 key points + wrap-up; each image gets Ken Burns push-in and captions sit on a translucent background card.",
+  "description_zh": "60 秒竖屏知识科普视频：标题 + 3 要点 + 总结，每段配图 Ken Burns 推近、字幕带半透明背景卡。",
   "level": 3
 }

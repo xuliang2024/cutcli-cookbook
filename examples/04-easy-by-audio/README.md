@@ -1,48 +1,50 @@
 # 04 · Easy by Audio Duration
 
-> 用 `cutcli draft easy` 一行命令，按音频时长自动铺图片 + 字幕 + BGM。
+> Use `cutcli draft easy` — one command auto-fits an image + caption + BGM to an audio's duration.
+
+[English](README.md) · [简体中文](README.zh.md)
 
 ![preview](preview.gif)
 
-> `preview.gif` 暂未提交（CI 会强制要求）。
+> `preview.gif` is not committed yet (CI will require it).
 
-## 适用场景
+## When to use
 
-- 旁白先录好，需要快速按旁白时长配视觉
-- 念诗 / 读书 / 播客剪辑
-- 任何"我有一段音频，给我铺好底图就行"的场景
+- Voice-over already recorded; you need the visuals to match its length
+- Poetry / book reading / podcast cuts
+- Any "I have an audio, just lay an image under it" scenario
 
-## 一行运行
+## Run it
 
 ```bash
 bash run.sh
 ```
 
-`draft easy` 命令会：
+`draft easy` will:
 
-1. 下载音频，自动检测时长
-2. 用图片铺满整个时长
-3. 字幕铺满整个时长
-4. 自动对齐结束时间
+1. Download the audio and detect its duration
+2. Stretch the background image to cover the full duration
+3. Stretch the caption to cover the full duration
+4. Auto-align the end times
 
-## 关键参数解释
+## Key parameters
 
-| 参数 | 说明 |
+| Parameter | Description |
 |---|---|
-| `--audio-url` | 必填，决定整段视频的总时长 |
-| `--img-url` | 可选，背景图 |
-| `--video-url` | 可选，背景视频（与 img-url 二选一） |
-| `--text` | 可选，标题字幕 |
+| `--audio-url` | Required, decides the total video length |
+| `--img-url` | Optional, background image |
+| `--video-url` | Optional, background video (mutually exclusive with img-url) |
+| `--text` | Optional, title caption |
 
-## 进阶改造
+## Customize
 
-### 想要多张图轮播？
+### Want multiple images in a slideshow?
 
-`draft easy` 只支持单张图。需要多张请用 `images add`，参考 [`02-image-slideshow-bgm`](../02-image-slideshow-bgm/)。
+`draft easy` only takes one image. Use `images add` instead — see [`02-image-slideshow-bgm`](../02-image-slideshow-bgm/).
 
-### 用本地音频
+### Local audio file
 
-cutcli 也接受本地路径：
+cutcli also accepts local paths:
 
 ```bash
 cutcli draft easy "$DRAFT_ID" \
@@ -50,21 +52,21 @@ cutcli draft easy "$DRAFT_ID" \
   --img-url https://cutcli.com/assets/demo/scene-01.jpg
 ```
 
-### 把字幕拆成多句
+### Split the caption into multiple lines
 
-也得换用 `captions add`：
+Switch to `captions add`:
 
 ```bash
 DURATION=$(cutcli query audio-duration --url "$AUDIO_URL" | jq -r '.duration')
 HALF=$((DURATION / 2))
 
 cutcli captions add "$DRAFT_ID" --captions "[
-  {\"text\":\"前半段标题\",\"start\":0,\"end\":$HALF},
-  {\"text\":\"后半段标题\",\"start\":$HALF,\"end\":$DURATION}
+  {\"text\":\"First half title\",\"start\":0,\"end\":$HALF},
+  {\"text\":\"Second half title\",\"start\":$HALF,\"end\":$DURATION}
 ]"
 ```
 
-## 用到的 cutcli 能力
+## cutcli features used
 
-- `cutcli draft easy` — 一行命令快速铺素材
-- `cutcli query audio-duration` — 拿音频时长
+- `cutcli draft easy` — one-shot asset layout
+- `cutcli query audio-duration` — fetch an audio's length

@@ -27,17 +27,28 @@ export const META_SCHEMA = {
     },
     gif: { type: 'string', minLength: 1 },
     description: { type: 'string', minLength: 1 },
+    description_zh: { type: 'string', minLength: 1 },
     level: { type: 'integer', minimum: 1, maximum: 5 },
   },
 };
 
-export const REQUIRED_README_SECTIONS = [
+export const REQUIRED_README_SECTIONS_EN = [
+  '## When to use',
+  '## Run it',
+  '## Key parameters',
+  '## Customize',
+  '## cutcli features used',
+];
+
+export const REQUIRED_README_SECTIONS_ZH = [
   '## 适用场景',
   '## 一行运行',
   '## 关键参数解释',
   '## 进阶改造',
   '## 用到的 cutcli 能力',
 ];
+
+export const REQUIRED_README_SECTIONS = REQUIRED_README_SECTIONS_EN;
 
 export const URL_WHITELIST_PATTERNS = [
   /^https:\/\/cutcli\.com\//,

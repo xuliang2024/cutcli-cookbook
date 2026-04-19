@@ -1,38 +1,40 @@
 # 02 · Image Slideshow with BGM
 
-> 3 张图竖屏轮播，每张 3 秒，叠化 / 推移转场，配背景音乐。
+> Three portrait images slideshowing 3 s each, crossfade + push transitions, with background music.
+
+[English](README.md) · [简体中文](README.zh.md)
 
 ![preview](preview.gif)
 
-> `preview.gif` 暂未提交（CI 会强制要求）。
+> `preview.gif` is not committed yet (CI will require it).
 
-## 适用场景
+## When to use
 
-- 旅行 / 美食 / 风景 类相册短视频
-- 产品图轮播（电商首页）
-- 任何"图 + 配乐"的场景模版
+- Travel / food / scenic photo-album shorts
+- Product image carousel (ecommerce homepage)
+- Any "image + music" template scenario
 
-## 一行运行
+## Run it
 
 ```bash
 bash run.sh
 ```
 
-## 关键参数解释
+## Key parameters
 
-| 参数 | 值 | 为什么 |
+| Parameter | Value | Why |
 |---|---|---|
-| 每张图 3 秒 | `start`/`end` 间隔 3,000,000μs | 短视频常见单图停留时长 |
-| `transition: "叠化"` | 第 1→2 张 | 默认温和，适合相册流 |
-| `transition: "推移"` | 第 2→3 张 | 节奏稍微变化，避免单调 |
-| `transitionDuration: 500000` | 0.5 秒 | 转场不能超过最短片段时长的 1/3 |
-| `volume: 0.6` | 60% | BGM 不抢戏，给后期可能加的旁白留空间 |
+| 3 s per image | `start`/`end` 3,000,000 μs apart | Common per-image dwell for short video |
+| `transition: "叠化"` | image 1 → 2 | Default soft crossfade, fits photo album flow |
+| `transition: "推移"` | image 2 → 3 | Slight rhythm change, avoids monotony |
+| `transitionDuration: 500000` | 0.5 s | Transition must be ≤ 1/3 of the shorter segment |
+| `volume: 0.6` | 60 % | BGM stays in the background, leaving room for voice-over later |
 
-## 进阶改造
+## Customize
 
-### 想要更快的节奏？
+### Want a faster pace?
 
-把每张图改成 2 秒：
+Reduce each image to 2 s:
 
 ```json
 "start": 0, "end": 2000000
@@ -40,21 +42,22 @@ bash run.sh
 "start": 4000000, "end": 6000000
 ```
 
-记得同步把 `audio.json` 的 `duration` 和 `end` 也改成 `6000000`。
+Update `audio.json` `duration` and `end` to `6000000` to match.
 
-### 想加图 Ken Burns 缩放效果？
+### Want Ken Burns zoom?
 
-参考 [`05-keyframe-zoom-in`](../05-keyframe-zoom-in/) — 用关键帧给每张图加 `scale_x` / `scale_y` 的缓慢变化。
+See [`05-keyframe-zoom-in`](../05-keyframe-zoom-in/) — use keyframes to slowly tween `scale_x` / `scale_y` per image.
 
-### 想用自己的图？
+### Use your own images
 
-把 `data/images.json` 中的 `imageUrl` 换成你的 CDN 链接。注意：
-- 必须是公开可访问的 HTTPS URL
-- `width` / `height` 要填你图片的真实尺寸（cutcli 不会自动检测）
-- 推荐 CDN：jsdelivr / GitHub Raw / 自建 R2
+Replace `imageUrl` in `data/images.json`. Notes:
 
-## 用到的 cutcli 能力
+- Must be a publicly accessible HTTPS URL
+- `width` / `height` must match the actual pixel size (cutcli does not auto-detect)
+- Recommended CDNs: jsdelivr / GitHub Raw / your own R2 bucket
 
-- `cutcli draft create` — 创建竖屏画布
-- `cutcli images add` — 批量加图、配置时间和转场
-- `cutcli audios add` — 加 BGM、设音量
+## cutcli features used
+
+- `cutcli draft create` — portrait canvas
+- `cutcli images add` — bulk add images with timing and transitions
+- `cutcli audios add` — BGM with volume control
