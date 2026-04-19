@@ -14,7 +14,7 @@
 | [`deploy.mdc`](deploy.mdc) | `worker/**` `.github/workflows/**` | R2 + Worker 部署、CF API Token 权限、回滚步骤、监控 |
 | [`example-spec.mdc`](example-spec.mdc) | `examples/**` | 案例目录结构、meta.json schema、README 章节、URL 白名单 |
 | [`docs-style.mdc`](docs-style.mdc) | `docs/**` | VitePress 写作风格、链接规则、自动生成区域提醒 |
-| [`cursor-loop.mdc`](cursor-loop.mdc) | always | (用户级) Cursor Loop MCP 配置 — 不要改 |
+| `cursor-loop.mdc` (gitignored) | always | (用户级) Cursor Loop MCP 配置 — 仅本地存在，不入仓 |
 
 ## 速找索引
 
