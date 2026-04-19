@@ -17,7 +17,7 @@ cutcli generates standard CapCut drafts that the desktop app can open directly. 
 curl -s https://cutcli.com/cli | bash
 
 # 2. Run the simplest example
-git clone https://github.com/m007/cutcli-cookbook.git
+git clone https://github.com/xuliang2024/cutcli-cookbook.git
 cd cutcli-cookbook/examples/01-hello-caption
 bash run.sh
 

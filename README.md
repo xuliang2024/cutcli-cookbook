@@ -17,7 +17,7 @@ cutcli 让你**用一行命令生成可被剪映直接打开的标准草稿**。
 curl -s https://cutcli.com/cli | bash
 
 # 2. 跑一个最简单的案例
-git clone https://github.com/m007/cutcli-cookbook.git
+git clone https://github.com/xuliang2024/cutcli-cookbook.git
 cd cutcli-cookbook/examples/01-hello-caption
 bash run.sh
 
@@ -63,7 +63,7 @@ bash run.sh
 - 官网：<https://cutcli.com>
 - 文档：<https://docs.cutcli.com>
 - 安装命令：`curl -s https://cutcli.com/cli | bash`
-- 反馈与讨论：[Issues](https://github.com/m007/cutcli-cookbook/issues) / [Discussions](https://github.com/m007/cutcli-cookbook/discussions)
+- 反馈与讨论：[Issues](https://github.com/xuliang2024/cutcli-cookbook/issues) / [Discussions](https://github.com/xuliang2024/cutcli-cookbook/discussions)
 
 ## License
 

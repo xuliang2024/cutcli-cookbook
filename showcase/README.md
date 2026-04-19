@@ -4,7 +4,7 @@
 
 ## 怎么投稿
 
-按 [Showcase Issue 模板](https://github.com/m007/cutcli-cookbook/issues/new?template=showcase.yml) 开一个 issue，填上：
+按 [Showcase Issue 模板](https://github.com/xuliang2024/cutcli-cookbook/issues/new?template=showcase.yml) 开一个 issue，填上：
 
 - 作品标题
 - 作品链接（视频/文章/抖音/B站/Twitter 都行）

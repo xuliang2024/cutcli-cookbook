@@ -2,7 +2,7 @@
 
 把"我的一天 / 我的一周"类 Vlog 模板用 cutcli 重新做一遍，目标 30 秒，能批量复用。
 
-参考完整代码：[`examples/30-vlog-day-in-life`](https://github.com/m007/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life)。
+参考完整代码：[`examples/30-vlog-day-in-life`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life)。
 
 ## 需求拆解
 
@@ -69,4 +69,4 @@ bash run.sh images-summer.json
 
 ## 完整代码
 
-[`examples/30-vlog-day-in-life`](https://github.com/m007/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life)
+[`examples/30-vlog-day-in-life`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life)

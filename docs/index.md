@@ -17,7 +17,7 @@ hero:
       link: /guide/installation
     - theme: alt
       text: GitHub
-      link: https://github.com/m007/cutcli-cookbook
+      link: https://github.com/xuliang2024/cutcli-cookbook
 
 features:
   - icon: ⚡️
@@ -47,7 +47,7 @@ features:
 curl -s https://cutcli.com/cli | bash
 
 # 跑一个最简单的案例
-git clone https://github.com/m007/cutcli-cookbook.git
+git clone https://github.com/xuliang2024/cutcli-cookbook.git
 cd cutcli-cookbook/examples/01-hello-caption
 bash run.sh
 ```

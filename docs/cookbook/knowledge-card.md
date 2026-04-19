@@ -2,7 +2,7 @@
 
 "3 分钟讲懂 XX" 风格的竖屏知识视频。重点：**字幕清晰、节奏稳、画面不抢戏**。
 
-参考完整代码：[`examples/20-knowledge-science-card`](https://github.com/m007/cutcli-cookbook/tree/main/examples/20-knowledge-science-card)。
+参考完整代码：[`examples/20-knowledge-science-card`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card)。
 
 ## 结构
 
@@ -67,4 +67,4 @@ BGM 调到 0.25，让旁白主导。
 
 ## 完整代码
 
-[`examples/20-knowledge-science-card`](https://github.com/m007/cutcli-cookbook/tree/main/examples/20-knowledge-science-card)
+[`examples/20-knowledge-science-card`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card)

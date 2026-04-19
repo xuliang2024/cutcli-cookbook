@@ -7,7 +7,7 @@
 ### 1. 提一个新案例（最受欢迎）
 
 ```bash
-git clone https://github.com/m007/cutcli-cookbook.git
+git clone https://github.com/xuliang2024/cutcli-cookbook.git
 cd cutcli-cookbook
 node scripts/new-example.mjs my-cool-case
 # 按提示填几个字段，自动生成 examples/99-community/<你的 GitHub handle>/my-cool-case/

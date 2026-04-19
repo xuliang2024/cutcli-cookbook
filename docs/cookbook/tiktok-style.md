@@ -2,7 +2,7 @@
 
 抖音 / TikTok 爆款的字幕节奏：每 2 秒一个关键词、强烈视觉对比、加粗 + 描边、入场动画夸张。
 
-参考完整代码：[`examples/03-tiktok-keyword-highlight`](https://github.com/m007/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight) 与 [`examples/05-keyframe-zoom-in`](https://github.com/m007/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)。
+参考完整代码：[`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight) 与 [`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)。
 
 ## 五条字幕铁律
 
@@ -82,5 +82,5 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 
 ## 完整代码
 
-- 关键词字幕：[`examples/03-tiktok-keyword-highlight`](https://github.com/m007/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight)
-- 关键帧推近：[`examples/05-keyframe-zoom-in`](https://github.com/m007/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)
+- 关键词字幕：[`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight)
+- 关键帧推近：[`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)

@@ -14,7 +14,7 @@
 cd /Users/m007/codes/cutcli-cookbook
 git add -A
 git commit -m "feat: initial scaffold with W1~W4 deliverables"
-gh repo create m007/cutcli-cookbook --public --source . --remote origin --description "Open-source cookbook, templates and docs for cutcli (CapCut/Jianying draft CLI)"
+gh repo create xuliang2024/cutcli-cookbook --public --source . --remote origin --description "Open-source cookbook, templates and docs for cutcli (CapCut/Jianying draft CLI)"
 git push -u origin main
 ```
 
@@ -50,7 +50,7 @@ gh run watch
 ## 4. 启用分支保护
 
 ```bash
-gh api repos/m007/cutcli-cookbook/branches/main/protection \
+gh api repos/xuliang2024/cutcli-cookbook/branches/main/protection \
   --method PUT \
   --field required_status_checks[strict]=true \
   --field required_status_checks[contexts][]='Lint (cases + commands + links)' \
@@ -73,7 +73,7 @@ gh issue create --title "[Case] 美食拍照 vlog" --body-file <(awk '/case-001/
 ## 6. 启用 GitHub Discussions
 
 ```bash
-gh api repos/m007/cutcli-cookbook --method PATCH --field has_discussions=true
+gh api repos/xuliang2024/cutcli-cookbook --method PATCH --field has_discussions=true
 ```
 
 ## 7. 准备发布

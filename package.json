@@ -8,7 +8,7 @@
   "homepage": "https://docs.cutcli.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/m007/cutcli-cookbook"
+    "url": "https://github.com/xuliang2024/cutcli-cookbook"
   },
   "type": "module",
   "scripts": {

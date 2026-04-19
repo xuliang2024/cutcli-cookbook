@@ -29,8 +29,8 @@ export default defineConfig({
         text: '相关',
         items: [
           { text: '官网 cutcli.com', link: 'https://cutcli.com' },
-          { text: 'GitHub', link: 'https://github.com/m007/cutcli-cookbook' },
-          { text: '更新日志', link: 'https://github.com/m007/cutcli-cookbook/blob/main/CHANGELOG.md' },
+          { text: 'GitHub', link: 'https://github.com/xuliang2024/cutcli-cookbook' },
+          { text: '更新日志', link: 'https://github.com/xuliang2024/cutcli-cookbook/blob/main/CHANGELOG.md' },
         ],
       },
     ],
@@ -86,7 +86,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/m007/cutcli-cookbook' },
+      { icon: 'github', link: 'https://github.com/xuliang2024/cutcli-cookbook' },
     ],
 
     footer: {
@@ -117,7 +117,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/m007/cutcli-cookbook/edit/main/docs/:path',
+      pattern: 'https://github.com/xuliang2024/cutcli-cookbook/edit/main/docs/:path',
       text: '在 GitHub 上编辑此页',
     },
 

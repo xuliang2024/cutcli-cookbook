@@ -6,11 +6,11 @@
 
 | 案例 | 演示 | 难度 |
 |---|---|---|
-| [01-hello-caption](https://github.com/m007/cutcli-cookbook/tree/main/examples/01-hello-caption) | 一行字幕 + 入场动画 | ⭐ |
-| [02-image-slideshow-bgm](https://github.com/m007/cutcli-cookbook/tree/main/examples/02-image-slideshow-bgm) | 3 图轮播 + 转场 + 背景音乐 | ⭐ |
-| [03-tiktok-keyword-highlight](https://github.com/m007/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight) | 多条字幕 + 关键词高亮 | ⭐ |
-| [04-easy-by-audio](https://github.com/m007/cutcli-cookbook/tree/main/examples/04-easy-by-audio) | 按音频时长自动铺素材 | ⭐ |
-| [05-keyframe-zoom-in](https://github.com/m007/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in) | 图片 + 关键帧缩放 | ⭐⭐ |
+| [01-hello-caption](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/01-hello-caption) | 一行字幕 + 入场动画 | ⭐ |
+| [02-image-slideshow-bgm](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/02-image-slideshow-bgm) | 3 图轮播 + 转场 + 背景音乐 | ⭐ |
+| [03-tiktok-keyword-highlight](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight) | 多条字幕 + 关键词高亮 | ⭐ |
+| [04-easy-by-audio](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/04-easy-by-audio) | 按音频时长自动铺素材 | ⭐ |
+| [05-keyframe-zoom-in](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in) | 图片 + 关键帧缩放 | ⭐⭐ |
 
 ## 场景教程
 
@@ -23,12 +23,12 @@
 
 ## 投稿你的案例
 
-写好了就提 PR！流程见 [CONTRIBUTING.md](https://github.com/m007/cutcli-cookbook/blob/main/CONTRIBUTING.md)。
+写好了就提 PR！流程见 [CONTRIBUTING.md](https://github.com/xuliang2024/cutcli-cookbook/blob/main/CONTRIBUTING.md)。
 
 最简单的方式：
 
 ```bash
-git clone https://github.com/m007/cutcli-cookbook.git
+git clone https://github.com/xuliang2024/cutcli-cookbook.git
 cd cutcli-cookbook
 node scripts/new-example.mjs my-cool-case
 # 编辑生成的 examples/99-community/<handle>/my-cool-case/run.sh

@@ -2,7 +2,7 @@
 
 电商首页 / 详情页 banner / 抖音投流常用的 30 秒产品宣传片模板。
 
-参考完整代码：[`examples/10-product-promo-30s`](https://github.com/m007/cutcli-cookbook/tree/main/examples/10-product-promo-30s)。
+参考完整代码：[`examples/10-product-promo-30s`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s)。
 
 ## 黄金 30 秒结构
 
@@ -66,4 +66,4 @@ cutcli filters add "$DRAFT_ID" --filter-infos '[
 
 ## 完整代码
 
-[`examples/10-product-promo-30s`](https://github.com/m007/cutcli-cookbook/tree/main/examples/10-product-promo-30s)
+[`examples/10-product-promo-30s`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s)

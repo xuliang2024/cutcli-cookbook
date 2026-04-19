@@ -44,7 +44,7 @@ cutcli captions add "$DRAFT_ID" --captions '[
 
 ## 自定义提示词
 
-如果你想用 ChatGPT / Gemini 等不在内置列表里的 AI 工具，仓库里 [`prompts/system/cutcli-expert.md`](https://github.com/m007/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) 是一份完整的"cutcli 专家"系统提示词，复制粘贴即可。
+如果你想用 ChatGPT / Gemini 等不在内置列表里的 AI 工具，仓库里 [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) 是一份完整的"cutcli 专家"系统提示词，复制粘贴即可。
 
 更多提示词模板见 [Prompts 库](/prompts/)。
 
