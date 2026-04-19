@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# 20-knowledge-science-card: 竖屏知识科普卡片 (3 分钟讲懂 X 风格)
-#   0-2s    标题
-#   2-50s   3 个要点 + 配图（Ken Burns 推近）
-#   50-60s  总结 + CTA
+# 20-knowledge-science-card: portrait knowledge card ("3 minutes to understand X" style)
+#   0-2s    title
+#   2-50s   3 key points + matching images (Ken Burns push-in)
+#   50-60s  wrap-up + CTA
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -22,7 +22,7 @@ echo "Draft created: $DRAFT_ID"
 
 cutcli images   add "$DRAFT_ID" --image-infos "@$HERE/data/images.json"
 
-# 给每段图加 Ken Burns 推近
+# Add Ken Burns push-in to every image segment
 SEGMENTS=$(cutcli images list "$DRAFT_ID" | jq -r '.[].segmentId')
 KFS="["
 i=0
@@ -49,6 +49,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Draft "knowledge-science-card" 已生成 (60s, 竖屏).
+Done. Draft "knowledge-science-card" generated (60 s, portrait).
 Draft ID: $DRAFT_ID
 EOF

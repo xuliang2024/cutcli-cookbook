@@ -13,7 +13,7 @@ import { walk } from './_lib/walk.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __root = path.resolve(path.dirname(__filename), '..');
 
-const SCAN_DIRS = ['docs', 'examples', 'templates', 'prompts', 'showcase', 'README.md', 'README.en.md'];
+const SCAN_DIRS = ['docs', 'examples', 'templates', 'prompts', 'showcase', 'README.md', 'README.zh.md'];
 const SKIP_DIR = new Set(['node_modules', 'dist', '.vitepress', '.wrangler']);
 const TEXT_EXT = new Set(['.md', '.sh', '.json', '.mjs', '.ts', '.txt', '.html', '.yml', '.yaml']);
 

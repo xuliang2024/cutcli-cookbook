@@ -1,8 +1,8 @@
-# 特效 (effects)
+# Effects
 
-> 占位文档，W2 由同步脚本填充完整参数表。
+> Placeholder. The full parameter table will be filled in by the sync script in W2.
 
-## 命令
+## Commands
 
 ```bash
 cutcli effects add <draftId> --effect-infos <json>
@@ -10,11 +10,11 @@ cutcli effects list <draftId>
 cutcli query effects --action search --keyword <kw>
 ```
 
-## 主要字段
+## Main fields
 
-| 字段 | 类型 | 必填 | 说明 |
+| Field | Type | Required | Description |
 |---|---|---|---|
-| `effectId` | string | 是 | 特效 ID（用 query 查询） |
-| `start` | number | 是 | 开始时间（μs） |
-| `end` | number | 是 | 结束时间（μs） |
-| `segmentId` | string | 否 | 应用到指定片段 |
+| `effectId` | string | yes | Effect ID (look it up via `query`) |
+| `start` | number | yes | Start time (μs) |
+| `end` | number | yes | End time (μs) |
+| `segmentId` | string | no | Apply to a specific segment |

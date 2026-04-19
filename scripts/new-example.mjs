@@ -97,7 +97,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 --name "${id}" | jq -r '.draftId')
 echo "Draft created: $DRAFT_ID"
 
-# TODO: 添加你的内容
+# TODO: add your content
 # cutcli captions add "$DRAFT_ID" --captions "@$HERE/data/captions.json"
 # cutcli images   add "$DRAFT_ID" --image-infos "@$HERE/data/images.json"
 # cutcli audios   add "$DRAFT_ID" --audio-infos "@$HERE/data/audio.json"
@@ -113,6 +113,49 @@ cutcli draft info "$DRAFT_ID" --pretty
     `# ${title}
 
 > ${description}
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> Record \`preview.gif\` (3-8 s, ≤ 3 MB) before opening a PR.
+
+## When to use
+
+- TODO
+
+## Run it
+
+\`\`\`bash
+bash run.sh
+\`\`\`
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| TODO | TODO | TODO |
+
+## Customize
+
+### Want X?
+
+TODO
+
+## cutcli features used
+
+- \`cutcli draft create\`
+- TODO
+`,
+  );
+
+  await fs.writeFile(
+    path.join(targetDir, 'README.zh.md'),
+    `# ${title}
+
+> ${description}
+
+[English](README.md) · [简体中文](README.zh.md)
 
 ![preview](preview.gif)
 

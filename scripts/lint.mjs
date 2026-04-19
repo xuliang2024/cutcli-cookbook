@@ -14,6 +14,7 @@ const checks = [
   { name: 'examples', script: 'validate-example.mjs', args: ['--all'] },
   { name: 'commands', script: 'check-command-name.mjs', args: [] },
   { name: 'links', script: 'check-links.mjs', args: [] },
+  { name: 'i18n-pairs', script: 'check-i18n-pairs.mjs', args: [] },
 ];
 
 function runOne({ name, script, args }) {

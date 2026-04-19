@@ -19,6 +19,7 @@
     "lint:cases": "node scripts/validate-example.mjs --all",
     "lint:cmds": "node scripts/check-command-name.mjs",
     "lint:links": "node scripts/check-links.mjs",
+    "lint:i18n": "node scripts/check-i18n-pairs.mjs",
     "new:example": "node scripts/new-example.mjs",
     "build:gallery": "node scripts/build-gallery.mjs",
     "r2:upload": "node scripts/upload-r2.mjs",

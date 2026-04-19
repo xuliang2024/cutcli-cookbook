@@ -1,27 +1,27 @@
-# 图片 (images)
+# Images
 
-> 占位文档，W2 由同步脚本填充完整参数表。
+> Placeholder. The full parameter table will be filled in by the sync script in W2.
 
-## 命令
+## Commands
 
 ```bash
-cutcli images add <draftId> --image-infos <json> [选项]
+cutcli images add <draftId> --image-infos <json> [options]
 cutcli images list <draftId>
 ```
 
-## 主要字段
+## Main fields
 
-| 字段 | 类型 | 必填 | 说明 |
+| Field | Type | Required | Description |
 |---|---|---|---|
-| `imageUrl` | string | 是 | 图片 URL（自动下载） |
-| `width` | number | 是 | 宽度（像素） |
-| `height` | number | 是 | 高度（像素） |
-| `start` | number | 是 | 开始时间（μs） |
-| `end` | number | 是 | 结束时间（μs） |
-| `transformX` / `transformY` | number | 否 | 位置（-1~1） |
-| `scaleX` / `scaleY` | number | 否 | 缩放（1.0 = 原始） |
-| `rotation` | number | 否 | 旋转角度 |
-| `inAnimation` / `outAnimation` | string | 否 | 入/出场动画名 |
-| `transition` | string | 否 | 与下一段的转场名 |
+| `imageUrl` | string | yes | Image URL (auto-downloaded) |
+| `width` | number | yes | Width (pixels) |
+| `height` | number | yes | Height (pixels) |
+| `start` | number | yes | Start time (μs) |
+| `end` | number | yes | End time (μs) |
+| `transformX` / `transformY` | number | no | Position (-1 to 1) |
+| `scaleX` / `scaleY` | number | no | Scale (1.0 = original) |
+| `rotation` | number | no | Rotation in degrees |
+| `inAnimation` / `outAnimation` | string | no | Entrance / exit animation |
+| `transition` | string | no | Transition into the next segment |
 
-完整列表 `cutcli images add --help`。
+Full list: `cutcli images add --help`.

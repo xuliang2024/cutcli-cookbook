@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 04-easy-by-audio: 用 cutcli draft easy 按音频时长自动铺素材
+# 04-easy-by-audio: use cutcli draft easy to auto-fit assets to the audio length
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -21,12 +21,12 @@ echo "Draft created: $DRAFT_ID"
 cutcli draft easy "$DRAFT_ID" \
   --audio-url "$AUDIO_URL" \
   --img-url "$IMG_URL" \
-  --text "欢迎观看，cutcli 出品"
+  --text "Welcome — built with cutcli"
 
 cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Draft "easy-by-audio" 已生成，背景图 + 标题 + BGM 全部自动铺满音频时长。
+Done. Draft "easy-by-audio" generated; background image + title + BGM all auto-fitted to the audio length.
 Draft ID: $DRAFT_ID
 EOF

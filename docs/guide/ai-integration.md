@@ -1,38 +1,38 @@
-# AI 工具集成
+# AI integrations
 
-cutcli 提供一键集成命令，自动给 Cursor / Claude Code / OpenClaw 安装专用 SKILL 配置。安装后，AI 助手就能在对话中直接帮你写 cutcli 命令。
+cutcli ships a one-line setup command that installs a dedicated SKILL configuration for Cursor, Claude Code, and OpenClaw. Once installed, any of those AI assistants can write cutcli commands for you.
 
-## 一键安装
+## One-line install
 
 ```bash
 # Cursor IDE
 cutcli setup cursor
 
-# Claude Code (CLI 版)
+# Claude Code (CLI)
 cutcli setup claude
 
-# OpenClaw (龙虾)
+# OpenClaw
 cutcli setup openclaw
 
-# 全部
+# All of the above
 cutcli setup all
 ```
 
-## 已经安装过？
+## Already installed?
 
-加 `--force` 覆盖：
+Pass `--force` to overwrite:
 
 ```bash
 cutcli setup cursor --force
 ```
 
-## 验证
+## Verify
 
-打开你的 AI 工具，问：
+Open your AI tool and ask:
 
-> 帮我用 cutcli 做一个 5 秒的字幕"Hello"，加渐显动画
+> Make me a 5-second caption that says "Hello" with a fade-in animation, using cutcli.
 
-AI 应该返回类似的命令：
+The assistant should respond with something like:
 
 ```bash
 DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
@@ -42,18 +42,18 @@ cutcli captions add "$DRAFT_ID" --captions '[
 ]' --font-size 8 --bold
 ```
 
-## 自定义提示词
+## Custom prompts
 
-如果你想用 ChatGPT / Gemini 等不在内置列表里的 AI 工具，仓库里 [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) 是一份完整的"cutcli 专家"系统提示词，复制粘贴即可。
+If you use ChatGPT / Gemini or another assistant not in the built-in list, copy the full content of [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) into the model's "system prompt" / "custom instructions".
 
-更多提示词模板见 [Prompts 库](/prompts/)。
+More prompt templates: [Prompts library](/prompts/).
 
-## 工作原理
+## How it works
 
-`cutcli setup` 做的事情很简单：
+`cutcli setup` is small:
 
-1. 在 `~/.cursor/skills/cut-draft/`（或 Claude / OpenClaw 对应目录）写入一个 `SKILL.md` 文件
-2. 该文件包含 cutcli 的命令清单、参数表、典型用法
-3. AI 工具下次启动时会自动加载这个 skill
+1. Writes a `SKILL.md` file under `~/.cursor/skills/cut-draft/` (or the equivalent for Claude / OpenClaw)
+2. The file lists cutcli commands, parameters, and idiomatic usage
+3. The AI tool loads the skill the next time it starts
 
-你可以随时 `cat ~/.cursor/skills/cut-draft/SKILL.md` 查看具体内容。
+You can always inspect it: `cat ~/.cursor/skills/cut-draft/SKILL.md`.

@@ -14,7 +14,8 @@ import addFormats from 'ajv-formats';
 import { walk, exists } from './_lib/walk.mjs';
 import {
   META_SCHEMA,
-  REQUIRED_README_SECTIONS,
+  REQUIRED_README_SECTIONS_EN,
+  REQUIRED_README_SECTIONS_ZH,
   URL_WHITELIST_PATTERNS,
 } from './_lib/example-schema.mjs';
 
@@ -52,6 +53,23 @@ async function findAllExamples() {
     out.push(path.join(root, e.name));
   }
   return out;
+}
+
+async function checkReadmeSections(file, requiredSections, errors, label) {
+  const name = label ?? path.basename(file);
+  if (!(await exists(file))) {
+    if (name === 'README.md') errors.push(`missing required file: README.md`);
+    return;
+  }
+  const md = await fs.readFile(file, 'utf8');
+  for (const section of requiredSections) {
+    if (!md.includes(section)) {
+      errors.push(`${name} missing section header "${section}"`);
+    }
+  }
+  if (/[A-Za-z]:\\Users\\|\/Users\/[a-z0-9_]+\//.test(md)) {
+    errors.push(`${name} contains absolute local path (privacy leak)`);
+  }
 }
 
 async function validateOne(dir) {
@@ -96,16 +114,14 @@ async function validateOne(dir) {
     }
   }
 
-  if (await exists(path.join(dir, 'README.md'))) {
-    const md = await fs.readFile(path.join(dir, 'README.md'), 'utf8');
-    for (const section of REQUIRED_README_SECTIONS) {
-      if (!md.includes(section)) {
-        errors.push(`README.md missing section header "${section}"`);
-      }
-    }
-    if (/[A-Za-z]:\\Users\\|\/Users\/[a-z0-9_]+\//.test(md)) {
-      errors.push('README.md contains absolute local path (privacy leak)');
-    }
+  await checkReadmeSections(path.join(dir, 'README.md'), REQUIRED_README_SECTIONS_EN, errors);
+  if (await exists(path.join(dir, 'README.zh.md'))) {
+    await checkReadmeSections(
+      path.join(dir, 'README.zh.md'),
+      REQUIRED_README_SECTIONS_ZH,
+      errors,
+      'README.zh.md',
+    );
   }
 
   const dataDir = path.join(dir, 'data');
@@ -137,7 +153,7 @@ async function validateOne(dir) {
       if (!ok) {
         errors.push(
           `${path.basename(f)}: url not in CDN whitelist: ${url} ` +
-            '(see CONTRIBUTING.md#素材使用规范)',
+            '(see CONTRIBUTING.md#asset-usage-policy)',
         );
       }
     }

@@ -1,70 +1,70 @@
-# 时间单位（微秒）
+# Time units (microseconds)
 
-cutcli 中**所有时间参数都是微秒（μs）**，不论是字幕、图片、音频还是关键帧。
+Every time-related parameter in cutcli is in **microseconds (μs)** — captions, images, audios, keyframes, the lot.
 
-## 换算公式
+## Conversion
 
 ```text
-1 秒 = 1,000,000 微秒
+1 second = 1,000,000 microseconds
 ```
 
-| 期望时长 | 写法 |
+| Desired duration | Value |
 |---|---|
-| 0.1 秒 | `100000` |
-| 0.5 秒 | `500000` |
-| 1 秒 | `1000000` |
-| 3 秒 | `3000000` |
-| 10 秒 | `10000000` |
-| 1 分钟 | `60000000` |
+| 0.1 s | `100000` |
+| 0.5 s | `500000` |
+| 1 s | `1000000` |
+| 3 s | `3000000` |
+| 10 s | `10000000` |
+| 1 min | `60000000` |
 
-## 为什么用微秒？
+## Why microseconds?
 
-- 与剪映的内部存储格式一致，无精度损失
-- 关键帧、转场、动画时长都能精确到微秒级
-- 跨平台无浮点数误差
+- Matches CapCut's internal storage format with no precision loss
+- Keyframes / transitions / animations stay sample-accurate
+- No floating-point drift across platforms
 
-## start 与 end 怎么理解
+## Understanding `start` and `end`
 
 ```text
-时间线 →
-0           3,000,000           6,000,000        (微秒)
-[第一段字幕  ][   第二段字幕   ]
+Timeline →
+0           3,000,000           6,000,000        (microseconds)
+[ caption 1 ][   caption 2     ]
 start=0    end=3M  start=3M    end=6M
 ```
 
-`start` 是片段在**总时间线**上的开始时刻；`end` 是结束时刻。两者相减就是片段时长。
+`start` is when the segment begins on the **global timeline**; `end` is when it stops. Their difference is the segment duration.
 
-::: warning 同一轨道不要重叠
-同一条字幕轨 / 视频轨内，相邻片段的 `start` 必须 ≥ 上一段的 `end`，否则剪映会出现混乱。
+::: warning No overlap on the same track
+Within the same caption / video / audio track, the `start` of the next segment must be ≥ the previous segment's `end`. Overlapping segments confuse CapCut.
 :::
 
-## 实用脚本
+## Handy helpers
 
-把秒转成微秒：
+Convert seconds to microseconds in bash:
 
 ```bash
 to_us() { echo $(( $1 * 1000000 )); }
 
 START=$(to_us 0)        # 0
 END=$(to_us 3)          # 3000000
-echo "字幕从 $START 到 $END"
+echo "Caption from $START to $END"
 ```
 
-把"3 秒 500 毫秒"这种小数转换：
+Convert decimals like `3.5` (3 s 500 ms):
 
 ```bash
 to_us_decimal() { python3 -c "print(int(float('$1') * 1000000))"; }
 to_us_decimal 3.5    # 3500000
 ```
 
-## 常见错误
+## Common mistakes
 
-| 现象 | 可能原因 |
+| Symptom | Likely cause |
 |---|---|
-| 字幕只闪一帧 | 写的是毫秒：`{"start":0,"end":3000}` 应为 `3000000` |
-| 关键帧动画太快 | 同样的微秒/毫秒混淆，关键帧 offset 也是微秒 |
-| 入场动画时长比片段还长 | `inAnimationDuration` + `outAnimationDuration` 必须 ≤ `end - start` |
+| Caption flashes for one frame | Wrote ms by mistake: `{"start":0,"end":3000}` should be `3000000` |
+| Keyframe animation finishes too fast | Same μs / ms confusion — keyframe `offset` is also in μs |
+| Entrance animation longer than the segment | `inAnimationDuration` + `outAnimationDuration` must be ≤ `end - start` |
 
-## 更多
+## More
 
-- [坐标系与位置](./coordinate-system.md)
+- [Coordinate system & positioning](./coordinate-system.md)

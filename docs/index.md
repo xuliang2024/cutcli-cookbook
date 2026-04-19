@@ -3,17 +3,17 @@ layout: home
 
 hero:
   name: cutcli
-  text: 用一行命令生成剪映草稿
-  tagline: CapCut / 剪映 草稿命令行工具 — 字幕、图片、视频、音频、特效、关键帧，全部脚本化
+  text: One command to a CapCut draft
+  tagline: CapCut / Jianying draft CLI — script captions, images, videos, audios, effects, and keyframes
   image:
     src: /hero.svg
     alt: cutcli
   actions:
     - theme: brand
-      text: 30 分钟上手
+      text: Get started in 30 minutes
       link: /guide/first-draft
     - theme: alt
-      text: 安装
+      text: Install
       link: /guide/installation
     - theme: alt
       text: GitHub
@@ -21,42 +21,44 @@ hero:
 
 features:
   - icon: ⚡️
-    title: 一行安装
+    title: One-line install
     details: "curl -s https://cutcli.com/cli | bash"
   - icon: 🎬
-    title: 标准草稿
-    details: 生成可被剪映桌面端直接打开的标准草稿文件夹，无需任何插件
+    title: Standard drafts
+    details: Generates draft folders that the CapCut / Jianying desktop app opens directly — no plugins.
   - icon: 🧩
-    title: 全场景覆盖
-    details: 字幕 / 图片 / 视频 / 音频 / 特效 / 滤镜 / 贴纸 / 关键帧 / 遮罩 全部脚本化
+    title: Full coverage
+    details: Captions / images / videos / audios / effects / filters / stickers / keyframes / masks all scripted.
   - icon: 🤖
-    title: AI 友好
-    details: 一键集成 Cursor / Claude Code / OpenClaw，自然语言生成视频
+    title: AI-friendly
+    details: One-line setup for Cursor / Claude Code / OpenClaw — turn natural language into video.
   - icon: 🌏
-    title: 全平台
-    details: macOS (Intel & Apple Silicon) / Linux / Windows 二进制开箱即用
+    title: Cross-platform
+    details: macOS (Intel & Apple Silicon) / Linux / Windows binaries, no Node required.
   - icon: 📚
-    title: 案例库
-    details: 即拿即用的 cookbook 案例，覆盖营销、知识、Vlog、TikTok 风格
+    title: Cookbook
+    details: Ready-to-run examples covering marketing, knowledge cards, vlogs, TikTok-style shorts.
 ---
 
-## 快速试一下
+## Quick try
 
 ```bash
-# 安装 cutcli
+# Install cutcli
 curl -s https://cutcli.com/cli | bash
 
-# 跑一个最简单的案例
+# Run the simplest example
 git clone https://github.com/xuliang2024/cutcli-cookbook.git
 cd cutcli-cookbook/examples/01-hello-caption
 bash run.sh
 ```
 
-打开剪映，新草稿已经在草稿列表里。
+Open CapCut / Jianying — your new draft is already in the list.
 
-## 选一个起点
+## Pick a starting point
 
-- 第一次接触 cutcli？ → [30 分钟做第一个草稿](/guide/first-draft)
-- 想看完整可运行的案例？ → [案例总览](/cookbook/index)
-- 找命令的具体用法？ → [CLI 命令参考](/reference/cli)
-- 想让 AI 帮你写命令？ → [AI 工具集成](/guide/ai-integration)
+- New to cutcli? → [Build your first draft in 30 minutes](/guide/first-draft)
+- Want runnable examples? → [Cookbook overview](/cookbook/index)
+- Looking up a command? → [CLI reference](/reference/cli)
+- Want AI to write commands for you? → [AI integrations](/guide/ai-integration)
+
+> 中文用户请前往 [docs.cutcli.com/zh/](/zh/)。

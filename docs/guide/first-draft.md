@@ -1,31 +1,31 @@
-# 30 分钟做第一个草稿
+# Build your first draft in 30 minutes
 
-读完这篇，你能：
+After this page you'll be able to:
 
-- 创建第一个剪映草稿
-- 加一行字幕、一张图片、一段背景音乐
-- 用关键帧做缩放动画
-- 把草稿打包发给别人
+- Create your first CapCut / Jianying draft
+- Add a caption, an image, and a piece of background music
+- Animate a zoom with keyframes
+- Package and share the draft with someone else
 
-全程不需要写代码，只用 `cutcli` 命令。
+No code required — just `cutcli` commands.
 
-## 准备
+## Prerequisites
 
-确认 cutcli 已经装好：
+Confirm cutcli is installed:
 
 ```bash
 cutcli --version
 ```
 
-如果报错请先看 [安装与配置](./installation.md)。
+If this errors out, see [Installation](./installation.md).
 
-## 第 1 步：创建草稿
+## Step 1: Create the draft
 
 ```bash
 cutcli draft create --width 1080 --height 1920
 ```
 
-输出类似：
+Output looks like:
 
 ```json
 {
@@ -34,35 +34,36 @@ cutcli draft create --width 1080 --height 1920
 }
 ```
 
-复制 `draftId`，下面所有命令都要用它。为了方便，我们把它存成环境变量：
+Copy the `draftId`; every subsequent command needs it. Save it as an env var for convenience:
 
 ```bash
 DRAFT_ID="a1b2c3d4-e5f6-7890-abcd-1234567890ab"
 ```
 
-::: tip 一行获取 draftId
+::: tip One-liner: capture draftId
 ```bash
 DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
 ```
 :::
 
-打开剪映，应该能在草稿列表看到一个新的空白草稿。
+Open CapCut / Jianying and you'll see a new empty draft in the list.
 
-## 第 2 步：加一行字幕
+## Step 2: Add a caption
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions '[
-  {"text":"我的第一个 cutcli 草稿","start":0,"end":3000000,
+  {"text":"My first cutcli draft","start":0,"end":3000000,
    "inAnimation":"渐显","inAnimationDuration":500000}
 ]' --font-size 8 --bold --text-color "#FFFFFF"
 ```
 
-要点：
+Notes:
 
-- 时间单位是**微秒**：`3000000` 表示 3 秒，`500000` 表示 0.5 秒。详见 [时间单位](./time-units.md)
-- `inAnimation` 是入场动画名。可以跑 `cutcli query text-animations --type in --pretty` 列出所有可选名
+- Time is in **microseconds**: `3000000` = 3 s, `500000` = 0.5 s. See [Time units](./time-units.md).
+- `inAnimation` is the entrance animation name. Run `cutcli query text-animations --type in --pretty` to list every option.
+- Animation names are Chinese strings shipped with CapCut (`渐显` = fade-in, `轻微放大` = subtle zoom, etc.). They work in every locale.
 
-## 第 3 步：加一张图片背景
+## Step 3: Add a background image
 
 ```bash
 cutcli images add "$DRAFT_ID" --image-infos '[
@@ -78,9 +79,9 @@ cutcli images add "$DRAFT_ID" --image-infos '[
 ]'
 ```
 
-cutcli 会自动把图片下载到草稿的 `resources/` 目录，剪映打开后无需联网即可使用。
+cutcli downloads the image into the draft's `resources/` folder, so the draft works offline once opened.
 
-## 第 4 步：加背景音乐
+## Step 4: Add background music
 
 ```bash
 cutcli audios add "$DRAFT_ID" --audio-infos '[
@@ -94,12 +95,12 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 ]'
 ```
 
-## 第 5 步：用关键帧做缩放
+## Step 5: Animate a zoom with keyframes
 
-先用 `cutcli images list "$DRAFT_ID"` 拿到刚才那张图片的 `segmentId`，然后：
+First grab the image's `segmentId` with `cutcli images list "$DRAFT_ID"`, then:
 
 ```bash
-SEG_ID="刚才列出来的图片 segmentId"
+SEG_ID="<the segmentId you just listed>"
 
 cutcli keyframes add "$DRAFT_ID" --keyframes "[
   {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_x\",\"offset\":0,\"value\":1.0},
@@ -109,15 +110,15 @@ cutcli keyframes add "$DRAFT_ID" --keyframes "[
 ]"
 ```
 
-刷新剪映里的草稿（关闭再打开），背景图会出现 5 秒内从 100% 缓慢放大到 130% 的效果。
+Refresh the draft inside CapCut (close and reopen) — the background slowly scales from 100 % to 130 % over 5 s.
 
-## 第 6 步：检查成果
+## Step 6: Inspect the result
 
 ```bash
 cutcli draft info "$DRAFT_ID" --pretty
 ```
 
-应该看到：
+You should see:
 
 ```json
 {
@@ -134,17 +135,17 @@ cutcli draft info "$DRAFT_ID" --pretty
 }
 ```
 
-## 第 7 步：打包分享给别人
+## Step 7: Share the draft
 
 ```bash
 cutcli draft upload "$DRAFT_ID"
 ```
 
-返回的 `downloadUrl` 是一个公开的 zip 下载链接，对方下载后解压到自己的剪映草稿目录就能直接打开。
+The returned `downloadUrl` is a public zip link. The recipient unzips it into their own CapCut drafts directory and opens it directly.
 
-## 完整脚本版
+## Full script
 
-把所有命令拼成一个 `run.sh`：
+Wire all the commands into a single `run.sh`:
 
 ```bash
 #!/usr/bin/env bash
@@ -154,7 +155,7 @@ DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
 echo "Draft: $DRAFT_ID"
 
 cutcli captions add "$DRAFT_ID" --captions '[
-  {"text":"我的第一个 cutcli 草稿","start":0,"end":3000000,
+  {"text":"My first cutcli draft","start":0,"end":3000000,
    "inAnimation":"渐显","inAnimationDuration":500000}
 ]' --font-size 8 --bold
 
@@ -172,8 +173,8 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 cutcli draft info "$DRAFT_ID" --pretty
 ```
 
-## 接下来
+## Next
 
-- 看更复杂的 [案例](/cookbook/index)
-- 学习 [关键帧的更多用法](/reference/keyframes)
-- 用 AI 帮你写命令：[AI 工具集成](./ai-integration.md)
+- More involved [examples](/cookbook/index)
+- More on [keyframes](/reference/keyframes)
+- Drive cutcli from AI tools: [AI integrations](./ai-integration.md)

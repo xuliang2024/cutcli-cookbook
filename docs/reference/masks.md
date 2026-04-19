@@ -1,21 +1,21 @@
-# 遮罩 (masks)
+# Masks
 
-> 占位文档，W2 由同步脚本填充完整参数表。
+> Placeholder. The full parameter table will be filled in by the sync script in W2.
 
-## 命令
+## Commands
 
 ```bash
-cutcli masks add <draftId> --segment-ids <ids> [--name <type>] [选项]
+cutcli masks add <draftId> --segment-ids <ids> [--name <type>] [options]
 cutcli masks list <draftId>
 ```
 
-## 主要参数
+## Main parameters
 
-| 选项 | 说明 |
+| Option | Description |
 |---|---|
-| `--segment-ids` | 片段 ID 列表，逗号分隔 |
-| `--name` | 遮罩类型：线性/镜面/圆形/矩形/星形/爱心 |
-| `--width` / `--height` | 尺寸 |
-| `--feather` | 羽化值 |
-| `--rotation` | 旋转角度 |
-| `--invert` | 反转遮罩 |
+| `--segment-ids` | Comma-separated segment IDs |
+| `--name` | Mask shape: linear / mirror / circle / rectangle / star / heart |
+| `--width` / `--height` | Size |
+| `--feather` | Feather amount |
+| `--rotation` | Rotation angle |
+| `--invert` | Invert the mask |

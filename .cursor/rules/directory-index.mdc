@@ -12,24 +12,26 @@ alwaysApply: true
 
 ```text
 cutcli-cookbook/
-├── README.md / README.en.md   # 仓库门面（中/英）
-├── LICENSE                    # MIT
-├── CONTRIBUTING.md            # 怎么贡献（外部贡献者首先看的）
-├── CODE_OF_CONDUCT.md
-├── CHANGELOG.md
-├── package.json               # 根 package（VitePress + 工具脚本依赖）
+├── README.md / README.zh.md         # 仓库门面（英文为主 / 中文）
+├── LICENSE                          # MIT
+├── CONTRIBUTING.md / CONTRIBUTING.zh.md
+├── CODE_OF_CONDUCT.md               # 已是英文
+├── CHANGELOG.md / CHANGELOG.zh.md
+├── package.json                     # 根 package（VitePress + 工具脚本依赖）
 ├── package-lock.json
 ├── .gitignore
 │
-├── docs/                      # VitePress 文档站源（部署到 docs.cutcli.com）
-├── examples/                  # 一键运行的 cutcli 案例（核心资产）
-├── templates/                 # 可复用 JSON 片段
-├── prompts/                   # AI 工具提示词
-├── showcase/                  # 月刊精选 + 上线发布资料
-├── scripts/                   # 仓库工具脚本（lint / 校验 / R2 上传）
-├── worker/                    # docs.cutcli.com 的 Cloudflare Worker
-├── .github/                   # Issue/PR/CI/发布指南
-└── .cursor/                   # Cursor IDE 规则与 MCP 配置
+├── docs/                            # VitePress 文档站源（部署到 docs.cutcli.com）
+│   ├── *.md / guide/ / cookbook/    # 英文（root locale）
+│   └── zh/                          # 中文 locale 镜像（/zh/）
+├── examples/                        # 一键运行的 cutcli 案例（核心资产；每个 case 双语 README）
+├── templates/                       # 可复用 JSON 片段
+├── prompts/                         # AI 工具提示词（双语）
+├── showcase/                        # 月刊精选 + 上线发布资料
+├── scripts/                         # 仓库工具脚本（lint / 校验 / R2 上传）
+├── worker/                          # docs.cutcli.com 的 Cloudflare Worker
+├── .github/                         # Issue/PR/CI/发布指南（模板双语，GOOD_FIRST_ISSUES 双语）
+└── .cursor/                         # Cursor IDE 规则与 MCP 配置（中文）
 ```
 
 ## docs/ — 文档站
@@ -37,52 +39,44 @@ cutcli-cookbook/
 ```text
 docs/
 ├── .vitepress/
-│   └── config.mts             # 站点配置（导航、侧边栏、搜索、cleanUrls=false）
-├── index.md                   # 首页 (hero + features)
+│   └── config.mts             # 站点配置（locales={root:en, zh:/zh/}, cleanUrls=false）
+├── index.md                   # 英文首页 (hero + features)
 ├── public/                    # 静态资源（被复制到 dist 根目录）
-│   ├── 404.html               # 自定义 404 页（worker miss 时返回）
+│   ├── 404.html               # 英文 404 页（worker miss 时返回）
 │   ├── favicon.svg / logo.svg / hero.svg
 │   └── gallery.json           # build:gallery 自动生成
-├── guide/                     # 入门指南（4 篇）
-│   ├── installation.md / first-draft.md
-│   ├── time-units.md / coordinate-system.md
-│   └── ai-integration.md
-├── cookbook/                  # 场景教程（5 篇）
-│   ├── index.md
-│   ├── make-a-vlog.md / product-promo.md
-│   ├── knowledge-card.md / tiktok-style.md
-├── reference/                 # 命令参考（11 篇；部分由同步脚本覆盖）
-│   ├── cli.md                 # ← 由 jy_cli/scripts/sync-to-cookbook.mjs 生成
-│   ├── api.md                 # ← 由同步脚本生成
-│   ├── concepts.md            # ← 由同步脚本生成（来自 jy_cli/docs/README.md）
-│   ├── captions.md / images.md / videos.md / audios.md
-│   ├── effects.md / filters.md / transitions.md
-│   ├── stickers.md / keyframes.md / masks.md
-└── prompts/
-    └── index.md
+├── guide/                     # 英文入门指南（5 篇）
+├── cookbook/                  # 英文场景教程（5 篇）
+├── reference/                 # 英文命令参考（11 篇；cli/api/concepts 由同步脚本覆盖）
+├── prompts/index.md           # 英文 Prompts 库
+└── zh/                        # 中文 locale 镜像（与 root 同结构）
+    ├── index.md
+    ├── guide/ / cookbook/ / reference/ / prompts/
 ```
 
-> 改 `docs/reference/cli|api|concepts.md` ⚠ **不要直接编辑** — 它们由 `jy_cli/scripts/sync-to-cookbook.mjs` 覆盖。改源头 `jy_cli/docs/cli.md` 等再 `node scripts/sync-to-cookbook.mjs`。
+> 改 `docs/reference/cli|api|concepts.md` 与 `docs/zh/reference/cli|api|concepts.md` ⚠ **不要直接编辑** — 它们由 `jy_cli/scripts/sync-to-cookbook.mjs` 覆盖。改源头 `jy_cli/docs/cli.md` 等再跑同步。
+>
+> 当前过渡期：闭源同步脚本只输出中文，所以 `docs/reference/{cli,api,concepts}.md` 与 `docs/zh/reference/...` 都是中文；待 `jy_cli/scripts/sync-to-cookbook.mjs` 升级后，root 写英文、`zh/` 写中文。
 
 ## examples/ — 案例
 
 ```text
 examples/
-├── README.md                  # 案例总览
-├── 01-hello-caption/          # P0：一行字幕
-├── 02-image-slideshow-bgm/    # P0：3 图轮播 + BGM
-├── 03-tiktok-keyword-highlight/  # P0：关键词高亮
-├── 04-easy-by-audio/          # P0：cutcli draft easy
-├── 05-keyframe-zoom-in/       # P0：关键帧
-├── 10-product-promo-30s/      # 进阶：30s 产品宣传片
-├── 20-knowledge-science-card/ # 进阶：60s 知识科普
-├── 30-vlog-day-in-life/       # 进阶：30s Vlog
-└── 99-community/              # 社区贡献区
-    ├── README.md
-    └── .example-template/     # 模板（供 scripts/new-example.mjs 复用）
+├── README.md / README.zh.md     # 案例总览（双语）
+├── 01-hello-caption/            # P0：一行字幕
+├── 02-image-slideshow-bgm/      # P0：3 图轮播 + BGM
+├── 03-tiktok-keyword-highlight/ # P0：关键词高亮
+├── 04-easy-by-audio/            # P0：cutcli draft easy
+├── 05-keyframe-zoom-in/         # P0：关键帧
+├── 10-product-promo-30s/        # 进阶：30s 产品宣传片
+├── 20-knowledge-science-card/   # 进阶：60s 知识科普
+├── 30-vlog-day-in-life/         # 进阶：30s Vlog
+└── 99-community/                # 社区贡献区
+    ├── README.md / README.zh.md
+    └── .example-template/       # 模板（供 scripts/new-example.mjs 复用）
 ```
 
-每个 case 必有：`README.md`、`run.sh` (chmod +x)、`meta.json`、`data/*.json`、`preview.gif`。详见 `.cursor/rules/example-spec.mdc`。
+每个 case 必有：`README.md`（英文）、`README.zh.md`（中文）、`run.sh` (chmod +x)、`meta.json`、`data/*.json`、`preview.gif`。详见 `.cursor/rules/example-spec.mdc`。
 
 ## scripts/
 
@@ -90,12 +84,13 @@ examples/
 scripts/
 ├── _lib/
 │   ├── walk.mjs               # 通用文件遍历
-│   └── example-schema.mjs     # 案例 schema + 必填章节 + URL 白名单
-├── validate-example.mjs       # 案例校验 (npm run lint:cases)
-├── new-example.mjs            # 案例脚手架 (npm run new:example)
+│   └── example-schema.mjs     # 案例 schema + 中英 H2 章节集合 + URL 白名单
+├── validate-example.mjs       # 案例校验，同时认 README.md 英文 + README.zh.md 中文章节 (npm run lint:cases)
+├── new-example.mjs            # 案例脚手架，同时生成中英两份 README 骨架 (npm run new:example)
 ├── build-gallery.mjs          # 生成 docs/public/gallery.json
 ├── check-command-name.mjs     # grep 公开仓 cut vs cutcli (npm run lint:cmds)
 ├── check-links.mjs            # 校验 markdown 内部链接 (npm run lint:links)
+├── check-i18n-pairs.mjs       # 校验中英文件成对存在 (npm run lint:i18n)
 ├── lint.mjs                   # 聚合 lint runner (npm run lint)
 ├── upload-r2.mjs              # 增量上传 dist 到 R2 (npm run r2:upload)
 └── r2-gc.mjs                  # 清 R2 孤儿对象 (npm run r2:gc，每周一次)
@@ -117,7 +112,7 @@ worker/
 
 ```text
 templates/
-├── README.md
+├── README.md / README.zh.md
 ├── captions/
 │   ├── cinematic-title.json
 │   ├── tiktok-bouncy.json
@@ -133,23 +128,26 @@ templates/
 
 ```text
 prompts/
-├── README.md
+├── README.md / README.zh.md
 ├── system/
-│   └── cutcli-expert.md       # 通用「cutcli 专家」系统提示
+│   ├── cutcli-expert.md       # 英文（LLM 默认）
+│   └── cutcli-expert.zh.md    # 中文备份
 ├── cursor/
-│   └── make-promo-video.md
+│   ├── make-promo-video.md
+│   └── make-promo-video.zh.md
 └── claude/
-    └── auto-storyboard.md
+    ├── auto-storyboard.md
+    └── auto-storyboard.zh.md
 ```
 
 ## showcase/
 
 ```text
 showcase/
-├── README.md                  # 投稿规则 + 评选标准
+├── README.md / README.zh.md   # 投稿规则 + 评选标准（双语）
 ├── _gallery.json              # 月刊机器可读列表
-├── 2026-04.md                 # 第 1 期月刊
-└── launch.md                  # W4 上线发布 checklist + 渠道文案 + demo 脚本
+├── 2026-04.md / 2026-04.zh.md # 第 1 期月刊（双语）
+└── launch.md                  # W4 上线发布 checklist + 渠道文案 + demo 脚本（中文，维护者用）
 ```
 
 ## .github/
@@ -157,13 +155,13 @@ showcase/
 ```text
 .github/
 ├── FUNDING.yml
-├── GOOD_FIRST_ISSUES.md       # 15 条可领取入门任务
-├── RELEASE_GUIDE.md           # 维护者首次发布指南
-├── PULL_REQUEST_TEMPLATE.md
+├── GOOD_FIRST_ISSUES.md / GOOD_FIRST_ISSUES.zh.md  # 双语
+├── RELEASE_GUIDE.md           # 中文，维护者用
+├── PULL_REQUEST_TEMPLATE.md   # 单文件双语
 ├── ISSUE_TEMPLATE/
-│   ├── bug_report.yml / case_request.yml / showcase.yml / config.yml
+│   └── bug_report / case_request / showcase / config — 4 个 yml，name/description/label 字段双语
 └── workflows/
-    ├── ci.yml                       # PR + push 都跑：lint + build + worker typecheck
+    ├── ci.yml                       # PR + push 都跑：lint (含 lint:i18n) + build + worker typecheck
     ├── deploy-docs.yml              # main 改动 docs/ 或 worker/ 时：build + R2 增量 + worker deploy + smoke
     └── scheduled-cases-test.yml     # 每天 02:00 UTC+8 跑全部案例校验，失败开 issue
 ```

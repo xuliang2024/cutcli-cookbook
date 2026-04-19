@@ -1,12 +1,15 @@
-# 社区贡献区
+# Community contributions
 
-这个目录收所有外部贡献者的案例，按 `<github-handle>/<case-slug>/` 组织：
+[English](README.md) · [简体中文](README.zh.md)
+
+This directory holds every example contributed by the community, organized as `<github-handle>/<case-slug>/`:
 
 ```text
 99-community/
 ├── alice/
 │   └── retro-vlog-intro/
 │       ├── README.md
+│       ├── README.zh.md
 │       ├── run.sh
 │       ├── data/
 │       ├── meta.json
@@ -15,18 +18,18 @@
     └── product-promo-fast/...
 ```
 
-## 怎么贡献
+## How to contribute
 
-最简单：
+The fastest path:
 
 ```bash
 node scripts/new-example.mjs my-case-name
 ```
 
-脚手架会引导你填写信息，并自动生成 `99-community/<你的 GitHub handle>/my-case-name/` 目录与所有必需文件骨架。
+The scaffold collects a few fields and creates `99-community/<your-github-handle>/my-case-name/` with all required files (English + Chinese README skeletons, `run.sh`, `meta.json`, `data/`).
 
-详细规范见根目录 [`CONTRIBUTING.md`](../../CONTRIBUTING.md)。
+See [`CONTRIBUTING.md`](../../CONTRIBUTING.md) for full rules.
 
-## 入选 showcase
+## Featured in the showcase
 
-合并到 main 后，每月维护者会从社区案例中评选 5-10 个加入 [`showcase/`](../../showcase/) 月刊，并在 cutcli.com / Twitter / 小红书 转发。
+Once merged into main, maintainers pick 5-10 community examples each month for [`showcase/`](../../showcase/), and re-share them on cutcli.com / Twitter / RedBook.

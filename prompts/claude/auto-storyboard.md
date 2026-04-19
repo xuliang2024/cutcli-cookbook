@@ -1,52 +1,54 @@
 ---
-title: Claude 自动写分镜并生成 cutcli 命令
+title: Claude — auto storyboard then cutcli
 author: m007
 target: claude
 tags: [storyboard, auto, vlog]
 license: MIT
 ---
 
-# Claude 自动写分镜 → cutcli 命令
+# Claude — auto storyboard → cutcli commands
 
-> 适合 Claude Code 或 Claude Desktop。需求一句话，Claude 先列分镜表，再输出可运行脚本。
+[English](auto-storyboard.md) · [简体中文](auto-storyboard.zh.md)
+
+> Made for Claude Code or Claude Desktop. Give a one-liner; Claude first lays out a storyboard table, then emits a runnable script.
 
 ## Prompt
 
-我会给你一段需求（一句话），你先扮演**分镜师**，再扮演 **cutcli 工程师**：
+I'll give you a one-line requirement. Play two roles:
 
-### 第一步：分镜表
+### Step 1: Storyboard
 
-按这个 markdown 表格输出，不要省略任何列。
+Output the markdown table below — don't skip any columns.
 
-| 镜号 | 时段 | 画面 | 字幕 | 音乐/音效 | 转场 |
+| Shot | Time | Visual | Caption | Music / SFX | Transition |
 |---|---|---|---|---|---|
 | 1 | 0:00-0:03 | ... | ... | ... | ... |
 | 2 | 0:03-0:08 | ... | ... | ... | ... |
 
-### 第二步：cutcli 脚本
+### Step 2: cutcli script
 
-把分镜表翻译成 `run.sh`：
+Translate the storyboard into `run.sh`:
 
-- 命令名 `cutcli`
-- 时间用整数微秒
-- 复杂 JSON 拆 `data/*.json`
-- 顶部 `set -euo pipefail`
-- 用 `DRAFT_ID=$(cutcli draft create ... | jq -r '.draftId')`
-- 每个 add 命令前先 `echo` 一句注释方便后期 debug
+- Command name `cutcli`
+- Times are integer microseconds
+- Pull complex JSON into `data/*.json`
+- Start with `set -euo pipefail`
+- Use `DRAFT_ID=$(cutcli draft create ... | jq -r '.draftId')`
+- Echo a one-line comment before each `add` command for easier debugging
 
-### 第三步：自检
+### Step 3: Self-review
 
-跑完脚本后，列出"3 个我可能想改的地方"（比如换字体、改时长、加滤镜），并附改法。
+After the script runs, list "3 things I might want to tweak" (font, duration, filter, …) along with how to change them.
 
-### 我的需求
+### My requirement
 
-> {请把你的需求填这里，例如："做一个 15 秒的咖啡店开张宣传片，温暖色调，emoji 表情贴纸"}
+> {Drop your requirement here, e.g. "Make a 15-second coffee-shop opening promo, warm tone, with emoji stickers"}
 
-## 已知能力速查
+## Quick capability cheatsheet
 
-- 字幕动画名查 `cutcli query text-animations --type in|out|loop`
-- 转场名查 `cutcli query transitions --action search --keyword <kw>`
-- 滤镜名查 `cutcli query filters --action search --keyword <kw>`
-- 文档 <https://docs.cutcli.com>
+- Caption animation names: `cutcli query text-animations --type in|out|loop`
+- Transition names: `cutcli query transitions --action search --keyword <kw>`
+- Filter names: `cutcli query filters --action search --keyword <kw>`
+- Docs: <https://docs.cutcli.com>
 
-请开始。
+Begin.

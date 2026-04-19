@@ -1,22 +1,22 @@
-# 知识科普卡片
+# Knowledge science card
 
-"3 分钟讲懂 XX" 风格的竖屏知识视频。重点：**字幕清晰、节奏稳、画面不抢戏**。
+The "3 minutes to understand X" portrait video format. Priorities: **legible captions, steady pacing, calm visuals**.
 
-参考完整代码：[`examples/20-knowledge-science-card`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card)。
+Full code: [`examples/20-knowledge-science-card`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card).
 
-## 结构
+## Structure
 
-| 时段 | 内容 |
+| Time | Content |
 |---|---|
-| 0-2s | 标题 "3 分钟讲懂：XX" |
-| 2-12s | 要点 1：一句话 + 配图 + Ken Burns |
-| 12-30s | 要点 2 |
-| 30-50s | 要点 3 |
-| 50-60s | 总结 + CTA |
+| 0-2 s | Title "3 minutes to understand X" |
+| 2-12 s | Point 1: one sentence + image + Ken Burns |
+| 12-30 s | Point 2 |
+| 30-50 s | Point 3 |
+| 50-60 s | Wrap-up + CTA |
 
-## 字幕背景卡（关键差异化）
+## Caption background card (the signature look)
 
-知识类视频的标志性视觉是**半透明黑色圆角字幕背景**，cutcli 一行参数搞定：
+The signature visual of knowledge cards is the **rounded translucent black caption card**. cutcli covers it in one line:
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions @captions.json \
@@ -25,16 +25,16 @@ cutcli captions add "$DRAFT_ID" --captions @captions.json \
   --transform-y -0.6
 ```
 
-| 参数 | 含义 |
+| Parameter | Meaning |
 |---|---|
-| `--bg-style 1` | 启用背景填充 (0 = 无) |
-| `--bg-color "#000000"` | 背景色 |
-| `--bg-alpha 0.55` | 背景透明度（0-1） |
-| `--bg-round 8` | 圆角 |
+| `--bg-style 1` | Enable background fill (0 = none) |
+| `--bg-color "#000000"` | Background color |
+| `--bg-alpha 0.55` | Background transparency (0-1) |
+| `--bg-round 8` | Corner radius |
 
-## 给每段图自动加 Ken Burns
+## Auto-Ken-Burns every image
 
-每段配图独立缩放，让画面有动感。bash 循环动态构造 keyframes JSON：
+Every image gets its own zoom for visual energy. Build the keyframes JSON in bash:
 
 ```bash
 SEGMENTS=$(cutcli images list "$DRAFT_ID" | jq -r '.[].segmentId')
@@ -52,9 +52,9 @@ KFS="${KFS}]"
 cutcli keyframes add "$DRAFT_ID" --keyframes "$KFS"
 ```
 
-## 旁白怎么加
+## Adding voice-over
 
-知识类视频通常有真人旁白或 AI 配音：
+Knowledge videos usually have a real voice-over or AI narration:
 
 ```bash
 cutcli audios add "$DRAFT_ID" --audio-infos '[
@@ -63,8 +63,8 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 ]'
 ```
 
-BGM 调到 0.25，让旁白主导。
+BGM goes down to 0.25 to let the narration lead.
 
-## 完整代码
+## Full code
 
 [`examples/20-knowledge-science-card`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card)

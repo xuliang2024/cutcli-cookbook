@@ -1,38 +1,38 @@
-# TikTok 风格短视频
+# TikTok-style short video
 
-抖音 / TikTok 爆款的字幕节奏：每 2 秒一个关键词、强烈视觉对比、加粗 + 描边、入场动画夸张。
+The TikTok / Douyin viral caption rhythm: a new keyword every 2 s, strong visual contrast, bold + bordered text, exaggerated entrance animations.
 
-参考完整代码：[`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight) 与 [`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)。
+Full code: [`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight) and [`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in).
 
-## 五条字幕铁律
+## Five caption rules
 
-1. **每条 ≤ 12 字**，不超过 2 秒
-2. **必有一个关键词高亮**，颜色固定 1-2 种
-3. **白色字 + 黑描边宽 1**，永远清晰
-4. **入场动画用"向上滑入"或"弹入跳动"**，避免渐显（太慢）
-5. **位置 `--transform-y -0.55`**，比传统底部字幕稍高（避开 UI）
+1. **≤ 12 characters**, no longer than 2 s
+2. **Always one keyword highlighted**, color-locked to 1-2 brand colors
+3. **White text + black border 1**, always legible
+4. **Entrance: slide-up or bounce-in**, never plain fade (too slow)
+5. **Position `--transform-y -0.55`**, slightly higher than traditional bottom captions (avoids the UI)
 
-## 命令模板
+## Command template
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions '[
-  {"text":"今天教大家一个秘密","start":0,"end":2000000,
-   "keyword":"秘密","keywordColor":"#FFD600",
+  {"text":"Today I'\''ll share a secret","start":0,"end":2000000,
+   "keyword":"secret","keywordColor":"#FFD600",
    "inAnimation":"弹入跳动","inAnimationDuration":350000},
-  {"text":"用这个方法效率翻倍","start":2000000,"end":4000000,
-   "keyword":"翻倍","keywordColor":"#FF3A6E",
+  {"text":"This trick doubles your output","start":2000000,"end":4000000,
+   "keyword":"doubles","keywordColor":"#FF3A6E",
    "inAnimation":"弹入跳动","inAnimationDuration":350000},
-  {"text":"记得点赞收藏","start":4000000,"end":6000000,
-   "keyword":"点赞收藏","keywordColor":"#FF6600",
+  {"text":"Like and save it","start":4000000,"end":6000000,
+   "keyword":"Like","keywordColor":"#FF6600",
    "inAnimation":"弹入跳动","inAnimationDuration":350000,
    "outAnimation":"渐隐","outAnimationDuration":250000}
 ]' --font-size 9 --bold --text-color "#FFFFFF" \
    --border-color "#000000" --border-width 1 --transform-y -0.55
 ```
 
-## 配视觉：图片 + 关键帧推拉
+## Visuals: image + keyframe push
 
-每段字幕底下配一张图，加 1.0 → 1.15 的关键帧推近：
+Pair each caption with an image and a 1.0 → 1.15 zoom keyframe:
 
 ```bash
 cutcli images add "$DRAFT_ID" --image-infos '[
@@ -41,7 +41,7 @@ cutcli images add "$DRAFT_ID" --image-infos '[
   {"imageUrl":"...","width":1080,"height":1920,"start":4000000,"end":6000000}
 ]'
 
-# 给每张图加缩放
+# Add a zoom to each image
 SEGS=$(cutcli images list "$DRAFT_ID" | jq -r '.[].segmentId')
 for SEG in $SEGS; do
   cutcli keyframes add "$DRAFT_ID" --keyframes "[
@@ -53,9 +53,9 @@ for SEG in $SEGS; do
 done
 ```
 
-## 选 BGM
+## Picking BGM
 
-抖音爆款 BGM 通常节奏感强、有 Drop。挑选时让 Drop 卡在你**第一个关键词出现的位置**（一般 0.5-1s 处），观感会有"卡点"加成。
+TikTok-style BGM is rhythmic with a clear drop. Time the drop to your **first keyword** (typically 0.5-1 s in) and you get a free sync moment.
 
 ```bash
 cutcli audios add "$DRAFT_ID" --audio-infos '[
@@ -63,9 +63,9 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 ]'
 ```
 
-## 双语版（中英文同屏）
+## Bilingual variant (CN + EN on screen)
 
-爆款的另一种玩法：中英文同时呈现。两条字幕同时间段，靠 `transformY` 错开位置：
+A different viral pattern: show CN and EN at the same time, offset by `transformY`:
 
 ```json
 [
@@ -78,9 +78,9 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 ]
 ```
 
-> 注意：`transform_y` 是单条字幕字段；全局的是 `--transform-y`（kebab-case CLI 风格）。
+> Note: `transform_y` is a per-caption field; the global one is `--transform-y` (kebab-case CLI style).
 
-## 完整代码
+## Full code
 
-- 关键词字幕：[`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight)
-- 关键帧推近：[`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)
+- Keyword captions: [`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight)
+- Keyframe push: [`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)

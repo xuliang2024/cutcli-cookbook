@@ -1,28 +1,28 @@
-# 关键帧 (keyframes)
+# Keyframes
 
-> 占位文档，W2 由同步脚本填充完整参数表。
+> Placeholder. The full parameter table will be filled in by the sync script in W2.
 
-## 命令
+## Commands
 
 ```bash
 cutcli keyframes add <draftId> --keyframes <json>
 cutcli keyframes list <draftId> --segment-id <id>
 ```
 
-## 字段
+## Fields
 
-| 字段 | 类型 | 必填 | 说明 |
+| Field | Type | Required | Description |
 |---|---|---|---|
-| `segmentId` | string | 是 | 所属片段 ID |
-| `property` | string | 是 | 属性名 |
-| `offset` | number | 是 | 在片段内的时间偏移（μs） |
-| `value` | number | 是 | 属性值 |
+| `segmentId` | string | yes | Owning segment ID |
+| `property` | string | yes | Property name |
+| `offset` | number | yes | Offset within the segment (μs) |
+| `value` | number | yes | Property value |
 
-## 支持的属性
+## Supported properties
 
 `position_x`, `position_y`, `scale_x`, `scale_y`, `rotation`, `opacity`
 
-## 示例：3 秒内放大到 1.5 倍
+## Example: zoom to 1.5× over 3 seconds
 
 ```bash
 cutcli keyframes add "$DRAFT_ID" --keyframes '[

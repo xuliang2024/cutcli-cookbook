@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 01-hello-caption: 一行字幕 + 入场动画
+# 01-hello-caption: one caption + entrance animation
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -28,6 +28,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Open CapCut/Jianying — the new draft "hello-caption" is in your draft list.
+Done. Open CapCut / Jianying — the new draft "hello-caption" is in your draft list.
 Draft ID: $DRAFT_ID
 EOF

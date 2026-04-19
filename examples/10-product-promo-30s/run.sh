@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# 10-product-promo-30s: 30 秒电商产品宣传片
-#   0-3s   开场标题（产品名）
-#   3-12s  3 张产品图轮播（叠化转场）
-#   12-24s 卖点字幕分 3 句（关键词高亮）
-#   24-30s CTA 卡尾
+# 10-product-promo-30s: 30-second ecommerce product promo
+#   0-3s   opening title (product name)
+#   3-12s  3 product images with crossfade transitions
+#   12-24s 3 selling-point captions with keyword highlight
+#   24-30s closing CTA card
 # Usage: bash run.sh
 set -euo pipefail
 
@@ -32,6 +32,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 cat <<EOF
 
-Done. Draft "product-promo-30s" 已生成 (30s, 竖屏).
+Done. Draft "product-promo-30s" generated (30 s, portrait).
 Draft ID: $DRAFT_ID
 EOF

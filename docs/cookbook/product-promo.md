@@ -1,25 +1,25 @@
-# 产品宣传片（30 秒）
+# Product promo (30 seconds)
 
-电商首页 / 详情页 banner / 抖音投流常用的 30 秒产品宣传片模板。
+A 30-second product promo template for ecommerce homepages, detail-page banners, and TikTok ads.
 
-参考完整代码：[`examples/10-product-promo-30s`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s)。
+Full code: [`examples/10-product-promo-30s`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s).
 
-## 黄金 30 秒结构
+## The 30-second structure
 
 ```text
-0────3────────12────────24────30  (秒)
-[标题][产品轮播 ×3][卖点 ×3   ][CTA]
+0────3────────12────────24────30  (seconds)
+[title][3 product shots][3 selling pts][CTA]
 ```
 
-| 时段 | 内容 |
+| Time | Content |
 |---|---|
-| 0-3s | 产品名标题，渐显 |
-| 3-12s | 3 张产品图轮播，叠化转场 |
-| 12-24s | 3 句卖点字幕，每句 4s，关键词高亮 |
-| 24-30s | "立即了解 → cutcli.com" CTA，弹入跳动 |
-| 全程 | BGM 0.5 音量 |
+| 0-3 s | Product name title, fade-in |
+| 3-12 s | 3 product shots, crossfade transitions |
+| 12-24 s | 3 selling-point captions, 4 s each, keyword highlight |
+| 24-30 s | "Learn more → cutcli.com" CTA, bounce-in |
+| Throughout | BGM at volume 0.5 |
 
-## 命令组合
+## Command sketch
 
 ```bash
 DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
@@ -31,31 +31,31 @@ cutcli captions add "$DRAFT_ID" --captions    @captions.json \
 cutcli audios   add "$DRAFT_ID" --audio-infos @audio.json
 ```
 
-## 关键参数解释
+## Why these parameters
 
-| 参数 | 选择 | 为什么 |
+| Parameter | Choice | Reason |
 |---|---|---|
-| 黑描边宽 1 + 白色字 | `--border-color "#000" --border-width 1` | 不论背景什么色都清晰 |
-| 关键词色 黄 + 红粉 | `#FFD600` / `#FF3A6E` | 高对比度，全片只用 1-2 种主色 |
-| 字幕 `--transform-y -0.55` | 偏下 55% | 避开抖音底部 UI |
-| BGM 0.5 | 音量 | 给后期加旁白留空间 |
-| 卖点字幕 4s/句 | `start`/`end` 间隔 4M μs | 比 TikTok 节奏稍慢，便于看完信息 |
+| Black border + white text | `--border-color "#000" --border-width 1` | Stays legible on any background |
+| Highlight colors yellow + pink | `#FFD600` / `#FF3A6E` | High contrast, only 1-2 brand colors |
+| Caption `--transform-y -0.55` | Below center but above the bottom | Avoids TikTok's bottom UI |
+| BGM at 0.5 | Volume | Leaves room for voice-over |
+| 4 s per selling-point caption | `start`/`end` 4 M μs apart | Slower than TikTok pace, easier to read |
 
-## 进阶变体
+## Variants
 
-### 60 秒版
+### 60-second cut
 
-把所有时间 ×2，再加 2-3 张图、2-3 句卖点。结构完全不变。
+Double every duration, add 2-3 more shots and selling points. Same structure.
 
-### 横屏 16:9 版（适合 B 站 / YouTube）
+### Landscape 16:9 (Bilibili / YouTube)
 
 ```bash
 cutcli draft create --width 1920 --height 1080
 ```
 
-字幕位置改 `--transform-y -0.4`（横屏字幕传统更靠下）。
+Move captions to `--transform-y -0.4` (a bit lower for landscape).
 
-### 加滤镜统一色调
+### Add a unifying filter
 
 ```bash
 cutcli query filters --action search --keyword "暖色" --pretty
@@ -64,6 +64,6 @@ cutcli filters add "$DRAFT_ID" --filter-infos '[
 ]'
 ```
 
-## 完整代码
+## Full code
 
 [`examples/10-product-promo-30s`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s)

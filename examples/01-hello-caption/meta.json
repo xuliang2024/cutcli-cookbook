@@ -6,6 +6,7 @@
   "duration": 5,
   "resolution": "1080x1920",
   "gif": "preview.gif",
-  "description": "最小可运行的 cutcli 案例：一行字幕 + 渐显/渐隐动画。",
+  "description": "Smallest runnable cutcli example: one caption with fade in / fade out animation.",
+  "description_zh": "最小可运行的 cutcli 案例：一行字幕 + 渐显/渐隐动画。",
   "level": 1
 }

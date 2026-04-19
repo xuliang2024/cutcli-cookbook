@@ -1,46 +1,46 @@
-# 坐标系与位置
+# Coordinate system & positioning
 
-理解 cutcli 的坐标系，可以让你精确控制字幕、图片、贴纸的位置。
+Understanding cutcli's coordinate system lets you place captions, images, and stickers exactly where you want.
 
-## 归一化坐标
+## Normalized coordinates
 
-cutcli 使用**归一化坐标**：屏幕中心为原点 `(0, 0)`，X 正方向向右，Y 正方向向上。整个画布映射到 `[-1, 1]` × `[-1, 1]`。
+cutcli uses **normalized coordinates**: the screen center is the origin `(0, 0)`, X grows to the right, Y grows up. The whole canvas maps to `[-1, 1]` × `[-1, 1]`.
 
 ```text
-            (0, 1)        ← 屏幕最上
+            (0, 1)        ← top of screen
               ↑
               |
 (-1, 0) ←   (0,0)   → (1, 0)
               |
               ↓
-            (0, -1)       ← 屏幕最下
+            (0, -1)       ← bottom of screen
 ```
 
-举几个具体位置：
+Concrete positions:
 
-| 位置 | transformX | transformY |
+| Position | transformX | transformY |
 |---|---|---|
-| 屏幕正中 | 0 | 0 |
-| 顶部居中 | 0 | 0.8 |
-| 底部居中 | 0 | -0.8 |
-| 左下角 | -0.8 | -0.8 |
-| 右上角 | 0.8 | 0.8 |
+| Dead center | 0 | 0 |
+| Top center | 0 | 0.8 |
+| Bottom center | 0 | -0.8 |
+| Bottom-left corner | -0.8 | -0.8 |
+| Top-right corner | 0.8 | 0.8 |
 
-> 不要把值设到 `±1`，那是画布边界，元素会被部分裁切。常用 `±0.7 ~ ±0.9`。
+> Don't push values to `±1` — that's the canvas edge and elements get clipped. Stick to `±0.7 ~ ±0.9`.
 
-## 字幕示例
+## Caption example
 
-把字幕固定在底部 1/4 位置（短视频常见的位置）：
+Pin a caption to the bottom quarter (the typical short-video position):
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions '[
-  {"text":"底部居中字幕","start":0,"end":3000000}
+  {"text":"Caption near the bottom","start":0,"end":3000000}
 ]' --transform-y -0.7 --font-size 8
 ```
 
-## 图片示例
+## Image example
 
-把图片缩到 50%、放到屏幕右上角：
+Scale an image to 50 % and place it in the top-right corner:
 
 ```bash
 cutcli images add "$DRAFT_ID" --image-infos '[
@@ -56,28 +56,28 @@ cutcli images add "$DRAFT_ID" --image-infos '[
 ]'
 ```
 
-## 缩放与旋转
+## Scale & rotation
 
-| 字段 | 含义 | 默认 |
+| Field | Meaning | Default |
 |---|---|---|
-| `scaleX` | X 方向缩放，1.0 = 原始 | 1.0 |
-| `scaleY` | Y 方向缩放 | 1.0 |
-| `rotation` | 顺时针旋转角度（度） | 0 |
+| `scaleX` | X scale, 1.0 = original | 1.0 |
+| `scaleY` | Y scale | 1.0 |
+| `rotation` | Clockwise rotation in degrees | 0 |
 
-> 想等比缩放，X 与 Y 同时设为相同值。
+> For uniform scaling, set `scaleX` and `scaleY` to the same value.
 
-## 不同画布的注意事项
+## Different canvas sizes
 
-归一化坐标不依赖具体分辨率：
+Normalized coordinates are resolution-independent:
 
-- 在 1080×1920（竖屏）画布上 `(0, -0.8)` 是底部居中
-- 在 1920×1080（横屏）画布上 `(0, -0.8)` 同样是底部居中
+- On a 1080×1920 portrait canvas, `(0, -0.8)` is bottom-center
+- On a 1920×1080 landscape canvas, `(0, -0.8)` is also bottom-center
 
-但**像素尺寸**（`width` / `height`）需要根据画布比例自己换算，cutcli 不会自动缩放。
+But **pixel sizes** (`width` / `height`) need to be sized for your canvas — cutcli doesn't auto-rescale them.
 
-## 关键帧中的位置动画
+## Position keyframes
 
-关键帧的 `position_x` / `position_y` 也用同一套归一化坐标：
+Keyframe `position_x` / `position_y` use the same normalized scale:
 
 ```bash
 cutcli keyframes add "$DRAFT_ID" --keyframes '[
@@ -86,20 +86,20 @@ cutcli keyframes add "$DRAFT_ID" --keyframes '[
 ]'
 ```
 
-效果：图片 2 秒内从屏幕左侧滑到右侧。
+Effect: the image slides from the left to the right of the screen over 2 s.
 
-## 进阶：与剪映 UI 中的"位置"对照
+## Mapping to CapCut UI's pixel position
 
-剪映 UI 上显示的位置是**像素坐标**（参考画布左上角为原点）。换算关系：
+CapCut's UI shows positions in **pixels** (origin = top-left of canvas). Conversion:
 
 ```text
 ui_x = (transformX + 1) / 2 * canvasWidth
-ui_y = (1 - transformY) / 2 * canvasHeight    ← 注意 Y 翻转
+ui_y = (1 - transformY) / 2 * canvasHeight    ← Y is inverted
 ```
 
-举例：画布 1080×1920，cutcli 中 `(transformX=0, transformY=-0.7)` 在剪映 UI 上显示约 `(540, 1632)`。
+Example: on a 1080×1920 canvas, `transformX=0, transformY=-0.7` corresponds to roughly `(540, 1632)` in the CapCut UI.
 
-## 下一步
+## Next
 
-- [关键帧详解](/reference/keyframes)
-- [字幕完整参数表](/reference/captions)
+- [Keyframes deep dive](/reference/keyframes)
+- [Caption parameter reference](/reference/captions)

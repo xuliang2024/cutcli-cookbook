@@ -6,6 +6,7 @@
   "duration": 9,
   "resolution": "1080x1920",
   "gif": "preview.gif",
-  "description": "3 张图竖屏轮播，每张 3 秒，叠化/推移转场，配 9 秒背景音乐。",
+  "description": "Three-image portrait slideshow, 3 s per image with crossfade / push transitions and 9 s of background music.",
+  "description_zh": "3 张图竖屏轮播，每张 3 秒，叠化/推移转场，配 9 秒背景音乐。",
   "level": 1
 }
