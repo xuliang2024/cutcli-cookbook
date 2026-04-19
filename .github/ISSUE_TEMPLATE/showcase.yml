@@ -1,44 +1,45 @@
-name: Showcase 投稿
-description: 投稿你用 cutcli 做的作品到月度 showcase
+name: Showcase submission / Showcase 投稿
+description: Submit a piece you made with cutcli to the monthly showcase / 投稿你用 cutcli 做的作品到月度 showcase
 title: "[Showcase] "
 labels: ["showcase"]
 body:
   - type: markdown
     attributes:
       value: |
-        把你用 cutcli 做的作品分享给社区！每月精选 5-10 个会被收录到 [showcase/](../../tree/main/showcase)。
+        Share what you've built with cutcli! Each month we pick 5-10 entries for [showcase/](../../tree/main/showcase).
+        把你用 cutcli 做的作品分享给社区！每月精选 5-10 个会被收录到 showcase。
   - type: input
     id: title
     attributes:
-      label: 作品标题
+      label: Work title / 作品标题
     validations:
       required: true
   - type: input
     id: link
     attributes:
-      label: 作品链接
-      description: 视频 / 文章 / 抖音 / B 站 / Twitter 都可以
+      label: Work link / 作品链接
+      description: Video / article / Douyin / Bilibili / Twitter — anything works. / 视频 / 文章 / 抖音 / B 站 / Twitter 都可以。
     validations:
       required: true
   - type: input
     id: author
     attributes:
-      label: 作者署名
-      description: 显示在 showcase 里的名字 + 链接（GitHub / 个人主页）
+      label: Author byline / 作者署名
+      description: How you'd like to be credited in the showcase + a link (GitHub / personal site). / 显示在 showcase 里的名字 + 链接。
       placeholder: "@yourhandle (https://github.com/yourhandle)"
     validations:
       required: true
   - type: textarea
     id: how
     attributes:
-      label: 制作过程简介
-      description: 用了哪些 cutcli 命令？用了 cookbook 里的哪个案例做基础？
+      label: How you made it / 制作过程简介
+      description: Which cutcli commands? Built on which cookbook example? / 用了哪些 cutcli 命令？参考了哪个 case？
     validations:
       required: true
   - type: checkboxes
     id: license
     attributes:
-      label: 授权
+      label: License / 授权
       options:
-        - label: 我同意将作品截图/封面以 CC-BY 4.0 授权 cutcli-cookbook 仓库展示，原始作品版权仍归我所有
+        - label: I agree to license the screenshot / cover under CC-BY 4.0 for cutcli-cookbook. The original work's copyright remains mine. / 我同意将作品截图/封面以 CC-BY 4.0 授权 cutcli-cookbook 仓库展示，原始作品版权仍归我所有。
           required: true

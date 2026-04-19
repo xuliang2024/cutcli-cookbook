@@ -1,24 +1,25 @@
-name: Bug 报告
-description: 报告一个 cutcli 命令、案例或文档的问题
+name: Bug report / Bug 报告
+description: Report an issue with a cutcli command, example, or doc / 报告一个 cutcli 命令、案例或文档的问题
 title: "[Bug] "
 labels: ["bug", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
+        Thanks for filing a bug! Please include enough info for a clean repro.
         感谢报告 bug！请尽量提供可复现的信息。
   - type: input
     id: cutcli-version
     attributes:
-      label: cutcli 版本
-      description: 跑 `cutcli --version` 拿到
+      label: cutcli version / cutcli 版本
+      description: Run `cutcli --version` / 跑 `cutcli --version` 拿到
       placeholder: 1.3.6
     validations:
       required: true
   - type: dropdown
     id: os
     attributes:
-      label: 操作系统
+      label: Operating system / 操作系统
       options:
         - macOS (Apple Silicon)
         - macOS (Intel)
@@ -30,28 +31,28 @@ body:
   - type: textarea
     id: steps
     attributes:
-      label: 复现步骤
-      description: 越详细越好；如果是案例 bug 请贴 case 路径
+      label: Steps to reproduce / 复现步骤
+      description: As detailed as possible; cite the case path if it's an example bug. / 越详细越好；如果是案例 bug 请贴 case 路径。
       placeholder: |
-        1. 跑 `bash examples/01-hello-caption/run.sh`
-        2. 报错 ...
+        1. bash examples/01-hello-caption/run.sh
+        2. error ...
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: 期望行为
+      label: Expected behavior / 期望行为
     validations:
       required: true
   - type: textarea
     id: actual
     attributes:
-      label: 实际行为（含完整报错栈）
+      label: Actual behavior (paste full error stack) / 实际行为（含完整报错栈）
       render: shell
     validations:
       required: true
   - type: textarea
     id: extra
     attributes:
-      label: 其他信息
-      description: 截图、日志、相关 issue 链接等
+      label: Anything else / 其他信息
+      description: Screenshots, logs, related issues. / 截图、日志、相关 issue 链接等。

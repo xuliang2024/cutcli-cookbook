@@ -1,60 +1,62 @@
 ---
-title: 用 Cursor 一句话生成产品宣传片
+title: One-liner product promo in Cursor
 author: m007
 target: cursor
 tags: [marketing, promo, cursor]
 license: MIT
 ---
 
-# 用 Cursor 一句话生成产品宣传片
+# One-liner product promo in Cursor
 
-> 把这段话粘贴到 Cursor 的"Rules for AI"或开一个新会话直接发给 AI。
+[English](make-promo-video.md) · [简体中文](make-promo-video.zh.md)
+
+> Paste the prompt below into Cursor's "Rules for AI" or send it to the agent directly.
 
 ## Prompt
 
-我要做一个 **30 秒** 的产品宣传片，用 cutcli 实现。请按以下结构帮我生成完整的 `run.sh`：
+I want to make a **30-second product promo** with cutcli. Generate a complete `run.sh` following the structure below.
 
-### 1. 输入
+### 1. Inputs
 
-- 产品名：`{产品名}`
-- 一句话卖点：`{卖点}`
-- 适用人群：`{人群}`
-- 3 张产品图 URL（必须是公开 https URL）：
+- Product name: `{product}`
+- One-line selling point: `{selling-point}`
+- Target audience: `{audience}`
+- 3 product image URLs (must be public HTTPS):
   - `{img1}`
   - `{img2}`
   - `{img3}`
-- BGM URL：`{bgm}`（如果没有就用 `https://cutcli.com/assets/demo/bgm-light.mp3`）
+- BGM URL: `{bgm}` (fall back to `https://cutcli.com/assets/demo/bgm-light.mp3` if blank)
 
-### 2. 视频结构（请严格按这个时间轴）
+### 2. Video structure (follow this timeline strictly)
 
-| 时段 | 内容 |
+| Time | Content |
 |---|---|
-| 0~3s | 标题字幕："{产品名}" 居中、大号、加粗、渐显 |
-| 3~12s | 3 张图轮播，每张 3 秒，"叠化"转场 |
-| 12~24s | 卖点字幕分 3 句轮流出现，每句关键词高亮 |
-| 24~30s | CTA："立即了解" + 浅色背景图 |
-| 全程 | BGM 音量 0.5 |
+| 0-3 s | Title caption: "{product}" centered, large, bold, fade-in |
+| 3-12 s | 3 images, 3 s each, crossfade transitions |
+| 12-24 s | 3 selling-point captions in sequence with keyword highlight |
+| 24-30 s | CTA: "Learn more" + a soft background image |
+| Throughout | BGM at volume 0.5 |
 
-### 3. 输出要求
+### 3. Output requirements
 
-- 完整 bash 脚本（顶部 `set -euo pipefail`）
-- 复杂 JSON 拆到 `data/*.json` 文件（用 `--captions @data/...` 引用）
-- 输出 `meta.json`（按 cutcli-cookbook 案例规范）
-- 输出 `README.md`（5 段：效果 / 适用场景 / 一行运行 / 关键参数 / 进阶改造）
+- Full bash script (start with `set -euo pipefail`)
+- Pull complex JSON into `data/*.json` files (`--captions @data/...`)
+- Emit `meta.json` (per the cutcli-cookbook spec)
+- Emit `README.md` (5 sections: Effect / When to use / Run it / Key parameters / Customize)
 
-### 4. 命令参考
+### 4. Command reference
 
-- 命令名是 `cutcli`（不是 `cut`）
-- 时间单位：微秒，1 秒 = 1,000,000
-- 字幕：`cutcli captions add` + `--captions <json>` + 全局样式（`--font-size`、`--bold`、`--text-color`、`--transform-y`）
-- 图片：`cutcli images add` + `--image-infos <json>`，支持 `transition` / `transitionDuration`
-- 音频：`cutcli audios add` + `--audio-infos <json>`，支持 `volume`
-- 详细参数表：<https://docs.cutcli.com/reference/cli>
+- The command name is `cutcli` (not `cut`)
+- Time unit: microseconds, 1 s = 1,000,000
+- Captions: `cutcli captions add` + `--captions <json>` + global style (`--font-size`, `--bold`, `--text-color`, `--transform-y`)
+- Images: `cutcli images add` + `--image-infos <json>`, supports `transition` / `transitionDuration`
+- Audios: `cutcli audios add` + `--audio-infos <json>`, supports `volume`
+- Full reference: <https://docs.cutcli.com/reference/cli>
 
-### 5. 风格约定
+### 5. Style conventions
 
-- 字幕全部加粗、白色 #FFFFFF + 黑描边宽 1
-- 关键词颜色 #FFD600（黄）或 #FF3A6E（红粉）二选一，全片统一
-- 字幕位置 `--transform-y -0.55`（偏下）
+- All captions bold, white #FFFFFF + 1 px black border
+- Highlight color: pick #FFD600 (yellow) or #FF3A6E (pink) and stay consistent
+- Caption position `--transform-y -0.55` (slightly below center)
 
-请直接生成代码，不需要先问我问题。
+Generate the code directly — don't ask me follow-up questions first.

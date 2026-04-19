@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 文档与教程
+  - name: Documentation & guides / 文档与教程
     url: https://docs.cutcli.com
-    about: 安装、入门、命令参考、故障排查
-  - name: 社区讨论 (Discussions)
+    about: Install, getting started, CLI reference, troubleshooting / 安装、入门、命令参考、故障排查
+  - name: Community discussions / 社区讨论 (Discussions)
     url: https://github.com/xuliang2024/cutcli-cookbook/discussions
-    about: 不确定是不是 bug? 想聊聊用法? 来这里
+    about: Not sure if it's a bug? Want to chat about usage? Come here. / 不确定是不是 bug? 想聊聊用法? 来这里
