@@ -1,0 +1,175 @@
+---
+description: "cutcli-cookbook 部署 — R2 + Worker 流程、CF API Token 权限、回滚、监控"
+globs:
+  - "worker/**"
+  - ".github/workflows/**"
+  - "scripts/upload-r2.mjs"
+  - "scripts/r2-gc.mjs"
+alwaysApply: false
+---
+
+# 部署架构与流程
+
+## 资源拓扑
+
+```mermaid
+flowchart LR
+  user[Browser] -->|"https://docs.cutcli.com/*"| dns[Cloudflare DNS]
+  dns -->|"proxied A 192.0.2.1"| route[Worker Route]
+  route -->|"docs.cutcli.com/*"| worker[Worker docs-cutcli]
+  worker -->|"R2 binding DOCS"| r2[(R2 cutcli-docs)]
+```
+
+## 资源清单
+
+| 资源 | 标识 |
+|---|---|
+| R2 bucket | `cutcli-docs`（专放 VitePress build 产物） |
+| Worker | `docs-cutcli`（src 在本仓 `worker/`） |
+| Worker route | `docs.cutcli.com/*` + `docs.cutcli.com` |
+| DNS 记录 | `docs.cutcli.com` A 192.0.2.1 (proxied) |
+| Cloudflare account | `xuliang2022@gmail.com` (id `11c47779f0d4c3d0e69ccc6c484dc589`) |
+| Zone | `cutcli.com` (zone id `064059cb21d36956c11381995b964467`) |
+
+## 路径解析（worker 行为）
+
+`worker/src/index.ts` 收到请求时按下面顺序解析 R2 key：
+
+1. `/`             → `index.html`
+2. `/foo/`         → `foo/index.html`
+3. `/foo/bar.html` → `foo/bar.html` （直接命中）
+4. `/foo/bar`（无扩展名）→ 依次试 `foo/bar.html` → `foo/bar/index.html`
+5. 都不命中       → 返回 R2 中的 `404.html`，HTTP 404
+
+## 缓存策略
+
+| 路径 | Cache-Control |
+|---|---|
+| `assets/<hash>.{js,css}` | `public, max-age=31536000, immutable` (VitePress 文件名带 hash，安全) |
+| 其他（含 `.html`） | `public, max-age=3600, must-revalidate` |
+
+## 本地部署
+
+```bash
+# 一键
+npm run deploy
+
+# 等价于
+npm run docs:build      # vitepress build → docs/.vitepress/dist
+npm run r2:upload       # 增量上传，仅 etag 变化的文件 (~10s)
+npm run worker:deploy   # 仅 worker 改动时需要
+```
+
+`r2:upload` 用并发 6 路调用 `worker/node_modules/.bin/wrangler`，跳过 md5 相同的文件。设置 `UPLOAD_CONCURRENCY=8` 可提速。
+
+## CI 部署（推荐）
+
+合并到 `main` 后，`.github/workflows/deploy-docs.yml` 自动跑：
+
+```text
+checkout
+  → setup-node v22
+  → npm ci (root + worker)
+  → npm run docs:build
+  → node scripts/upload-r2.mjs        # 增量上传
+  → cloudflare/wrangler-action@v3 deploy worker (仅 worker 有改动时)
+  → smoke test (curl 5 个关键路径)
+```
+
+触发条件（`paths`）：
+
+- `docs/**`
+- `worker/**`
+- `scripts/upload-r2.mjs`
+- `package.json` / `package-lock.json`
+- `.github/workflows/deploy-docs.yml`
+
+也可手动 `gh workflow run deploy-docs.yml`。
+
+## CF API Token 权限
+
+GitHub Secrets 必须配：
+
+| Secret | 用途 |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | wrangler 鉴权 |
+| `CLOUDFLARE_ACCOUNT_ID` | `11c47779f0d4c3d0e69ccc6c484dc589` |
+
+Token 推荐**最小权限**（不要用 Global API Key）：
+
+- Account → Workers Scripts → Edit
+- Account → Workers R2 Storage → Edit
+- Zone → Workers Routes → Edit (resource: `cutcli.com`)
+- Zone → DNS → Edit (resource: `cutcli.com`，仅首次绑域名时需要)
+
+## 监控
+
+```bash
+# 实时 worker 日志
+cd worker && npx wrangler tail
+
+# 查 7 日错误率（目标 < 0.1%）
+# Cloudflare Dashboard → Workers & Pages → docs-cutcli → Logs / Analytics
+```
+
+`scheduled-cases-test.yml` 每晚跑案例校验，失败自动开 issue。
+
+## 回滚
+
+### 文档内容回滚（最常见）
+
+```bash
+# 回滚到上一个 commit
+git revert HEAD
+git push
+
+# CI 自动重跑 deploy-docs，约 1 分钟内全球 R2 + worker 边缘节点同步完
+```
+
+### Worker 回滚
+
+```bash
+# Cloudflare Dashboard → Workers & Pages → docs-cutcli → Deployments
+# 选上一版本 → Rollback
+```
+
+或用 wrangler：
+
+```bash
+cd worker
+npx wrangler deployments list
+npx wrangler rollback --version-id <previous-id>
+```
+
+### R2 整体回滚（极端情况）
+
+R2 没有自动版本控制；需要从最近一次成功的 build 重新上传：
+
+```bash
+git checkout <good-sha>
+npm run docs:build && npm run r2:upload
+# 再 git checkout main 回到当前
+```
+
+## 周级 GC（清孤儿）
+
+VitePress 每次 build 会生成新的 `assets/<hash>.{js,css}`，旧的会留在 R2。每周一次清理：
+
+```bash
+CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN \
+CLOUDFLARE_ACCOUNT_ID=11c47779f0d4c3d0e69ccc6c484dc589 \
+node scripts/r2-gc.mjs --dry-run    # 预览要删什么
+node scripts/r2-gc.mjs --yes         # 实际删
+```
+
+## 首次部署 checklist（参考 .github/RELEASE_GUIDE.md）
+
+- [x] R2 bucket `cutcli-docs` 已建
+- [x] Worker `docs-cutcli` 已部署
+- [x] DNS `docs.cutcli.com` A 192.0.2.1 proxied
+- [x] Worker routes 已绑
+- [x] GitHub repo 已创建并 push
+- [x] GitHub secrets 已配
+- [x] CI / Deploy 跑过一次全绿
+- [ ] `main` 分支保护（待开）
+- [ ] 90s demo 视频（待人手）

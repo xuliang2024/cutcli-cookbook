@@ -1,0 +1,200 @@
+---
+description: "案例规范 — 改动 examples/** 时必须遵守的目录结构、字段、章节"
+globs:
+  - "examples/**"
+  - "scripts/validate-example.mjs"
+  - "scripts/new-example.mjs"
+alwaysApply: false
+---
+
+# 案例规范（examples/**）
+
+> 改动任何 `examples/<id>-<slug>/` 都要遵守。CI 会用 `scripts/validate-example.mjs` 校验。
+
+## 目录结构
+
+```text
+examples/<id>-<slug>/
+├── README.md         # 必填：5 段
+├── run.sh            # 必填：可执行 + set -euo pipefail
+├── meta.json         # 必填：通过 schema 校验
+├── data/             # 复杂 JSON 拆这里
+│   ├── captions.json
+│   ├── images.json
+│   └── ...
+└── preview.gif       # 推荐：≤ 3 MB，3-8s
+```
+
+## 命名规则
+
+- `<id>` 范围：
+  - `01~09` = P0 入门案例（官方维护）
+  - `10~19` = 营销 / 产品类
+  - `20~29` = 知识 / 教育类
+  - `30~39` = Vlog / 个人类
+  - `99-community/<github-handle>/<case>/` = 社区贡献区
+- `<slug>` 用 kebab-case，如 `hello-caption`、`product-promo-30s`
+
+## meta.json schema
+
+```json
+{
+  "id": "01-hello-caption",
+  "title": "Hello Caption",
+  "tags": ["captions", "animation"],
+  "author": "your-github-handle",
+  "duration": 5,
+  "resolution": "1080x1920",
+  "gif": "preview.gif",
+  "description": "一句话描述",
+  "level": 1
+}
+```
+
+字段约束（详见 `scripts/_lib/example-schema.mjs`）：
+
+| 字段 | 类型 | 约束 |
+|---|---|---|
+| `id` | string | `^[a-z0-9][a-z0-9-]*$` |
+| `tags` | string[] | 至少 1 个 |
+| `duration` | number | > 0 |
+| `resolution` | string | `^[0-9]+x[0-9]+$` |
+| `level` | int | 1-5（推荐难度） |
+
+## README.md 必有 5 个 H2 章节
+
+CI 校验严格匹配以下标题：
+
+```markdown
+## 适用场景
+
+## 一行运行
+
+## 关键参数解释
+
+## 进阶改造
+
+## 用到的 cutcli 能力
+```
+
+第一段必须包含 `![preview](preview.gif)`（即使 gif 还没录，也要占位）。
+
+## run.sh 必有要素
+
+```bash
+#!/usr/bin/env bash
+# <id>: <一句话描述>
+# Usage: bash run.sh
+set -euo pipefail
+
+if ! command -v cutcli >/dev/null 2>&1; then
+  echo "cutcli not found. Install: curl -s https://cutcli.com/cli | bash" >&2
+  exit 1
+fi
+if ! command -v jq >/dev/null 2>&1; then
+  echo "jq not found." >&2
+  exit 1
+fi
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+
+DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 --name "<id>" | jq -r '.draftId')
+
+# ... 加内容
+cutcli captions add "$DRAFT_ID" --captions "@$HERE/data/captions.json" ...
+
+cutcli draft info "$DRAFT_ID" --pretty
+```
+
+要求：
+
+- 顶部 shebang `#!/usr/bin/env bash`
+- `set -euo pipefail`
+- 用 `cutcli`（不是 `cut`）
+- 用 `chmod +x run.sh`
+- 用 `@$HERE/data/file.json` 引用 JSON（不要内联在命令行里转义）
+- 输出关键变量给用户参考
+
+## 素材 URL 白名单
+
+`run.sh` 和 `data/*.json` 中的 URL 必须匹配以下之一：
+
+```regex
+^https://cutcli\.com/
+^https://[a-z0-9-]+\.r2\.dev/
+^https://[a-z0-9-]+\.r2\.cloudflarestorage\.com/
+^https://cdn\.jsdelivr\.net/
+^https://raw\.githubusercontent\.com/
+^https://[a-z0-9-]+\.githubusercontent\.com/
+```
+
+不允许：
+
+- `http://` 明文
+- 个人云盘 / OSS 私链
+- 带 query token 的临时签名 URL
+
+## 时间单位
+
+**所有时间字段都是微秒**：
+
+| 期望 | 写法 |
+|---|---|
+| 0.5 秒 | `500000` |
+| 3 秒 | `3000000` |
+| 30 秒 | `30000000` |
+
+错写毫秒（如 `3000` = 3ms）字幕只闪一帧。
+
+## 关键帧的 segmentId 怎么拿
+
+`segmentId` 在 add 之前不存在。脚手架模式：
+
+```bash
+# 1. 先 add 片段
+cutcli images add "$DRAFT_ID" --image-infos @data/images.json
+
+# 2. 用 list 拿回 segmentId
+SEG=$(cutcli images list "$DRAFT_ID" | jq -r '.[0].segmentId')
+
+# 3. 用 jq 替换模板里的 __SEG_ID__
+KFS=$(jq --arg seg "$SEG" '[.[] | .segmentId = $seg]' "$HERE/data/keyframes.template.json")
+
+# 4. add 关键帧
+cutcli keyframes add "$DRAFT_ID" --keyframes "$KFS"
+```
+
+参考 `examples/05-keyframe-zoom-in/run.sh`。
+
+## 校验
+
+提交前必跑：
+
+```bash
+node scripts/validate-example.mjs examples/<your-case>
+bash examples/<your-case>/run.sh    # 实际跑一遍，剪映打开看效果
+```
+
+校验项：
+
+- [ ] `run.sh` / `README.md` / `meta.json` 存在
+- [ ] `run.sh` chmod +x、有 shebang、有 `set -euo pipefail`
+- [ ] `meta.json` 通过 ajv schema
+- [ ] `README.md` 5 个章节齐全
+- [ ] `data/*.json` 都是合法 JSON
+- [ ] 所有 URL 在白名单内
+- [ ] README 不含本地路径 `/Users/...`
+
+## 脚手架（推荐入口）
+
+```bash
+node scripts/new-example.mjs my-case-slug
+# 按提示输入 author / title / tags / duration / resolution / description
+# 自动生成 examples/99-community/<author>/my-case-slug/{README.md,run.sh,meta.json,data/}
+```
+
+## 最后
+
+- 拿不准的 case 复杂度，先看 `examples/01~05`（最简单的样板）
+- 想做长视频，看 `examples/10~30`（30s~60s）
+- 装饰元素（贴纸/特效/滤镜）先 `cutcli query` 找 ID，再 add

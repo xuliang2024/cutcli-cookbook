@@ -1,0 +1,173 @@
+---
+description: "cutcli-cookbook 仓库目录索引 — 谁放在哪、改谁会影响什么"
+globs: "**/*"
+alwaysApply: true
+---
+
+# 仓库目录索引
+
+> 改动文件前先在这里查"它属于哪个层"，避免越权或漏改。
+
+## 顶层一览
+
+```text
+cutcli-cookbook/
+├── README.md / README.en.md   # 仓库门面（中/英）
+├── LICENSE                    # MIT
+├── CONTRIBUTING.md            # 怎么贡献（外部贡献者首先看的）
+├── CODE_OF_CONDUCT.md
+├── CHANGELOG.md
+├── package.json               # 根 package（VitePress + 工具脚本依赖）
+├── package-lock.json
+├── .gitignore
+│
+├── docs/                      # VitePress 文档站源（部署到 docs.cutcli.com）
+├── examples/                  # 一键运行的 cutcli 案例（核心资产）
+├── templates/                 # 可复用 JSON 片段
+├── prompts/                   # AI 工具提示词
+├── showcase/                  # 月刊精选 + 上线发布资料
+├── scripts/                   # 仓库工具脚本（lint / 校验 / R2 上传）
+├── worker/                    # docs.cutcli.com 的 Cloudflare Worker
+├── .github/                   # Issue/PR/CI/发布指南
+└── .cursor/                   # Cursor IDE 规则与 MCP 配置
+```
+
+## docs/ — 文档站
+
+```text
+docs/
+├── .vitepress/
+│   └── config.mts             # 站点配置（导航、侧边栏、搜索、cleanUrls=false）
+├── index.md                   # 首页 (hero + features)
+├── public/                    # 静态资源（被复制到 dist 根目录）
+│   ├── 404.html               # 自定义 404 页（worker miss 时返回）
+│   ├── favicon.svg / logo.svg / hero.svg
+│   └── gallery.json           # build:gallery 自动生成
+├── guide/                     # 入门指南（4 篇）
+│   ├── installation.md / first-draft.md
+│   ├── time-units.md / coordinate-system.md
+│   └── ai-integration.md
+├── cookbook/                  # 场景教程（5 篇）
+│   ├── index.md
+│   ├── make-a-vlog.md / product-promo.md
+│   ├── knowledge-card.md / tiktok-style.md
+├── reference/                 # 命令参考（11 篇；部分由同步脚本覆盖）
+│   ├── cli.md                 # ← 由 jy_cli/scripts/sync-to-cookbook.mjs 生成
+│   ├── api.md                 # ← 由同步脚本生成
+│   ├── concepts.md            # ← 由同步脚本生成（来自 jy_cli/docs/README.md）
+│   ├── captions.md / images.md / videos.md / audios.md
+│   ├── effects.md / filters.md / transitions.md
+│   ├── stickers.md / keyframes.md / masks.md
+└── prompts/
+    └── index.md
+```
+
+> 改 `docs/reference/cli|api|concepts.md` ⚠ **不要直接编辑** — 它们由 `jy_cli/scripts/sync-to-cookbook.mjs` 覆盖。改源头 `jy_cli/docs/cli.md` 等再 `node scripts/sync-to-cookbook.mjs`。
+
+## examples/ — 案例
+
+```text
+examples/
+├── README.md                  # 案例总览
+├── 01-hello-caption/          # P0：一行字幕
+├── 02-image-slideshow-bgm/    # P0：3 图轮播 + BGM
+├── 03-tiktok-keyword-highlight/  # P0：关键词高亮
+├── 04-easy-by-audio/          # P0：cutcli draft easy
+├── 05-keyframe-zoom-in/       # P0：关键帧
+├── 10-product-promo-30s/      # 进阶：30s 产品宣传片
+├── 20-knowledge-science-card/ # 进阶：60s 知识科普
+├── 30-vlog-day-in-life/       # 进阶：30s Vlog
+└── 99-community/              # 社区贡献区
+    ├── README.md
+    └── .example-template/     # 模板（供 scripts/new-example.mjs 复用）
+```
+
+每个 case 必有：`README.md`、`run.sh` (chmod +x)、`meta.json`、`data/*.json`、`preview.gif`。详见 `.cursor/rules/example-spec.mdc`。
+
+## scripts/
+
+```text
+scripts/
+├── _lib/
+│   ├── walk.mjs               # 通用文件遍历
+│   └── example-schema.mjs     # 案例 schema + 必填章节 + URL 白名单
+├── validate-example.mjs       # 案例校验 (npm run lint:cases)
+├── new-example.mjs            # 案例脚手架 (npm run new:example)
+├── build-gallery.mjs          # 生成 docs/public/gallery.json
+├── check-command-name.mjs     # grep 公开仓 cut vs cutcli (npm run lint:cmds)
+├── check-links.mjs            # 校验 markdown 内部链接 (npm run lint:links)
+├── lint.mjs                   # 聚合 lint runner (npm run lint)
+├── upload-r2.mjs              # 增量上传 dist 到 R2 (npm run r2:upload)
+└── r2-gc.mjs                  # 清 R2 孤儿对象 (npm run r2:gc，每周一次)
+```
+
+## worker/
+
+```text
+worker/
+├── package.json               # wrangler + workers-types
+├── wrangler.toml              # name=docs-cutcli, R2 binding=DOCS, routes=docs.cutcli.com
+├── tsconfig.json
+├── README.md
+└── src/
+    └── index.ts               # ~100 行：R2 反代 + 5 步路径回退 + 缓存策略
+```
+
+## templates/
+
+```text
+templates/
+├── README.md
+├── captions/
+│   ├── cinematic-title.json
+│   ├── tiktok-bouncy.json
+│   └── news-ticker.json
+├── animations/
+│   ├── smooth-zoom-in.json
+│   └── glitch-cut.json
+└── filters/
+    └── (待充实)
+```
+
+## prompts/
+
+```text
+prompts/
+├── README.md
+├── system/
+│   └── cutcli-expert.md       # 通用「cutcli 专家」系统提示
+├── cursor/
+│   └── make-promo-video.md
+└── claude/
+    └── auto-storyboard.md
+```
+
+## showcase/
+
+```text
+showcase/
+├── README.md                  # 投稿规则 + 评选标准
+├── _gallery.json              # 月刊机器可读列表
+├── 2026-04.md                 # 第 1 期月刊
+└── launch.md                  # W4 上线发布 checklist + 渠道文案 + demo 脚本
+```
+
+## .github/
+
+```text
+.github/
+├── FUNDING.yml
+├── GOOD_FIRST_ISSUES.md       # 15 条可领取入门任务
+├── RELEASE_GUIDE.md           # 维护者首次发布指南
+├── PULL_REQUEST_TEMPLATE.md
+├── ISSUE_TEMPLATE/
+│   ├── bug_report.yml / case_request.yml / showcase.yml / config.yml
+└── workflows/
+    ├── ci.yml                       # PR + push 都跑：lint + build + worker typecheck
+    ├── deploy-docs.yml              # main 改动 docs/ 或 worker/ 时：build + R2 增量 + worker deploy + smoke
+    └── scheduled-cases-test.yml     # 每天 02:00 UTC+8 跑全部案例校验，失败开 issue
+```
+
+## .cursor/rules/ — 本目录
+
+参见 `.cursor/rules/README.md`。

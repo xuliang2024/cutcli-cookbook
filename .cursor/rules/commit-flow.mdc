@@ -1,0 +1,153 @@
+---
+description: "cutcli-cookbook 提交流程：commit message 风格、PR 流程、CI 通过线、分支保护"
+globs: "**/*"
+alwaysApply: true
+---
+
+# 提交流程
+
+## 提交前自检（必跑）
+
+```bash
+npm run lint            # cases + commands + links 全过
+npm run docs:build      # VitePress 构建无错
+```
+
+如果改动了案例：
+
+```bash
+node scripts/validate-example.mjs examples/<your-case>
+bash examples/<your-case>/run.sh    # 真跑一遍，剪映打开验证
+```
+
+如果改动了 Worker：
+
+```bash
+cd worker && npx tsc --noEmit       # type-check
+cd worker && npx wrangler dev       # 本地起测一下
+```
+
+## Conventional Commits
+
+格式：
+
+```text
+<type>(<scope>): <subject>
+
+[可选正文]
+
+[可选 footer，如 BREAKING CHANGE / Closes #123]
+```
+
+| type | 用途 |
+|---|---|
+| `feat` | 新功能、新案例、新模板 |
+| `fix` | bug 修复 |
+| `docs` | 文档变更（含 README、guide、cookbook） |
+| `chore` | 构建脚本、依赖升级、CI、配置 |
+| `refactor` | 重构、不影响行为 |
+| `test` | 测试代码 |
+| `style` | 仅格式调整 |
+
+scope 推荐：`examples` / `templates` / `prompts` / `docs` / `worker` / `scripts` / `ci` / `release`
+
+例子：
+
+```text
+feat(examples): add 06-cinematic-title with bouncy text
+fix(worker): handle trailing slash in path resolution
+docs(guide): translate first-draft.md to English
+chore(ci): bump cloudflare/wrangler-action to v3.5
+refactor(scripts): extract walk() into _lib
+```
+
+## PR 流程
+
+1. **Fork 或创建分支**
+   ```bash
+   git checkout -b feat/my-case
+   ```
+2. **改动 + 自检**（见上文）
+3. **Push 到 origin**
+   ```bash
+   git push -u origin feat/my-case
+   ```
+4. **开 PR**
+   ```bash
+   gh pr create --title "feat(examples): add my-case" --body-file <(cat <<'EOF'
+   ## 这个 PR 做了什么？
+   ...
+   ## 自检
+   - [x] npm run lint 通过
+   - [x] bash examples/my-case/run.sh 本地跑成功
+   - [x] preview.gif 已加（≤3 MB）
+   EOF
+   )
+   ```
+5. **等 CI 绿**（约 1-2 分钟）
+6. **等 review**：默认要 1 个 approve
+
+## CI 必过线
+
+PR 必须满足：
+
+| 检查 | workflow | 任务 |
+|---|---|---|
+| Lint | `ci.yml` | `npm run lint:cases / lint:cmds / lint:links` |
+| 文档构建 | `ci.yml` | `npm run docs:build` |
+| Worker 类型检查 | `ci.yml` | `cd worker && npx tsc --noEmit` |
+
+合并到 `main` 后还会自动跑：
+
+| Workflow | 触发 | 内容 |
+|---|---|---|
+| `deploy-docs.yml` | push 到 main 且改了 `docs/` 或 `worker/` | build + R2 上传 + worker deploy + smoke test |
+| `scheduled-cases-test.yml` | 每天 02:00 UTC+8 | 跑全部案例校验，失败自动开 issue |
+
+## 分支保护
+
+`main` 启用以下保护（首次部署后由维护者一次性设置）：
+
+```bash
+gh api repos/xuliang2024/cutcli-cookbook/branches/main/protection \
+  --method PUT \
+  --field required_status_checks[strict]=true \
+  --field required_status_checks[contexts][]='Lint (cases + commands + links)' \
+  --field required_status_checks[contexts][]='VitePress build' \
+  --field enforce_admins=false \
+  --field required_pull_request_reviews[required_approving_review_count]=1 \
+  --field restrictions=null
+```
+
+## 不要做的事
+
+- ❌ 直接编辑 `docs/reference/cli.md` / `api.md` / `concepts.md`（由同步脚本生成）
+- ❌ 引用 `cut <subcommand>` 命令名（用 `cutcli`）
+- ❌ 提交 `.env` 文件或任何含 token / cookie 的内容
+- ❌ 把私有 CDN 链接（带 query token）写进 case
+- ❌ 提交 > 3 MB 的 preview.gif（会被 CI 警告）
+- ❌ 跨用例修改超过 5 个文件 — 请拆成多个 PR
+
+## 应急回滚
+
+```bash
+# 上一个 commit 出 bug，但已 push 到 main
+git revert HEAD
+git push
+
+# CI deploy-docs 自动重跑，约 1 分钟内 docs.cutcli.com 回到旧版本
+```
+
+## 闭源同步配套
+
+如果改动了闭源 `jy_cli/docs/cli.md` 等需要传到公开仓：
+
+```bash
+cd /Users/m007/codes/jy_cli
+node scripts/sync-to-cookbook.mjs
+
+cd /Users/m007/codes/cutcli-cookbook
+git status -s docs/reference/    # 看是哪些文件变了
+git add docs/reference && git commit -m "docs(sync): sync from jy_cli@<short-sha>"
+git push
+```

@@ -1,0 +1,81 @@
+---
+description: "cutcli-cookbook 项目元信息：用途、地址、本地路径、域名、与闭源仓 jy_cli 的关系"
+globs: "**/*"
+alwaysApply: true
+---
+
+# cutcli-cookbook · 项目元信息
+
+> 这是一个**开源**项目，配套于闭源核心 `cutcli`（CapCut / 剪映 草稿命令行工具）。
+
+## 一句话
+
+收录 cutcli 的可一键运行案例、JSON 模板、AI 提示词、官方文档站源码与社区贡献入口。
+
+## 核心地址
+
+| 项 | 值 |
+|---|---|
+| GitHub | <https://github.com/xuliang2024/cutcli-cookbook> |
+| 文档站 | <https://docs.cutcli.com> |
+| 主站 | <https://cutcli.com>（cutcli 安装 + 落地页） |
+| License | MIT |
+| 默认分支 | `main` |
+
+## 本地路径
+
+| 仓库 | 路径 | 类型 |
+|---|---|---|
+| `cutcli-cookbook` | `/Users/m007/codes/cutcli-cookbook/` | **开源**（本仓） |
+| `jy_cli` | `/Users/m007/codes/jy_cli/` | **闭源**（cutcli 源码 + cutcli.com worker） |
+
+两个仓库**同级**摆放，便于 `jy_cli/scripts/sync-to-cookbook.mjs` 走相对路径 `../cutcli-cookbook/` 同步公开文档。
+
+## 部署架构
+
+```text
+docs.cutcli.com  →  Cloudflare DNS (proxied A 192.0.2.1)
+                 →  Worker docs-cutcli (本仓 worker/)
+                 →  R2 bucket cutcli-docs (VitePress build 产物)
+```
+
+| 资源 | 位置 |
+|---|---|
+| R2 bucket | `cutcli-docs`（账号 `xuliang2022@gmail.com`，account id `11c47779f0d4c3d0e69ccc6c484dc589`） |
+| Worker | `docs-cutcli`（路由 `docs.cutcli.com/*` + `docs.cutcli.com`） |
+| Worker 源码 | `worker/src/index.ts`（R2 反代 + SPA 路径回退） |
+| 域名 zone | `cutcli.com`（zone id `064059cb21d36956c11381995b964467`） |
+
+## 仓内/仓外铁律
+
+1. **绝不**把 `jy_cli/src/`、`jy_cli/dist/`、`jy_cli/binaries/`、闭源 `jy_cli/worker/` 的内容复制进本仓。
+2. 案例只调用 **公开 CLI 命令** `cutcli xxx`，不引用 npm 包 `cut_cli` 的内部 API。
+3. 闭源 → 公开的内容流动只能通过 `jy_cli/scripts/sync-to-cookbook.mjs`（单向、带 sanitizer）。
+4. 命令名严格用 `cutcli`，禁止 `cut`（与 Unix util 冲突）；CI 会 grep fail。
+
+## 与闭源 jy_cli 的关系
+
+```mermaid
+flowchart LR
+  subgraph priv [Private jy_cli]
+    privDocs[docs/]
+    syncScript[scripts/sync-to-cookbook.mjs]
+    privWorker[worker cutcli &#x2192; cutcli.com]
+  end
+  subgraph pub [Public cutcli-cookbook]
+    examples[examples/]
+    pubDocs[docs/]
+    pubWorker[worker docs-cutcli &#x2192; docs.cutcli.com]
+  end
+  privDocs -->|"sync (sanitized)"| syncScript
+  syncScript -->|"writes docs/reference/"| pubDocs
+  pubDocs -->|"vitepress build &#x2192; R2"| live[(docs.cutcli.com)]
+```
+
+## 想了解更多
+
+- 目录索引：参见 `.cursor/rules/directory-index.mdc`
+- 提交流程：参见 `.cursor/rules/commit-flow.mdc`
+- 部署流程：参见 `.cursor/rules/deploy.mdc`
+- 案例规范：参见 `.cursor/rules/example-spec.mdc`（自动应用于 examples/**）
+- 闭源/开源边界：参见 `.cursor/rules/open-source-boundary.mdc`

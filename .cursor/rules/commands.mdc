@@ -1,0 +1,161 @@
+---
+description: "cutcli-cookbook 常用命令速查 — npm / git / gh / wrangler / cutcli"
+globs: "**/*"
+alwaysApply: true
+---
+
+# 命令速查
+
+## npm scripts
+
+```bash
+# 文档站
+npm run docs:dev              # 本地预览 http://localhost:5173
+npm run docs:build            # 输出到 docs/.vitepress/dist/
+npm run docs:preview          # 预览构建产物
+
+# Lint
+npm run lint                  # 跑全部 lint：cases + commands + links
+npm run lint:cases            # 只校验所有 examples
+npm run lint:cmds             # grep 公开仓有没有裸 cut 命令
+npm run lint:links            # markdown 内部链接可达性
+
+# 案例脚手架
+npm run new:example my-case   # 在 examples/99-community/<handle>/my-case/ 生成骨架
+
+# 部署 (CI 自动跑；本地手动也可)
+npm run r2:upload             # 增量上传 dist 到 R2 cutcli-docs
+npm run r2:gc -- --yes        # 删除 R2 中已不在 dist 的孤儿对象（每周一次）
+npm run worker:dev            # 本地起 worker dev server
+npm run worker:deploy         # wrangler deploy 到 docs-cutcli
+npm run deploy                # = docs:build + r2:upload + worker:deploy
+```
+
+## 案例校验
+
+```bash
+# 校验单个 case
+node scripts/validate-example.mjs examples/01-hello-caption
+
+# 校验所有
+node scripts/validate-example.mjs --all
+```
+
+## docs/reference 同步（来自闭源仓）
+
+```bash
+# 在闭源仓内
+cd /Users/m007/codes/jy_cli
+
+# 看会写什么、不实际写
+node scripts/sync-to-cookbook.mjs --dry-run
+
+# 实际同步（默认输出到 ../cutcli-cookbook/docs/reference/）
+node scripts/sync-to-cookbook.mjs
+
+# 自定义输出位置
+node scripts/sync-to-cookbook.mjs --out /tmp/sync-test/
+
+# 跑同步脚本的单元测试
+node scripts/sync.test.mjs
+```
+
+## git / gh
+
+```bash
+# 查看状态
+git status -s
+
+# 提交（遵循 Conventional Commits，详见 commit-flow.mdc）
+git commit -m "feat(examples): add 06-cinematic-title"
+
+# 推送
+git push
+
+# 看 CI 跑得怎么样
+gh run list --limit 5
+gh run watch <id>
+gh run view <id> --log-failed | tail -40
+
+# 手动触发 deploy
+gh workflow run deploy-docs.yml
+
+# 配 secret
+gh secret set CLOUDFLARE_API_TOKEN --body "$CLOUDFLARE_API_TOKEN"
+gh secret set CLOUDFLARE_ACCOUNT_ID --body "11c47779f0d4c3d0e69ccc6c484dc589"
+
+# 看 secret 列表
+gh secret list
+
+# 开 issue
+gh issue create --title "..." --body-file body.md --label good-first-issue
+```
+
+## Cloudflare wrangler
+
+> 本地用本仓的 `worker/node_modules/.bin/wrangler`，避免 npx 拉取慢。
+
+```bash
+WR=worker/node_modules/.bin/wrangler
+
+# 检查身份
+$WR whoami
+
+# R2 bucket 操作
+$WR r2 bucket create cutcli-docs
+$WR r2 bucket list
+$WR r2 object put cutcli-docs/<key> --file=<local>
+$WR r2 object delete cutcli-docs/<key>
+
+# Worker 部署
+cd worker && $WR deploy
+cd worker && $WR tail        # 实时日志
+cd worker && $WR dev         # 本地
+
+# 看版本
+$WR --version
+```
+
+## cutcli (跑案例时用)
+
+```bash
+# 装
+curl -s https://cutcli.com/cli | bash
+
+# 跑某个案例
+cd examples/01-hello-caption && bash run.sh
+
+# 命令速查
+cutcli --help
+cutcli docs                      # 离线手册
+cutcli docs <topic>              # 子命令手册
+cutcli docs open                 # 在浏览器打开 docs.cutcli.com
+
+# 查询素材
+cutcli query text-animations --type in --pretty
+cutcli query stickers --action search --keyword "爱心"
+cutcli query effects --action categories
+cutcli query filters --action search --keyword "复古"
+cutcli query transitions --action search --keyword "叠化"
+```
+
+## 在线 smoke
+
+```bash
+# 单页
+curl -s -o /dev/null -w "%{http_code}\n" https://docs.cutcli.com/
+
+# 全套（部署后跑）
+for p in / /guide/installation /guide/installation.html /reference/cli /cookbook/index /404-test; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "https://docs.cutcli.com$p")
+  echo "  $code  $p"
+done
+```
+
+## 一键全跑
+
+提交前自检：
+
+```bash
+npm run lint && npm run docs:build && echo "✓ ready to commit"
+```

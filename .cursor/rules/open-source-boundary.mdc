@@ -1,0 +1,102 @@
+---
+description: "开源 / 闭源边界 — 禁止从闭源仓 jy_cli 复制源码到本仓的安全铁律"
+globs: "**/*"
+alwaysApply: true
+---
+
+# 开源 / 闭源边界（安全关键）
+
+> ⚠ 这是本仓**最重要**的安全约束。违反任何一条都可能泄露 cutcli 闭源核心代码。
+
+## 仓库定位
+
+| 仓 | 路径 | 状态 |
+|---|---|---|
+| `cutcli-cookbook`（本仓） | `/Users/m007/codes/cutcli-cookbook/` | **公开** GitHub: <https://github.com/xuliang2024/cutcli-cookbook> |
+| `jy_cli` | `/Users/m007/codes/jy_cli/` | **闭源** 私有，不得泄露 |
+
+## 四条铁律
+
+### 1. 公开仓**永远不出现**这些路径的内容
+
+| 闭源路径 | 包含的敏感内容 |
+|---|---|
+| `jy_cli/src/` | TypeScript 源码、API 实现、内部模型 |
+| `jy_cli/dist/` | 编译产物 |
+| `jy_cli/binaries/` | 各平台二进制 |
+| `jy_cli/worker/` | cutcli.com 的 worker 实现 |
+| `jy_cli/scripts/build-*.sh` | 构建脚本 |
+| `jy_cli/.env` | 任何 .env 内容 |
+
+> ✅ 公开仓**自己**的 `worker/`（即 `cutcli-cookbook/worker/`）是 docs.cutcli.com 的反向代理，开源是合理的，不属于禁区。
+
+### 2. 案例只调用**公开 CLI 命令** `cutcli xxx`
+
+- ✅ 允许：`cutcli draft create`、`cutcli captions add ...`
+- ❌ 禁止：`import { addCaptions } from 'cut_cli/api/...'`
+- ❌ 禁止：访问 `~/.cut_cli/` 内部数据
+- ❌ 禁止：直接读写剪映草稿 JSON 字段
+
+### 3. 闭源 → 公开的内容流动**只有一条路径**
+
+```text
+jy_cli/docs/cli.md, api.md, README.md
+            ↓
+jy_cli/scripts/sync-to-cookbook.mjs (单向 + sanitizer)
+            ↓
+cutcli-cookbook/docs/reference/{cli,api,concepts}.md
+```
+
+详见 `jy_cli/scripts/sync.config.json`。所有同步都过：
+
+- `stripBlocks`：删除 `<!-- internal -->...<!-- /internal -->` 段落
+- `stripBlocks`：删除 `<!-- TODO-internal: ... -->` 单行
+- `replacements`：`cut <subcommand>` → `cutcli <subcommand>`
+- `replacements`：`npm install -g cut_cli` → `curl -s https://cutcli.com/cli | bash`
+
+### 4. 命令名严格用 `cutcli`，不是 `cut`
+
+`cut` 是 Unix 系统命令，混用会让用户复制即报错。CI 里 `scripts/check-command-name.mjs` grep 出现 `cut <draft|captions|...>` 即 fail。
+
+## 加内容前必查
+
+写或修改任何文件前，问自己：
+
+- [ ] 我添加的代码 / 文档**只**用了 cutcli 的公开 CLI 接口吗？
+- [ ] 我引用的素材 URL 在 `CONTRIBUTING.md` 的白名单里吗？
+- [ ] 我的命令示例都是 `cutcli` 而非 `cut` 吗？
+- [ ] 我没有意外贴上 `~/.cut_cli/`、`/Users/m007/codes/jy_cli/` 等本地路径吗？
+- [ ] 我没有暴露任何 token、cookie、密钥吗？
+
+如果对答案有任何不确定，**停下问维护者**，不要盲目提交。
+
+## CI 防线
+
+| 检查 | 阻断 |
+|---|---|
+| `scripts/check-command-name.mjs` | 公开仓出现裸 `cut <subcommand>` 即 fail |
+| `scripts/validate-example.mjs` | URL 不在白名单 / README 提及绝对本地路径，fail |
+| `.github/workflows/ci.yml` | 三个 lint 任何一个不过都不能 merge |
+
+## 同步脚本边界
+
+`jy_cli/scripts/sync-to-cookbook.mjs`：
+
+- ✅ 输出**只**写 `../cutcli-cookbook/docs/reference/`，绝不碰其他目录
+- ✅ 默认 dry-run 友好；用 `--dry-run` 总能预览
+- ✅ 输出文件第一行有 `THIS FILE IS GENERATED ... DO NOT EDIT` 注释
+- ✅ 单元测试 `scripts/sync.test.mjs` 覆盖核心转换
+
+如果维护者改了同步脚本，**必须**先跑 `node scripts/sync.test.mjs` 确保 8/8 PASS。
+
+## 如果不小心泄露了
+
+1. **立刻**停止 push
+2. 用 `git filter-repo` 或 BFG 清掉敏感 commit
+3. force push 覆盖远程历史
+4. 如已有 fork / clone，**默认这条信息已失守**，必须重新生成所有相关 secret / token
+5. 在 release 公告中说明（如果对用户有影响）
+
+## 报告漏洞
+
+发现可能泄露的代码 / 文档，请**不要**开公开 issue，直接邮件 maintainer，或在 GitHub Security Advisories 私下报告。
