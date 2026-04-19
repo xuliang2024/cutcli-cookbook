@@ -1,8 +1,8 @@
-# Transitions
+# 转场 (transitions)
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> 占位文档，W2 由同步脚本填充完整参数表。
 
-## Commands
+## 命令
 
 ```bash
 cutcli query transitions --action categories
@@ -10,9 +10,9 @@ cutcli query transitions --action search --keyword <kw>
 cutcli query transitions --action list --category <cat>
 ```
 
-Transitions are not their own command — they're a `transition` field on individual segments inside `images add` / `videos add`.
+转场不是独立命令，而是作为 `images add` / `videos add` 中每个片段的 `transition` 字段使用。
 
-## Use inside images / videos
+## 在图片/视频中使用
 
 ```json
 [

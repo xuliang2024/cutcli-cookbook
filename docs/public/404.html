@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -41,16 +41,29 @@
     color: #fff;
     border: 1px solid rgba(255,255,255,0.6);
   }
+  .lang {
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
+    opacity: 0.85;
+  }
+  .lang a {
+    background: transparent;
+    color: #fff;
+    text-decoration: underline;
+    padding: 0;
+    font-weight: 400;
+  }
 </style>
 </head>
 <body>
   <div class="card">
     <h1>404</h1>
-    <p>这个页面不在 cookbook 里。</p>
-    <p>也许你想找：</p>
-    <a href="/">回到首页</a>
-    <a class="secondary" href="/guide/installation">安装指南</a>
-    <a class="secondary" href="/cookbook/index">案例总览</a>
+    <p>This page is not in the cookbook.</p>
+    <p>You might be looking for:</p>
+    <a href="/">Home</a>
+    <a class="secondary" href="/guide/installation">Install guide</a>
+    <a class="secondary" href="/cookbook/index">Cookbook</a>
+    <p class="lang">中文用户：<a href="/zh/">前往中文文档</a></p>
   </div>
 </body>
 </html>

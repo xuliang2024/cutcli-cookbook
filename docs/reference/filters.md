@@ -1,19 +1,19 @@
-# 滤镜 (filters)
+# Filters
 
-> 占位文档，W2 由同步脚本填充完整参数表。
+> Placeholder. The full parameter table will be filled in by the sync script in W2.
 
-## 命令
+## Commands
 
 ```bash
 cutcli filters add <draftId> --filter-infos <json>
 cutcli query filters --action search --keyword <kw>
 ```
 
-## 主要字段
+## Main fields
 
-| 字段 | 类型 | 必填 | 说明 |
+| Field | Type | Required | Description |
 |---|---|---|---|
-| `filterId` | string | 是 | 滤镜 ID |
-| `start` | number | 是 | 开始时间（μs） |
-| `end` | number | 是 | 结束时间（μs） |
-| `intensity` | number | 否 | 滤镜强度 (0-100) |
+| `filterId` | string | yes | Filter ID |
+| `start` | number | yes | Start time (μs) |
+| `end` | number | yes | End time (μs) |
+| `intensity` | number | no | Filter intensity (0-100) |

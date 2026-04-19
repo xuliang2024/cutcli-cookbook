@@ -1,37 +1,37 @@
-# Prompts 提示词库
+# Prompt library
 
-为 Cursor / Claude Code / ChatGPT / Gemini 等 AI 工具准备的 cutcli 提示词，复制粘贴即用。
+Prompts for Cursor, Claude Code, ChatGPT, Gemini, and other AI tools — copy and paste.
 
-## 核心提示词
+## Core prompts
 
-| 类型 | 用途 | 文件 |
+| Type | Use | File |
 |---|---|---|
-| 系统级 | "你是一位 cutcli 专家"，适合放进 ChatGPT 自定义指令 | [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) |
-| Cursor | 在 Cursor 中一句话生成宣传片 | [`prompts/cursor/make-promo-video.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/cursor/make-promo-video.md) |
-| Claude | 让 Claude 自动写分镜并生成 cutcli 命令 | [`prompts/claude/auto-storyboard.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/claude/auto-storyboard.md) |
+| System | "You are a cutcli expert", great for ChatGPT custom instructions | [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) |
+| Cursor | One-line product promo inside Cursor | [`prompts/cursor/make-promo-video.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/cursor/make-promo-video.md) |
+| Claude | Let Claude write the storyboard and emit cutcli commands | [`prompts/claude/auto-storyboard.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/claude/auto-storyboard.md) |
 
-## 怎么用
+## How to use
 
 ### Cursor / Claude Code
 
-跑一次 `cutcli setup cursor`（或 `claude`）即可，详见 [AI 工具集成](/guide/ai-integration)。
+Run `cutcli setup cursor` (or `claude`) once — see [AI integrations](/guide/ai-integration).
 
-### ChatGPT / Gemini / 其他
+### ChatGPT / Gemini / others
 
-复制 [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) 全文，粘贴到模型的"系统提示"或"自定义指令"中。然后就可以直接说"帮我做一个 5 秒的字幕动画"，模型会输出可运行的 cutcli 命令。
+Copy the full content of [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) into the model's "system prompt" / "custom instructions". Then ask things like "make me a 5-second caption animation" and the model emits ready-to-run cutcli commands.
 
-## 贡献你的 Prompt
+## Contributing prompts
 
-如果你写出了好用的 cutcli 提示词，欢迎 PR：
+If you've written a great cutcli prompt, open a PR:
 
-1. 文件放到 `prompts/<工具名>/<场景>.md`
-2. 文件顶部加 frontmatter：
+1. Drop the file under `prompts/<tool>/<scenario>.md`
+2. Add frontmatter:
    ```yaml
    ---
-   title: 一句话标题
+   title: One-line title
    author: your-handle
    target: cursor | claude | chatgpt | gemini
    tags: [marketing, vlog, ...]
    ---
    ```
-3. 提 PR，CI 会校验格式
+3. CI checks the format on PR.

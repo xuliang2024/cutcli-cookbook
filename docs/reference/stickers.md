@@ -1,8 +1,8 @@
-# 贴纸 (stickers)
+# Stickers
 
-> 占位文档，W2 由同步脚本填充完整参数表。
+> Placeholder. The full parameter table will be filled in by the sync script in W2.
 
-## 命令
+## Commands
 
 ```bash
 cutcli sticker add <draftId> --sticker-id <id> --start N --end N [--scale N]
@@ -10,11 +10,11 @@ cutcli sticker list <draftId>
 cutcli query stickers --action search --keyword <kw>
 ```
 
-## 主要参数
+## Main parameters
 
-| 选项 | 说明 |
+| Option | Description |
 |---|---|
-| `--sticker-id` | 贴纸 ID（用 `cutcli query stickers` 查询） |
-| `--start <μs>` | 开始时间（μs） |
-| `--end <μs>` | 结束时间（μs） |
-| `--scale <n>` | 缩放比例 |
+| `--sticker-id` | Sticker ID (look it up via `cutcli query stickers`) |
+| `--start <μs>` | Start time (μs) |
+| `--end <μs>` | End time (μs) |
+| `--scale <n>` | Scale factor |

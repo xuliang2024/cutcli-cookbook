@@ -1,37 +1,37 @@
-# 做一个 Vlog
+# Make a vlog
 
-把"我的一天 / 我的一周"类 Vlog 模板用 cutcli 重新做一遍，目标 30 秒，能批量复用。
+Rebuild the classic "a day in my life" vlog template with cutcli, targeting 30 s and reusable across episodes.
 
-参考完整代码：[`examples/30-vlog-day-in-life`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life)。
+Full code: [`examples/30-vlog-day-in-life`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life).
 
-## 需求拆解
+## Breakdown
 
-| 时段 | 内容 | 视觉手法 |
+| Time | Content | Visual technique |
 |---|---|---|
-| 0-2s | 标题"我的一天"居中渐显 | 字幕入场 |
-| 2-10s | 早晨场景 + "AM 7:00 · 早咖啡" | Ken Burns 推近 |
-| 10-20s | 中午场景 + "PM 1:00 · 午餐时光" | 擦除转场 |
-| 20-28s | 傍晚场景 + "PM 8:00 · 晚风散步" | 擦除转场 |
-| 28-30s | "明天见 ✨" 弹入 | 弹入跳动 |
-| 全程 | 轻 BGM volume=0.55 | 轻盈氛围 |
+| 0-2 s | Centered "My day" title fade-in | Caption entrance |
+| 2-10 s | Morning scene + "AM 7:00 · Coffee" | Ken Burns push-in |
+| 10-20 s | Noon scene + "PM 1:00 · Lunch" | Wipe transition |
+| 20-28 s | Evening scene + "PM 8:00 · Walk" | Wipe transition |
+| 28-30 s | "See you tomorrow ✨" pop-in | Bounce-in |
+| Throughout | Light BGM at volume 0.55 | Airy mood |
 
-## 三步写出来
+## Three steps
 
-### 1. 起骨架
+### 1. Skeleton
 
 ```bash
 DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 --name "vlog" | jq -r '.draftId')
 ```
 
-### 2. 加图（带擦除转场）
+### 2. Add the images (with wipe transitions)
 
-把 3 张图按 0-10 / 10-20 / 20-30 切，前两段加 `transition: "向右擦除"`：
+Three images covering 0-10 / 10-20 / 20-30, the first two using `transition: "向右擦除"` (wipe right):
 
 ```bash
 cutcli images add "$DRAFT_ID" --image-infos @images.json
 ```
 
-`images.json`：
+`images.json`:
 
 ```json
 [
@@ -41,32 +41,32 @@ cutcli images add "$DRAFT_ID" --image-infos @images.json
 ]
 ```
 
-### 3. 加时间标签字幕
+### 3. Time-stamp captions
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions @captions.json \
   --font-size 9 --bold --transform-y -0.7
 ```
 
-每段字幕带不同 `keywordColor` 对应早 / 午 / 晚气氛（黄 / 橙 / 粉）。
+Each caption uses a different `keywordColor` to match the morning / noon / evening mood (yellow / orange / pink).
 
-## 关键技巧
+## Key techniques
 
-- **擦除转场更有 Vlog 感**：比叠化更具节奏，类似翻页
-- **字幕偏下到 -0.7**：给画面更多展示空间，符合 Vlog 慢节奏审美
-- **第一段 Ken Burns**：Vlog 开场要有动感，让用户立刻进入场景
+- **Wipes feel more vlog-ish**: snappier than crossfades, page-turn vibe
+- **Captions at -0.7**: leaves more room for the visual, fits a slower vlog rhythm
+- **First Ken Burns**: start with motion so viewers immediately feel the scene
 
-## 想批量出多版？
+## Scaling to many variants
 
-把 `images.json` 改成 `images-summer.json` / `images-winter.json` / `images-trip.json`，run.sh 整体复用：
+Swap `images.json` for `images-summer.json` / `images-winter.json` / `images-trip.json` and reuse `run.sh`:
 
 ```bash
 bash run.sh images-summer.json
-# run.sh 里改 cutcli images add ... --image-infos "@${1:-images.json}"
+# Inside run.sh: cutcli images add ... --image-infos "@${1:-images.json}"
 ```
 
-一周做 7 个不同主题 Vlog 不是问题。
+Producing 7 themed vlogs in a week becomes trivial.
 
-## 完整代码
+## Full code
 
 [`examples/30-vlog-day-in-life`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life)

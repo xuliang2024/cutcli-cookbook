@@ -1,129 +1,129 @@
-# 安装与配置
+# Installation
 
-cutcli 提供独立二进制（推荐，无需 Node 环境）和 npm 包两种安装方式。
+cutcli ships as a single binary (recommended, no Node required) and as an npm package.
 
-## 推荐：一行脚本安装
+## Recommended: one-line install
 
 ```bash
 curl -s https://cutcli.com/cli | bash
 ```
 
-这条命令会：
+The script will:
 
-1. 探测你的系统（macOS Intel / Apple Silicon / Linux x86_64 / Linux arm64 / Windows）
-2. 从 CDN 下载对应平台的二进制
-3. 安装到 `/usr/local/bin/cutcli`（或同等用户路径）
-4. 验证 `cutcli --version` 是否能跑
+1. Detect your system (macOS Intel / Apple Silicon / Linux x86_64 / Linux arm64 / Windows)
+2. Download the matching binary from the CDN
+3. Install it to `/usr/local/bin/cutcli` (or an equivalent user path)
+4. Verify that `cutcli --version` works
 
-### 平台覆盖
+### Platform support
 
-| 系统 | 架构 | 状态 |
+| OS | Architecture | Status |
 |---|---|---|
-| macOS | Apple Silicon (arm64) | 支持 |
-| macOS | Intel (x86_64) | 支持 |
-| Linux | x86_64 | 支持 |
-| Linux | arm64 | 支持 |
-| Windows | x86_64 | 支持（请用 PowerShell 或 Git Bash） |
+| macOS | Apple Silicon (arm64) | Supported |
+| macOS | Intel (x86_64) | Supported |
+| Linux | x86_64 | Supported |
+| Linux | arm64 | Supported |
+| Windows | x86_64 | Supported (use PowerShell or Git Bash) |
 
-## 备选：npm
+## Alternative: npm
 
-如果你已经有 Node.js (≥ 18)，也可以装 npm 包：
+If you already have Node.js (≥ 18), install via npm:
 
 ```bash
 npm install -g cut_cli
 ```
 
-> 注意命令名：npm 包名为 `cut_cli`（带下划线），命令名为 `cutcli`（无空格、无下划线）。
+> Note the naming: the npm package is `cut_cli` (with underscore), and the command is `cutcli` (no space, no underscore).
 
-## 验证安装
+## Verify installation
 
 ```bash
 cutcli --version
 cutcli --help
 ```
 
-输出当前版本号和命令列表说明安装成功。
+The version number and command list confirm a successful install.
 
-## 草稿目录配置
+## Drafts directory
 
-cutcli 默认把生成的草稿写到剪映桌面端的标准草稿目录：
+By default, cutcli writes drafts to the standard CapCut / Jianying drafts folder:
 
-| 操作系统 | 默认路径 |
+| OS | Default path |
 |---|---|
 | macOS | `~/Movies/CapCut/User Data/Projects/com.lveditor.draft/` |
 | Windows | `%USERPROFILE%\Movies\CapCut\User Data\Projects\com.lveditor.draft\` |
 | Linux | `~/.config/CapCut/Projects/com.lveditor.draft/` |
 
-也就是说**生成完直接打开剪映就能看见**。
+That means **the draft you generate shows up immediately when you open the desktop app**.
 
-### 自定义草稿目录
+### Customize the drafts directory
 
-如果你想把草稿写到别处（例如外接硬盘）：
+If you want to write drafts elsewhere (e.g. an external drive):
 
 ```bash
-# 一次性设置（永久生效）
+# Persist the change
 cutcli config set-dir ~/Desktop/my-drafts
 
-# 或临时通过环境变量（仅本次进程）
+# Or set per-process via env var
 export CUT_DRAFTS_DIR=~/Desktop/my-drafts
 cutcli draft create
 ```
 
-查看当前配置：
+Show the current configuration:
 
 ```bash
 cutcli config show --pretty
 ```
 
-## 升级到最新版
+## Upgrade
 
-重新跑安装命令即可：
+Re-run the install script:
 
 ```bash
 curl -s https://cutcli.com/cli | bash
 ```
 
-或用 npm：
+Or via npm:
 
 ```bash
 npm install -g cut_cli@latest
 ```
 
-## 卸载
+## Uninstall
 
 ```bash
 sudo rm /usr/local/bin/cutcli
-# npm 安装的话
+# If installed via npm
 npm uninstall -g cut_cli
 ```
 
-## 下一步
+## Next steps
 
-- [30 分钟做第一个草稿](./first-draft.md)
-- [时间单位（微秒）](./time-units.md)
-- [AI 工具集成（Cursor / Claude / OpenClaw）](./ai-integration.md)
+- [Build your first draft in 30 minutes](./first-draft.md)
+- [Time units (microseconds)](./time-units.md)
+- [AI integrations (Cursor / Claude / OpenClaw)](./ai-integration.md)
 
-## 故障排查
+## Troubleshooting
 
 ### `curl: command not found`
 
-Windows 用户请用 PowerShell：
+Windows users — try PowerShell:
 
 ```powershell
 iwr https://cutcli.com/cli -UseBasicParsing | iex
 ```
 
-或下载到 Git Bash 中执行。
+Or run the install script in Git Bash.
 
 ### `command not found: cutcli`
 
-重新打开终端，或手动加 PATH：
+Re-open your terminal, or add the install dir to PATH manually:
 
 ```bash
 echo 'export PATH=$PATH:/usr/local/bin' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### 剪映找不到生成的草稿
+### CapCut can't see the generated draft
 
-确认 `cutcli config show` 输出的目录与剪映「设置 → 草稿位置」一致。如果不一致，用 `cutcli config set-dir <剪映显示的路径>` 修正。
+Make sure `cutcli config show` returns the same directory as CapCut's "Settings → Draft location". If they differ, run `cutcli config set-dir <path-from-capcut>` to align them.

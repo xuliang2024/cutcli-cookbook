@@ -1,42 +1,42 @@
-# 字幕 (captions)
+# Captions
 
-> 本页内容由闭源主仓 `jy_cli/docs/cli.md` 通过同步脚本生成（W2 完成）。在那之前，请用 `cutcli captions add --help` 查看实时参数。
+> The full reference is generated from the closed-source `jy_cli/docs/cli.md` via the sync script. Until then, run `cutcli captions add --help` for live parameter docs.
 
-## 命令
+## Commands
 
 ```bash
-cutcli captions add <draftId> --captions <json> [选项]
+cutcli captions add <draftId> --captions <json> [options]
 cutcli captions list <draftId>
 ```
 
-## 字幕 JSON 字段
+## Caption JSON fields
 
-| 字段 | 类型 | 必填 | 说明 |
+| Field | Type | Required | Description |
 |---|---|---|---|
-| `text` | string | 是 | 字幕文本 |
-| `start` | number | 是 | 开始时间（μs） |
-| `end` | number | 是 | 结束时间（μs） |
-| `keyword` | string | 否 | 关键词高亮 |
-| `keywordColor` | string | 否 | 关键词颜色 |
-| `inAnimation` | string | 否 | 入场动画名 |
-| `outAnimation` | string | 否 | 出场动画名 |
-| `inAnimationDuration` | number | 否 | 入场动画时长（μs） |
-| `outAnimationDuration` | number | 否 | 出场动画时长（μs） |
+| `text` | string | yes | Caption text |
+| `start` | number | yes | Start time (μs) |
+| `end` | number | yes | End time (μs) |
+| `keyword` | string | no | Highlighted keyword |
+| `keywordColor` | string | no | Keyword color |
+| `inAnimation` | string | no | Entrance animation name |
+| `outAnimation` | string | no | Exit animation name |
+| `inAnimationDuration` | number | no | Entrance duration (μs) |
+| `outAnimationDuration` | number | no | Exit duration (μs) |
 
-## 全局样式选项
+## Global style options
 
-| 选项 | 说明 |
+| Option | Description |
 |---|---|
-| `--font-size <n>` | 字号（推荐 6-12） |
-| `--text-color <hex>` | 颜色如 `#FFFFFF` |
-| `--bold` / `--italic` / `--underline` | 样式 |
-| `--alignment <n>` | 对齐 (0=居中, 1=左, 2=右) |
-| `--transform-x <n>` | X 位置（-1~1） |
-| `--transform-y <n>` | Y 位置（-1~1） |
+| `--font-size <n>` | Font size (recommended 6-12) |
+| `--text-color <hex>` | Color, e.g. `#FFFFFF` |
+| `--bold` / `--italic` / `--underline` | Style flags |
+| `--alignment <n>` | Alignment (0=center, 1=left, 2=right) |
+| `--transform-x <n>` | X position (-1 to 1) |
+| `--transform-y <n>` | Y position (-1 to 1) |
 
-完整参数见 `cutcli captions add --help`。
+Full options: `cutcli captions add --help`.
 
-## 示例
+## Example
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions '[

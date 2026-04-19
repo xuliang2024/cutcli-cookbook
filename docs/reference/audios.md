@@ -1,26 +1,26 @@
-# 音频 (audios)
+# Audios
 
-> 占位文档，W2 由同步脚本填充完整参数表。
+> Placeholder. The full parameter table will be filled in by the sync script in W2.
 
-## 命令
+## Commands
 
 ```bash
 cutcli audios add <draftId> --audio-infos <json>
 cutcli audios list <draftId>
 ```
 
-## 主要字段
+## Main fields
 
-| 字段 | 类型 | 必填 | 说明 |
+| Field | Type | Required | Description |
 |---|---|---|---|
-| `audioUrl` | string | 是 | 音频 URL（自动下载） |
-| `duration` | number | 是 | 音频时长（μs） |
-| `start` | number | 是 | 开始时间（μs） |
-| `end` | number | 是 | 结束时间（μs） |
-| `volume` | number | 否 | 音量 (0-1) |
-| `audioEffect` | string | 否 | 音效名称 |
+| `audioUrl` | string | yes | Audio URL (auto-downloaded) |
+| `duration` | number | yes | Audio duration (μs) |
+| `start` | number | yes | Start time (μs) |
+| `end` | number | yes | End time (μs) |
+| `volume` | number | no | Volume (0-1) |
+| `audioEffect` | string | no | Effect name |
 
-## 实用：取得音频时长
+## Helper: get the audio duration
 
 ```bash
 cutcli query audio-duration --url https://example.com/bgm.mp3
