@@ -1,0 +1,10 @@
+# Allow everything by default — this is a public, open-source documentation site.
+User-agent: *
+Allow: /
+
+# Discoverability hints
+Sitemap: https://docs.cutcli.com/sitemap.xml
+
+# AI search engines: see /llms.txt for a curated index, or /llms-full.txt for
+# the pre-aggregated full documentation snapshot.
+# Spec: https://llmstxt.org/

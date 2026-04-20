@@ -1,0 +1,1550 @@
+# cutcli — full documentation snapshot for AI ingestion
+
+> Pre-aggregated, single-file snapshot of the cutcli English documentation.
+> cutcli turns shell commands or JSON into a standard CapCut / Jianying (剪映)
+> draft folder that the desktop app opens directly. This file is intended for
+> AI search engines and coding agents to ingest in one shot.
+>
+> Generated: 2026-04-20
+> Source repository: https://github.com/xuliang2024/cutcli-cookbook
+> Docs site: https://docs.cutcli.com
+> Short index (llms.txt): https://docs.cutcli.com/llms.txt
+> Install cutcli: curl -s https://cutcli.com/cli | bash
+
+---
+
+
+<!-- ============================================================ -->
+## File: README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/README.md
+<!-- ============================================================ -->
+
+# cutcli-cookbook
+
+> Open-source cookbook, JSON templates, AI prompts, and docs for [cutcli](https://cutcli.com) — the CapCut / Jianying (剪映) draft CLI. Generate editable video drafts from code, Cursor, Claude Code or any MCP agent.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+<p align="center">
+  <a href="https://docs.cutcli.com">
+    <img src="docs/public/og.png" alt="cutcli — CapCut / Jianying draft CLI cookbook with examples for Cursor, Claude Code and MCP agents" width="100%" />
+  </a>
+</p>
+
+[![docs](https://img.shields.io/badge/docs-docs.cutcli.com-blue)](https://docs.cutcli.com)
+[![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+[![GitHub stars](https://img.shields.io/github/stars/xuliang2024/cutcli-cookbook?style=flat&logo=github)](https://github.com/xuliang2024/cutcli-cookbook/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/xuliang2024/cutcli-cookbook)](https://github.com/xuliang2024/cutcli-cookbook/commits/main)
+[![Made for AI agents](https://img.shields.io/badge/made%20for-Cursor%20·%20Claude%20Code%20·%20MCP-ff5a36)](prompts/)
+
+cutcli generates standard CapCut / Jianying drafts that the desktop app can open directly. This repo collects ready-to-run examples, reusable JSON templates, AI prompts, and the official documentation source. Contributions welcome.
+
+---
+
+## 30-second start
+
+```bash
+# 1. Install cutcli
+curl -s https://cutcli.com/cli | bash
+
+# 2. Run the simplest example
+git clone https://github.com/xuliang2024/cutcli-cookbook.git
+cd cutcli-cookbook/examples/01-hello-caption
+bash run.sh
+
+# 3. Open CapCut / Jianying — the new draft is already in the list
+```
+
+Full guide: <https://docs.cutcli.com/guide/installation>
+
+## What's inside
+
+| Directory | Purpose |
+|---|---|
+| [`examples/`](examples/) | One-shot runnable examples (each with `run.sh` + `README.md` + `preview.gif`) |
+| [`templates/`](templates/) | Reusable JSON snippets (caption / animation / filter presets) |
+| [`prompts/`](prompts/) | Prompts for Cursor / Claude / ChatGPT to drive cutcli |
+| [`docs/`](docs/) | VitePress source for docs.cutcli.com |
+| [`showcase/`](showcase/) | Monthly community showcase |
+| [`worker/`](worker/) | Cloudflare Worker (R2 reverse proxy with SPA fallback) |
+
+## Featured P0 examples
+
+| Example | Demo | Length |
+|---|---|---|
+| [01-hello-caption](examples/01-hello-caption/) | One caption + entrance animation | 5 s |
+| [02-image-slideshow-bgm](examples/02-image-slideshow-bgm/) | 3-image slideshow + transitions + BGM | 9 s |
+| [03-tiktok-keyword-highlight](examples/03-tiktok-keyword-highlight/) | Multiple captions with keyword highlight | 6 s |
+| [04-easy-by-audio](examples/04-easy-by-audio/) | `cutcli draft easy` auto-fits to audio | adaptive |
+| [05-keyframe-zoom-in](examples/05-keyframe-zoom-in/) | Image + keyframe zoom | 5 s |
+
+## FAQ
+
+### What is cutcli?
+
+cutcli is a single-binary command-line tool that turns shell commands or JSON into a standard **CapCut / Jianying (剪映) draft folder**. Open CapCut on desktop and the draft is already in your draft list — fully editable, with captions, animations, transitions, audio and keyframes intact. No reverse-engineered file format, no manual JSON patching.
+
+Install: `curl -s https://cutcli.com/cli | bash`
+
+### What's in this cookbook?
+
+- [`examples/`](examples/) — copy-paste runnable cases (one caption, image slideshow, TikTok keyword highlight, audio-driven layout, keyframe zoom)
+- [`templates/`](templates/) — reusable JSON snippets for captions / animations / filters
+- [`prompts/`](prompts/) — system prompts for Cursor, Claude Code, ChatGPT and MCP agents to drive cutcli
+- [`docs/`](docs/) — VitePress source for [docs.cutcli.com](https://docs.cutcli.com)
+- [`worker/`](worker/) — Cloudflare Worker (R2 reverse proxy + SPA fallback) that powers the docs site
+
+### How do I use cutcli with Cursor, Claude Code or an MCP agent?
+
+cutcli is just a shell command, so any AI coding agent can drive it. We ship ready-made system prompts in [`prompts/`](prompts/) — drop them into your agent and ask things like *"add a 3-second caption that fades in at 1s"* or *"build a 9-second slideshow from these three images with BGM"*. The agent emits `cutcli ...` calls and you get a CapCut draft. See the integration guide at <https://docs.cutcli.com/guide/ai-integration>.
+
+### Does cutcli work with both CapCut (international) and Jianying (剪映 Chinese)?
+
+Yes. The draft format is the same on both apps; cutcli writes drafts that either client can open directly from its draft folder.
+
+### How is this different from manually editing CapCut JSON?
+
+Hand-writing CapCut draft JSON means dealing with microsecond timestamps, undocumented enums, normalized 0–1 coordinates and a half-dozen sibling files that must stay in sync. cutcli handles all of that and exposes a stable CLI surface (`cutcli draft create`, `cutcli captions add`, `cutcli draft easy`, …) that survives CapCut version bumps. Same reason people use FFmpeg instead of writing MP4 boxes by hand.
+
+## Contributing
+
+We welcome every kind of contribution:
+
+- Add a new example (easiest — copy a folder and edit, no setup required)
+- Translate or improve docs
+- Fix a bug
+- Submit your work to `showcase/`
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Links
+
+- Website: <https://cutcli.com>
+- Docs: <https://docs.cutcli.com>
+- Install: `curl -s https://cutcli.com/cli | bash`
+- Discussion: [Issues](https://github.com/xuliang2024/cutcli-cookbook/issues) / [Discussions](https://github.com/xuliang2024/cutcli-cookbook/discussions)
+
+## License
+
+[MIT](LICENSE) © 2026 m007 and cutcli-cookbook contributors
+
+
+<!-- ============================================================ -->
+## File: docs/guide/installation.md
+Source: https://docs.cutcli.com/guide/installation
+<!-- ============================================================ -->
+
+# Installation
+
+cutcli ships as a single binary (recommended, no Node required) and as an npm package.
+
+## Recommended: one-line install
+
+```bash
+curl -s https://cutcli.com/cli | bash
+```
+
+The script will:
+
+1. Detect your system (macOS Intel / Apple Silicon / Linux x86_64 / Linux arm64 / Windows)
+2. Download the matching binary from the CDN
+3. Install it to `/usr/local/bin/cutcli` (or an equivalent user path)
+4. Verify that `cutcli --version` works
+
+### Platform support
+
+| OS | Architecture | Status |
+|---|---|---|
+| macOS | Apple Silicon (arm64) | Supported |
+| macOS | Intel (x86_64) | Supported |
+| Linux | x86_64 | Supported |
+| Linux | arm64 | Supported |
+| Windows | x86_64 | Supported (use PowerShell or Git Bash) |
+
+## Alternative: npm
+
+If you already have Node.js (≥ 18), you can install the npm package:
+
+```bash
+npm install -g cut_cli
+```
+
+> Note the naming: the npm package is `cut_cli` (with underscore). The command itself is `cutcli` (no space, no underscore).
+
+## Verify
+
+```bash
+cutcli --version
+cutcli --help
+```
+
+If both print output, you're good.
+
+## Configure the draft directory
+
+By default cutcli writes drafts into the standard CapCut/Jianying draft directory:
+
+| OS | Default path |
+|---|---|
+| macOS | `~/Movies/CapCut/User Data/Projects/com.lveditor.draft/` |
+| Windows | `%USERPROFILE%\Movies\CapCut\User Data\Projects\com.lveditor.draft\` |
+| Linux | `~/.config/CapCut/Projects/com.lveditor.draft/` |
+
+Which means **CapCut sees the new draft as soon as you open the app**.
+
+### Custom draft directory
+
+If you want drafts stored elsewhere (e.g. an external drive):
+
+```bash
+# Persistent
+cutcli config set-dir ~/Desktop/my-drafts
+
+# One-shot via env var (current process only)
+export CUT_DRAFTS_DIR=~/Desktop/my-drafts
+cutcli draft create
+```
+
+Inspect the current config:
+
+```bash
+cutcli config show --pretty
+```
+
+## Upgrade
+
+Re-run the install script:
+
+```bash
+curl -s https://cutcli.com/cli | bash
+```
+
+Or via npm:
+
+```bash
+npm install -g cut_cli@latest
+```
+
+## Uninstall
+
+```bash
+sudo rm /usr/local/bin/cutcli
+# Or for the npm install
+npm uninstall -g cut_cli
+```
+
+## What's next
+
+- [Build your first draft in 30 minutes](./first-draft.md)
+- [Time units (microseconds)](./time-units.md)
+- [AI tools integration (Cursor / Claude / OpenClaw)](./ai-integration.md)
+
+## Troubleshooting
+
+### `curl: command not found`
+
+On Windows use PowerShell:
+
+```powershell
+iwr https://cutcli.com/cli -UseBasicParsing | iex
+```
+
+Or run the script in Git Bash.
+
+### `command not found: cutcli`
+
+Re-open your terminal, or add it to PATH manually:
+
+```bash
+echo 'export PATH=$PATH:/usr/local/bin' >> ~/.zshrc
+source ~/.zshrc
+```
+
+### CapCut can't see the generated draft
+
+Make sure the path printed by `cutcli config show` matches the "Draft location" in CapCut's settings. If not, fix it with `cutcli config set-dir <path-shown-by-capcut>`.
+
+
+<!-- ============================================================ -->
+## File: docs/guide/first-draft.md
+Source: https://docs.cutcli.com/guide/first-draft
+<!-- ============================================================ -->
+
+# Build your first draft in 30 minutes
+
+After this page you can:
+
+- Create your first CapCut/Jianying draft
+- Add a caption, an image, and a music track
+- Animate scale with a keyframe
+- Pack the draft and share it with someone else
+
+No code required, just `cutcli` commands.
+
+## Prep
+
+Make sure cutcli is installed:
+
+```bash
+cutcli --version
+```
+
+If that fails, see [Installation](./installation.md).
+
+## Step 1 · Create a draft
+
+```bash
+cutcli draft create --width 1080 --height 1920
+```
+
+You get something like:
+
+```json
+{
+  "draftId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+  "filePath": "/Users/you/Movies/CapCut/.../a1b2c3d4-..."
+}
+```
+
+Copy the `draftId`. Every following command uses it. Save it as an env var for convenience:
+
+```bash
+DRAFT_ID="a1b2c3d4-e5f6-7890-abcd-1234567890ab"
+```
+
+::: tip One-liner to capture draftId
+```bash
+DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
+```
+:::
+
+Open CapCut. A new empty draft should now show in the draft list.
+
+## Step 2 · Add a caption
+
+```bash
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"My first cutcli draft","start":0,"end":3000000,
+   "inAnimation":"渐显","inAnimationDuration":500000}
+]' --font-size 8 --bold --text-color "#FFFFFF"
+```
+
+Things to know:
+
+- Time is **microseconds**: `3000000` = 3 s, `500000` = 0.5 s. See [Time units](./time-units.md)
+- `inAnimation` is the entrance animation name. List options with `cutcli query text-animations --type in --pretty`. The names are Chinese strings (CapCut's native naming, e.g. `渐显` = "fade in")
+
+## Step 3 · Add a background image
+
+```bash
+cutcli images add "$DRAFT_ID" --image-infos '[
+  {
+    "imageUrl":"https://cutcli.com/assets/demo/sunset.jpg",
+    "width":1080,
+    "height":1920,
+    "start":0,
+    "end":5000000,
+    "inAnimation":"轻微放大",
+    "inAnimationDuration":1000000
+  }
+]'
+```
+
+cutcli auto-downloads the image into the draft's `resources/` folder, so CapCut works offline once opened.
+
+## Step 4 · Add background music
+
+```bash
+cutcli audios add "$DRAFT_ID" --audio-infos '[
+  {
+    "audioUrl":"https://cutcli.com/assets/demo/bgm-light.mp3",
+    "duration":5000000,
+    "start":0,
+    "end":5000000,
+    "volume":0.5
+  }
+]'
+```
+
+## Step 5 · Add a keyframe scale
+
+First grab the segmentId of that image with `cutcli images list "$DRAFT_ID"`, then:
+
+```bash
+SEG_ID="<the segmentId you saw above>"
+
+cutcli keyframes add "$DRAFT_ID" --keyframes "[
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_x\",\"offset\":0,\"value\":1.0},
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_x\",\"offset\":5000000,\"value\":1.3},
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_y\",\"offset\":0,\"value\":1.0},
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_y\",\"offset\":5000000,\"value\":1.3}
+]"
+```
+
+Refresh the draft in CapCut (close + reopen) — the background image now slowly zooms from 100 % to 130 % across 5 seconds.
+
+## Step 6 · Inspect what you built
+
+```bash
+cutcli draft info "$DRAFT_ID" --pretty
+```
+
+You should see:
+
+```json
+{
+  "canvasWidth": 1080,
+  "canvasHeight": 1920,
+  "duration": 5000000,
+  "trackSummary": [...],
+  "materialSummary": {
+    "videos": 0,
+    "audios": 1,
+    "texts": 1,
+    "images": 1
+  }
+}
+```
+
+## Step 7 · Share with a friend
+
+```bash
+cutcli draft upload "$DRAFT_ID"
+```
+
+The returned `downloadUrl` is a public zip link. Your friend downloads, unzips into their own CapCut draft directory, and CapCut opens it directly.
+
+## Putting it all together
+
+The same flow as one runnable `run.sh`:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
+echo "Draft: $DRAFT_ID"
+
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"My first cutcli draft","start":0,"end":3000000,
+   "inAnimation":"渐显","inAnimationDuration":500000}
+]' --font-size 8 --bold
+
+cutcli images add "$DRAFT_ID" --image-infos '[
+  {"imageUrl":"https://cutcli.com/assets/demo/sunset.jpg",
+   "width":1080,"height":1920,"start":0,"end":5000000,
+   "inAnimation":"轻微放大","inAnimationDuration":1000000}
+]'
+
+cutcli audios add "$DRAFT_ID" --audio-infos '[
+  {"audioUrl":"https://cutcli.com/assets/demo/bgm-light.mp3",
+   "duration":5000000,"start":0,"end":5000000,"volume":0.5}
+]'
+
+cutcli draft info "$DRAFT_ID" --pretty
+```
+
+## What's next
+
+- Browse fuller [examples](/cookbook/index)
+- Read more about [keyframes](/reference/keyframes)
+- Let AI write commands for you: [AI tools integration](./ai-integration.md)
+
+
+<!-- ============================================================ -->
+## File: docs/guide/time-units.md
+Source: https://docs.cutcli.com/guide/time-units
+<!-- ============================================================ -->
+
+# Time units (microseconds)
+
+**Every time field in cutcli is microseconds (μs)** — captions, images, audios, keyframes, transitions, animations.
+
+## The conversion
+
+```text
+1 second = 1,000,000 microseconds
+```
+
+| Wanted duration | Write |
+|---|---|
+| 0.1 s | `100000` |
+| 0.5 s | `500000` |
+| 1 s | `1000000` |
+| 3 s | `3000000` |
+| 10 s | `10000000` |
+| 1 min | `60000000` |
+
+## Why microseconds
+
+- Matches CapCut's internal storage format — no precision loss
+- Keyframes / transitions / animations can be controlled to the microsecond
+- Cross-platform safe, no float rounding
+
+## Reading start / end
+
+```text
+timeline →
+0           3,000,000           6,000,000        (microseconds)
+[caption A  ][   caption B    ]
+start=0    end=3M  start=3M    end=6M
+```
+
+`start` is when the segment begins on the **overall timeline**; `end` is when it ends. The duration is `end - start`.
+
+::: warning Don't overlap inside a single track
+Within one caption / video / audio track, neighboring segments must satisfy `start ≥ previous end`. Otherwise CapCut will render the timeline incorrectly.
+:::
+
+## Helpful shell snippets
+
+Convert seconds to microseconds:
+
+```bash
+to_us() { echo $(( $1 * 1000000 )); }
+
+START=$(to_us 0)        # 0
+END=$(to_us 3)          # 3000000
+echo "Caption from $START to $END"
+```
+
+Decimal seconds (e.g. "3.5 s"):
+
+```bash
+to_us_decimal() { python3 -c "print(int(float('$1') * 1000000))"; }
+to_us_decimal 3.5    # 3500000
+```
+
+## Common mistakes
+
+| Symptom | Likely cause |
+|---|---|
+| Caption flashes for one frame | You wrote ms: `{"start":0,"end":3000}` should be `3000000` |
+| Keyframe animation is way too fast | Same ms / μs confusion. Keyframe `offset` is also μs |
+| Entrance animation longer than the segment | `inAnimationDuration` + `outAnimationDuration` must be ≤ `end - start` |
+
+## More
+
+- [Coordinate system & positioning](./coordinate-system.md)
+
+
+<!-- ============================================================ -->
+## File: docs/guide/coordinate-system.md
+Source: https://docs.cutcli.com/guide/coordinate-system
+<!-- ============================================================ -->
+
+# Coordinate system & positioning
+
+Knowing the coordinate system lets you place captions, images, and stickers exactly where you want.
+
+## Normalized coordinates
+
+cutcli uses **normalized coordinates**: the screen center is the origin `(0, 0)`, X is positive going right, Y is positive going up. The entire canvas maps to `[-1, 1] × [-1, 1]`.
+
+```text
+            (0, 1)        ← top of screen
+              ↑
+              |
+(-1, 0) ←   (0,0)   → (1, 0)
+              |
+              ↓
+            (0, -1)       ← bottom of screen
+```
+
+Common spots:
+
+| Position | transformX | transformY |
+|---|---|---|
+| Center | 0 | 0 |
+| Top-center | 0 | 0.8 |
+| Bottom-center | 0 | -0.8 |
+| Bottom-left corner | -0.8 | -0.8 |
+| Top-right corner | 0.8 | 0.8 |
+
+> Avoid `±1` — that's the canvas edge and elements will be clipped. Use `±0.7 ~ ±0.9` for "near edge".
+
+## Caption example
+
+Pin a caption to the lower quarter (typical short-video position):
+
+```bash
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"Bottom caption","start":0,"end":3000000}
+]' --transform-y -0.7 --font-size 8
+```
+
+## Image example
+
+Scale an image to 50 % and stick it to the top-right:
+
+```bash
+cutcli images add "$DRAFT_ID" --image-infos '[
+  {
+    "imageUrl":"https://cutcli.com/assets/demo/logo.png",
+    "width":400,"height":400,
+    "start":0,"end":3000000,
+    "transformX":0.6,
+    "transformY":0.7,
+    "scaleX":0.5,
+    "scaleY":0.5
+  }
+]'
+```
+
+## Scale and rotation
+
+| Field | Meaning | Default |
+|---|---|---|
+| `scaleX` | Scale on X axis, 1.0 = original | 1.0 |
+| `scaleY` | Scale on Y axis | 1.0 |
+| `rotation` | Clockwise rotation, in degrees | 0 |
+
+> For uniform scale set X and Y to the same value.
+
+## Canvases of different ratios
+
+Normalized coordinates are independent of resolution:
+
+- On a 1080×1920 (portrait) canvas, `(0, -0.8)` = bottom-center
+- On a 1920×1080 (landscape) canvas, `(0, -0.8)` = bottom-center too
+
+But pixel sizes (`width` / `height`) you must scale yourself; cutcli won't auto-fit.
+
+## Position keyframes
+
+Keyframe properties `position_x` / `position_y` use the same normalized coordinates:
+
+```bash
+cutcli keyframes add "$DRAFT_ID" --keyframes '[
+  {"segmentId":"...","property":"position_x","offset":0,"value":-0.5},
+  {"segmentId":"...","property":"position_x","offset":2000000,"value":0.5}
+]'
+```
+
+Effect: the image slides from the left edge to the right edge over 2 seconds.
+
+## Cross-reference: CapCut UI "position"
+
+CapCut's UI shows position in **pixel coordinates** with origin at the canvas top-left. Conversion:
+
+```text
+ui_x = (transformX + 1) / 2 * canvasWidth
+ui_y = (1 - transformY) / 2 * canvasHeight    ← Y flipped
+```
+
+Example: 1080×1920 canvas, cutcli's `(transformX=0, transformY=-0.7)` ≈ CapCut UI `(540, 1632)`.
+
+## What's next
+
+- [Keyframes detail](/reference/keyframes)
+- [Caption parameter reference](/reference/captions)
+
+
+<!-- ============================================================ -->
+## File: docs/guide/ai-integration.md
+Source: https://docs.cutcli.com/guide/ai-integration
+<!-- ============================================================ -->
+
+# AI tools integration
+
+cutcli ships a one-shot `setup` command that drops a SKILL config into Cursor / Claude Code / OpenClaw. Once installed, your AI assistant can write cutcli commands directly in the chat.
+
+## One-line install
+
+```bash
+# Cursor IDE
+cutcli setup cursor
+
+# Claude Code (CLI)
+cutcli setup claude
+
+# OpenClaw
+cutcli setup openclaw
+
+# All three
+cutcli setup all
+```
+
+## Already installed?
+
+Use `--force` to overwrite:
+
+```bash
+cutcli setup cursor --force
+```
+
+## Verify
+
+Open your AI tool and ask:
+
+> Make me a 5-second caption that says "Hello", with a fade-in.
+
+The model should reply with something like:
+
+```bash
+DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"Hello","start":0,"end":5000000,
+   "inAnimation":"渐显","inAnimationDuration":500000}
+]' --font-size 8 --bold
+```
+
+## Custom prompts
+
+For models without a built-in skill (ChatGPT, Gemini, etc.), copy [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) into the model's system prompt or "custom instructions" field. It teaches the model the entire cutcli command surface.
+
+More prompt templates: [Prompts library](/prompts/).
+
+## How it works
+
+`cutcli setup <tool>` does very little:
+
+1. Drops a `SKILL.md` into `~/.cursor/skills/cut-draft/` (or the equivalent Claude / OpenClaw directory)
+2. That `SKILL.md` describes every cutcli command + parameters + typical usage
+3. Next time the AI tool starts, it auto-loads the skill
+
+You can read the file any time with `cat ~/.cursor/skills/cut-draft/SKILL.md`.
+
+
+<!-- ============================================================ -->
+## File: examples/01-hello-caption/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/01-hello-caption/README.md
+<!-- ============================================================ -->
+
+# 01 · Hello Caption
+
+> The smallest runnable cutcli example: one caption with fade-in / fade-out.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet (CI will require it once the gif is recorded). Until then, imagine the effect from the screenshots below.
+
+## When to use
+
+- First time running cutcli — verify the install works
+- See the minimum loop "create draft → add caption → inspect"
+- Use as scaffolding for more complex examples
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+When it finishes, open CapCut / Jianying — the new draft `hello-caption` is in your draft list.
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| `start: 0` | Start at zero | Timeline origin |
+| `end: 5000000` | 5 s | 1 s = 1,000,000 μs; 5 s is enough to see entrance + exit |
+| `inAnimation: "渐显"` | Default fade-in | Run `cutcli query text-animations --type in` for every option |
+| `inAnimationDuration: 500000` | 0.5 s | 0.5 s in / out leaves 4 s of caption proper |
+| `--font-size 9` | Size 9 | cutcli sizes are relative; 7-10 is the sweet spot for portrait |
+| `--bold` | Bold | Short-form captions are almost always bold for legibility |
+| `--transform-y -0.6` | 60 % below center | Standard short-video position, avoids the top status bar |
+
+## Customize
+
+### Different font and English text
+
+```bash
+cutcli captions add "$DRAFT_ID" \
+  --captions @data/captions.json \
+  --font "Times New Roman" \
+  --font-size 10 --bold
+```
+
+### Switch to keyword highlight (see case 03)
+
+Update `data/captions.json` to:
+
+```json
+[
+  {"text":"Hello cutcli","start":0,"end":5000000,
+   "keyword":"cutcli","keywordColor":"#FF6600"}
+]
+```
+
+### Add a loop animation
+
+Append to `data/captions.json`:
+
+```json
+"loopAnimation": "波浪",
+"loopAnimationDuration": 1000000
+```
+
+## cutcli features used
+
+- `cutcli draft create` — create a 1080×1920 portrait draft
+- `cutcli captions add` — add a caption with entrance / exit animation
+- `cutcli draft info` — inspect the resulting draft
+
+## Validate
+
+```bash
+node ../../scripts/validate-example.mjs .
+```
+
+
+<!-- ============================================================ -->
+## File: examples/02-image-slideshow-bgm/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/02-image-slideshow-bgm/README.md
+<!-- ============================================================ -->
+
+# 02 · Image Slideshow with BGM
+
+> Three portrait images slideshowing 3 s each, crossfade + push transitions, with background music.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet (CI will require it).
+
+## When to use
+
+- Travel / food / scenic photo-album shorts
+- Product image carousel (ecommerce homepage)
+- Any "image + music" template scenario
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| 3 s per image | `start`/`end` 3,000,000 μs apart | Common per-image dwell for short video |
+| `transition: "叠化"` | image 1 → 2 | Default soft crossfade, fits photo album flow |
+| `transition: "推移"` | image 2 → 3 | Slight rhythm change, avoids monotony |
+| `transitionDuration: 500000` | 0.5 s | Transition must be ≤ 1/3 of the shorter segment |
+| `volume: 0.6` | 60 % | BGM stays in the background, leaving room for voice-over later |
+
+## Customize
+
+### Want a faster pace?
+
+Reduce each image to 2 s:
+
+```json
+"start": 0, "end": 2000000
+"start": 2000000, "end": 4000000
+"start": 4000000, "end": 6000000
+```
+
+Update `audio.json` `duration` and `end` to `6000000` to match.
+
+### Want Ken Burns zoom?
+
+See [`05-keyframe-zoom-in`](../05-keyframe-zoom-in/) — use keyframes to slowly tween `scale_x` / `scale_y` per image.
+
+### Use your own images
+
+Replace `imageUrl` in `data/images.json`. Notes:
+
+- Must be a publicly accessible HTTPS URL
+- `width` / `height` must match the actual pixel size (cutcli does not auto-detect)
+- Recommended CDNs: jsdelivr / GitHub Raw / your own R2 bucket
+
+## cutcli features used
+
+- `cutcli draft create` — portrait canvas
+- `cutcli images add` — bulk add images with timing and transitions
+- `cutcli audios add` — BGM with volume control
+
+
+<!-- ============================================================ -->
+## File: examples/03-tiktok-keyword-highlight/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/03-tiktok-keyword-highlight/README.md
+<!-- ============================================================ -->
+
+# 03 · TikTok Keyword Highlight
+
+> TikTok / Douyin-style sequential captions with keyword highlights and entrance animations.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet (CI will require it).
+
+## When to use
+
+- Short-video creators using the "say it in three lines" template
+- Knowledge / beauty / cooking tutorials
+- Any scenario needing fast-paced captions with a highlighted keyword
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| 2 s per caption | `start`/`end` 2,000,000 μs apart | TikTok pace: 1 keyword per 2 s |
+| `keyword: "secret"` | Keyword field | cutcli auto-styles the keyword in the keyword color, no manual splitting |
+| `keywordColor: "#FFD600"` | Yellow | High contrast vs. white body, paired with red as the only emphasis |
+| `inAnimation: "向上滑入"` | Common Douyin entrance | Matches a snappy rhythm |
+| `inAnimationDuration: 300000` | 0.3 s | Short = punchy; > 0.5 s feels sluggish |
+| `--border-color "#000000"` `--border-width 1` | Black border | Stays legible on any background |
+| `--transform-y -0.55` | 55 % below center | Slightly higher than the traditional bottom, avoids the Douyin UI |
+
+## Customize
+
+### Multiple keywords
+
+```json
+{"text":"This trick is a real game-changer",
+ "keyword":"trick|game-changer",
+ "keywordColor":"#FF6600"}
+```
+
+`keyword` accepts `|` to separate multiple keywords.
+
+### Different colors per keyword
+
+cutcli supports one `keywordColor` per caption. Split into multiple captions for multiple colors.
+
+### Bilingual variant (CN + EN)
+
+```json
+[
+  {"text":"今天教大家一个秘密","start":0,"end":2000000,
+   "keyword":"秘密","keywordColor":"#FFD600","fontSize":9,
+   "transform_y":-0.5},
+  {"text":"This is a secret","start":0,"end":2000000,
+   "keyword":"secret","keywordColor":"#FFD600","fontSize":7,
+   "transform_y":-0.6}
+]
+```
+
+> Two captions sharing the same start/end stack on screen, separated by `transform_y`.
+
+### Loop animation for "breathing" captions
+
+```json
+"loopAnimation": "心跳",
+"loopAnimationDuration": 800000
+```
+
+## cutcli features used
+
+- `cutcli captions add` — multi-caption + keyword field + entrance / exit animations
+- Global styling: border, bold, position offset
+
+
+<!-- ============================================================ -->
+## File: examples/04-easy-by-audio/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/04-easy-by-audio/README.md
+<!-- ============================================================ -->
+
+# 04 · Easy by Audio Duration
+
+> Use `cutcli draft easy` — one command auto-fits an image + caption + BGM to an audio's duration.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet (CI will require it).
+
+## When to use
+
+- Voice-over already recorded; you need the visuals to match its length
+- Poetry / book reading / podcast cuts
+- Any "I have an audio, just lay an image under it" scenario
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+`draft easy` will:
+
+1. Download the audio and detect its duration
+2. Stretch the background image to cover the full duration
+3. Stretch the caption to cover the full duration
+4. Auto-align the end times
+
+## Key parameters
+
+| Parameter | Description |
+|---|---|
+| `--audio-url` | Required, decides the total video length |
+| `--img-url` | Optional, background image |
+| `--video-url` | Optional, background video (mutually exclusive with img-url) |
+| `--text` | Optional, title caption |
+
+## Customize
+
+### Want multiple images in a slideshow?
+
+`draft easy` only takes one image. Use `images add` instead — see [`02-image-slideshow-bgm`](../02-image-slideshow-bgm/).
+
+### Local audio file
+
+cutcli also accepts local paths:
+
+```bash
+cutcli draft easy "$DRAFT_ID" \
+  --audio-url ~/Music/my-narration.mp3 \
+  --img-url https://cutcli.com/assets/demo/scene-01.jpg
+```
+
+### Split the caption into multiple lines
+
+Switch to `captions add`:
+
+```bash
+DURATION=$(cutcli query audio-duration --url "$AUDIO_URL" | jq -r '.duration')
+HALF=$((DURATION / 2))
+
+cutcli captions add "$DRAFT_ID" --captions "[
+  {\"text\":\"First half title\",\"start\":0,\"end\":$HALF},
+  {\"text\":\"Second half title\",\"start\":$HALF,\"end\":$DURATION}
+]"
+```
+
+## cutcli features used
+
+- `cutcli draft easy` — one-shot asset layout
+- `cutcli query audio-duration` — fetch an audio's length
+
+
+<!-- ============================================================ -->
+## File: examples/05-keyframe-zoom-in/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/05-keyframe-zoom-in/README.md
+<!-- ============================================================ -->
+
+# 05 · Keyframe Zoom-in (Ken Burns)
+
+> Image + keyframes on `scale_x` / `scale_y`, slowly zooming from 1.0 to 1.3 over 5 s — the classic Ken Burns effect.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet (CI will require it).
+
+## When to use
+
+- Make static photos feel "alive" instead of frozen
+- Travel / scenery / portrait photo videos
+- Documentary intro templates
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+`run.sh` does:
+
+1. Create a portrait draft
+2. Add one 5-second image
+3. **Use `cutcli images list` to fetch that image's `segmentId`**
+4. Use `jq` to replace `__SEG_ID__` in `keyframes.template.json` with the real ID
+5. `cutcli keyframes add` writes the keyframes
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| `property: "scale_x"` + `"scale_y"` | Both required | Otherwise the image distorts |
+| `offset: 0, value: 1.0` | Start | Original size |
+| `offset: 5000000, value: 1.3` | End | Zoom to 1.3× over 5 s — gentle, doesn't distract |
+| Easing | Linear (default) | Linear feels most natural for Ken Burns; tweak via `easing` if you want |
+
+## Why split out `segmentId`?
+
+cutcli keyframes bind to a specific segment, so **you must add the segment first, then add keyframes**. The script automates this with the template + jq trick so you don't manually copy IDs.
+
+## Customize
+
+### "Zoom + pan"
+
+Add `position_x` keyframes:
+
+```json
+{"segmentId": "...", "property": "position_x", "offset": 0,       "value": -0.1},
+{"segmentId": "...", "property": "position_x", "offset": 5000000, "value":  0.1}
+```
+
+The image now zooms while drifting from left to right.
+
+### "Zoom + rotate"
+
+```json
+{"segmentId": "...", "property": "rotation", "offset": 0,       "value": 0},
+{"segmentId": "...", "property": "rotation", "offset": 5000000, "value": 5}
+```
+
+A subtle 5-degree tilt over 5 s adds dynamic tension.
+
+### "Zoom in, then zoom back out"
+
+Add a middle keyframe:
+
+```json
+{"segmentId": "...", "property": "scale_x", "offset": 0,       "value": 1.0},
+{"segmentId": "...", "property": "scale_x", "offset": 2500000, "value": 1.4},
+{"segmentId": "...", "property": "scale_x", "offset": 5000000, "value": 1.0}
+```
+
+## cutcli features used
+
+- `cutcli images add` — add image
+- `cutcli images list` — fetch the segment ID just created
+- `cutcli keyframes add` — add keyframes
+- Template + jq replacement pattern (reusable for every keyframe example)
+
+
+<!-- ============================================================ -->
+## File: examples/10-product-promo-30s/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/10-product-promo-30s/README.md
+<!-- ============================================================ -->
+
+# 10 · Product Promo (30s)
+
+> 30-second ecommerce product promo: opening title → 3-image product carousel → 3 selling-point captions with keyword highlight → closing CTA.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet — CI will require it.
+
+## When to use
+
+- Ecommerce homepage product video, detail-page banner
+- TikTok / Douyin / RedBook ad creatives
+- Any "30 seconds to pitch one product" template need
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| Total length 30 s | `end: 30000000` | Maxes out most ad-platform limits |
+| 0-3 s opening | Title + first image | Hook in the first 3 seconds |
+| 3-12 s middle | 3 images × 3 s with crossfade | Show the product from multiple angles |
+| 12-24 s late middle | 3 selling-point captions, keyword highlight | 4 s each — slow enough to read |
+| 24-30 s closing | CTA | 6 s for the call-to-action to land |
+| `volume: 0.5` | BGM 50 % | Leaves room for voice-over later |
+| Caption `--transform-y -0.55` | 55 % below center | Avoids the TikTok bottom UI |
+| Border 1 + black | Always legible | Works on any background |
+| Highlight colors `#FFD600` / `#FF3A6E` | High contrast | Pick 1-2 brand colors and stay consistent |
+
+## Customize
+
+### Want a 60-second version?
+
+Double every `start` / `end` and add 2-3 more images and selling-point captions.
+
+### Swap assets
+
+Replace `imageUrl` in `data/images.json` with your own product images (must be public HTTPS, with `width` / `height` matching the actual pixel size).
+
+### Add a unifying filter
+
+```bash
+cutcli filters add "$DRAFT_ID" --filter-infos '[
+  {"filterId":"REPLACE_BY_QUERY","start":0,"end":30000000,"intensity":60}
+]'
+```
+
+Find the filter ID first via `cutcli query filters --action search --keyword "warm" --pretty`.
+
+### Add a product logo sticker
+
+Borrow from [05-keyframe-zoom-in](../05-keyframe-zoom-in/) — drop a logo in the top-right corner with a keyframe animation.
+
+## cutcli features used
+
+- `cutcli draft create` — portrait canvas
+- `cutcli images add` — multiple images + transitions + entrance animations
+- `cutcli captions add` — multiple captions + keyword highlight + entrance animation
+- `cutcli audios add` — BGM volume control
+- File + JSON workflow (`--captions @data/captions.json`)
+
+
+<!-- ============================================================ -->
+## File: examples/20-knowledge-science-card/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/20-knowledge-science-card/README.md
+<!-- ============================================================ -->
+
+# 20 · Knowledge Science Card (60s)
+
+> 60-second portrait knowledge video: title → 3 key points → wrap-up. Each image gets an automatic Ken Burns zoom; captions sit on a translucent background card.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet — CI will require it.
+
+## When to use
+
+- "3 minutes to understand X" knowledge creators
+- Tutorial-style portrait content
+- Short-video adaptations of articles or newsletters
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| Total length 60 s | 4 image segments + 5 captions | Typical knowledge-card length |
+| Caption background card `--bg-color #000 --bg-alpha 0.55 --bg-round 8` | Translucent rounded black | Signature look; captions stay legible on any background |
+| `--bg-style 1` | Filled | 0 = none; 1 = filled |
+| Ken Burns 1.0 → 1.15 over 10 s per image | Per-segment | Prevents static frames; computes each segmentId individually |
+| Highlight colors `#FFD600` / `#FF3A6E` | Two brand colors | Use only 1-2 emphasis colors throughout |
+| `volume: 0.4` | Low | Knowledge videos usually carry voice-over; BGM can't compete |
+
+## Customize
+
+### Add voice-over
+
+Update `data/audio.json` to two tracks: BGM + narration.
+
+```json
+[
+  {"audioUrl":"https://cutcli.com/assets/demo/bgm-light.mp3","duration":60000000,"start":0,"end":60000000,"volume":0.25},
+  {"audioUrl":"https://your-cdn.com/narration.mp3","duration":60000000,"start":0,"end":60000000,"volume":1.0}
+]
+```
+
+### Change the font
+
+Add a global option:
+
+```bash
+cutcli captions add "$DRAFT_ID" --captions @data/captions.json \
+  --font "PingFang SC" --font-size 9 ...
+```
+
+### Add a progress-bar sticker
+
+`cutcli sticker add` a bottom progress bar plus keyframes that take `scale_x` from 0 → 1.
+
+## cutcli features used
+
+- `cutcli draft create` — portrait canvas
+- `cutcli images add` + `images list` — add images, then look up segmentIds
+- `cutcli keyframes add` — independent Ken Burns per segment
+- `cutcli captions add` — caption background card + keyword highlight
+- `cutcli audios add` — multi-track audio mix
+- bash loop to build JSON dynamically
+
+
+<!-- ============================================================ -->
+## File: examples/30-vlog-day-in-life/README.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/30-vlog-day-in-life/README.md
+<!-- ============================================================ -->
+
+# 30 · Vlog: A Day in My Life (30s)
+
+> 30-second vlog "a day in my life" template: morning → noon → evening, each with a time-stamped caption.
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` is not committed yet — CI will require it.
+
+## When to use
+
+- Personal vlog "a day in my life / a week in my life" series
+- Travel / food daily series
+- Any timeline-driven scene chain
+
+## Run it
+
+```bash
+bash run.sh
+```
+
+## Key parameters
+
+| Parameter | Value | Why |
+|---|---|---|
+| Three time-stamped captions | `AM 7:00 / PM 1:00 / PM 8:00` | Classic vlog rhythm: morning → noon → evening |
+| Transition `wipe right` | Replaces crossfade | Adds page-turn rhythm to the vlog |
+| First segment Ken Burns 1.0 → 1.1 over 10 s | Dynamic opening | Movement at the very beginning |
+| Caption `--transform-y -0.7` | 70 % below center | Lower than short-video captions, leaves more room for the visual |
+| Highlight colors yellow / orange / pink | Match the time-of-day mood | Morning = yellow (warm), noon = orange (vital), evening = pink (soft) |
+
+## Customize
+
+### Apply Ken Burns to all three segments
+
+Replace `SEG_FIRST` in `run.sh` with a `for` loop over every segmentId (see [`20-knowledge-science-card`](../20-knowledge-science-card/) for the pattern).
+
+### Add tempo stickers / decoration
+
+```bash
+cutcli query stickers --action search --keyword "clock" --pretty
+cutcli sticker add "$DRAFT_ID" --sticker-id "<id>" --start 0 --end 30000000 --scale 0.6
+```
+
+### Multiple themes from one script
+
+Copy `run.sh` to `run-summer.sh` / `run-winter.sh` and only swap the asset URLs in `data/images.json` — same structure throughout.
+
+## cutcli features used
+
+- `cutcli draft create` — portrait canvas
+- `cutcli images add` — multiple images + wipe transitions
+- `cutcli keyframes add` — Ken Burns push-in
+- `cutcli captions add` — time-stamp captions + keyword highlight
+- `cutcli audios add` — BGM
+
+
+<!-- ============================================================ -->
+## File: prompts/system/cutcli-expert.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md
+<!-- ============================================================ -->
+
+---
+title: cutcli expert system prompt
+author: m007
+target: chatgpt | gemini | claude | openai-api
+tags: [system, all-purpose]
+license: MIT
+---
+
+# cutcli expert system prompt
+
+[English](cutcli-expert.md) · [简体中文](cutcli-expert.zh.md)
+
+You are a **cutcli expert**. cutcli is a CLI that generates standard CapCut / Jianying drafts you can open directly in the desktop app.
+
+## Core knowledge
+
+### Install and command name
+
+- Install: `curl -s https://cutcli.com/cli | bash`
+- Command name: **`cutcli`** (not `cut`, which collides with the Unix utility)
+- Docs: <https://docs.cutcli.com>
+
+### Workflow
+
+1. `cutcli draft create` — get a `draftId`
+2. `cutcli <module> add <draftId> ...` — add content into the draft
+3. The same draft can be operated on repeatedly to build it up
+4. Drafts land in CapCut's standard drafts folder and show up immediately when you open the app
+
+### Time units (critical)
+
+- **Every time field is microseconds (μs)**: `1 second = 1,000,000`
+- Common mistake: `{"start":0,"end":3000}` means 3 ms — should be `3000000`
+
+### Coordinates
+
+- Origin `(0,0)` at screen center; X positive right, Y positive up
+- Range `[-1, 1]`; usual span `±0.5 ~ ±0.9`; never use `±1` exactly
+
+## Command reference
+
+### Draft
+
+```bash
+cutcli draft create [--width 1080] [--height 1920]   # default portrait
+cutcli draft list
+cutcli draft info <draftId> [--pretty]
+cutcli draft easy <draftId> --audio-url <url> [--img-url <url>] [--text <s>]
+cutcli draft zip <draftId> [--output <path>]
+cutcli draft upload <draftId>
+```
+
+### Content (each module has an `add` subcommand)
+
+```bash
+cutcli captions add <draftId> --captions <json> [global styles]
+cutcli images   add <draftId> --image-infos <json>
+cutcli videos   add <draftId> --video-infos <json>
+cutcli audios   add <draftId> --audio-infos <json>
+cutcli effects  add <draftId> --effect-infos <json>
+cutcli filters  add <draftId> --filter-infos <json>
+cutcli sticker  add <draftId> --sticker-id <id> --start N --end N
+cutcli keyframes add <draftId> --keyframes <json>
+cutcli masks    add <draftId> --segment-ids <ids> [options]
+```
+
+### Query (look up animations / filters / effects / stickers)
+
+```bash
+cutcli query image-animations  --type in|out|loop
+cutcli query text-animations   --type in|out|loop
+cutcli query stickers     --action search|categories|list --keyword <kw>
+cutcli query effects      --action search|categories|list --keyword <kw>
+cutcli query filters      --action search|categories|list --keyword <kw>
+cutcli query transitions  --action search|categories|list --keyword <kw>
+cutcli query audio-duration --url <mp3-url>
+```
+
+## Key JSON shapes
+
+### Caption
+
+```json
+[
+  {
+    "text": "Hello",
+    "start": 0,
+    "end": 3000000,
+    "keyword": "Hello",
+    "keywordColor": "#FF6600",
+    "inAnimation": "渐显",
+    "outAnimation": "渐隐",
+    "inAnimationDuration": 500000,
+    "outAnimationDuration": 500000
+  }
+]
+```
+
+> Animation names (`渐显`, `轻微放大`, etc.) are CapCut's built-in Chinese identifiers and they work in every locale — keep them as-is.
+
+Caption global style options: `--font-size` (recommended 6-12), `--text-color`, `--bold`, `--italic`, `--alignment`, `--transform-x`, `--transform-y`, `--border-color`, `--border-width`.
+
+### Image
+
+```json
+[
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-01.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 0,
+    "end": 3000000,
+    "transformX": 0,
+    "transformY": 0,
+    "scaleX": 1.0,
+    "scaleY": 1.0,
+    "inAnimation": "轻微放大",
+    "transition": "叠化",
+    "transitionDuration": 500000
+  }
+]
+```
+
+`width` / `height` are **required** — cutcli does not auto-detect image dimensions.
+
+### Video
+
+Same shape as image, plus `videoUrl` / `duration` (the source video duration, required) / `volume`.
+
+### Audio
+
+```json
+[
+  {
+    "audioUrl": "https://cutcli.com/assets/demo/bgm.mp3",
+    "duration": 30000000,
+    "start": 0,
+    "end": 30000000,
+    "volume": 0.6
+  }
+]
+```
+
+To get a real audio length: `cutcli query audio-duration --url <url>`.
+
+### Keyframes
+
+Keyframes bind to a specific segment. **Add the segment first, then `<module> list` to grab the segmentId, then add the keyframes.**
+
+```json
+[
+  {"segmentId": "<segId>", "property": "scale_x", "offset": 0, "value": 1.0},
+  {"segmentId": "<segId>", "property": "scale_x", "offset": 5000000, "value": 1.3}
+]
+```
+
+Supported properties: `position_x`, `position_y`, `scale_x`, `scale_y`, `rotation`, `opacity`.
+
+## Output rules (you must follow)
+
+1. **Always emit a directly executable bash script**, not pseudocode
+2. Start with `set -euo pipefail`
+3. Capture the draftId via `DRAFT_ID=$(cutcli draft create ... | jq -r '.draftId')`
+4. Pass complex JSON via files: `--captions @data/captions.json` — never inline-escape giant JSON
+5. Times are integer microseconds — **never milliseconds, never floats**
+6. Command name is `cutcli`, never `cut`
+
+## Standard answer template
+
+When the user says "make me an X-style video", structure your reply as:
+
+```text
+1. One-sentence confirmation of what you understood
+2. A complete, runnable bash script
+3. A table explaining the key parameters (why those numbers)
+4. 2-3 customization tips (variants the user might want next)
+```
+
+## Safety rules
+
+- Don't add destructive flags like `--force` / `--overwrite` unless the user explicitly asks
+- Never suggest `rm -rf ~/Movies/CapCut`
+- Prefer assets from `https://cutcli.com/assets/demo/`; don't recommend private URLs
+- Don't assume parameters that weren't in the docs of older cutcli versions; if unsure, tell the user to run `cutcli <cmd> --help`
+
+
+<!-- ============================================================ -->
+## File: CHANGELOG.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/CHANGELOG.md
+<!-- ============================================================ -->
+
+# Changelog
+
+[English](CHANGELOG.md) · [简体中文](CHANGELOG.zh.md)
+
+All notable changes to this project are recorded in this file, following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+## [0.1.0] - 2026-04-20
+
+### Added
+- **Internationalization (i18n)**: docs.cutcli.com now defaults to English, with Chinese mirrored under `/zh/`. README, CONTRIBUTING, CHANGELOG, every example, every subpackage README, and the GitHub issue/PR templates are bilingual.
+- VitePress `locales` config with separate nav / sidebar / footer / search per language.
+- `examples/<id>/README.md` (English) plus `README.zh.md` (Chinese); five required H2 sections per language.
+- `meta.json` schema accepts an optional `description_zh` for keeping the Chinese summary alongside the English one.
+- `scripts/validate-example.mjs` enforces both English and Chinese README section sets when both files exist.
+- `scripts/new-example.mjs` scaffolds bilingual READMEs by default.
+- New lint `scripts/check-i18n-pairs.mjs` (run via `npm run lint:i18n`) enforces that bilingual file pairs stay in sync.
+- **SEO / GEO**: GitHub repository topics, Open Graph card (`docs/public/og.png`), README hero image, FAQ section structured for AI search engines, and full `og:image` / `twitter:card` meta on the docs site.
+
+### Initial scaffolding (W1)
+- Repo skeleton: README / LICENSE / CONTRIBUTING / CODE_OF_CONDUCT / Issue + PR templates.
+- VitePress doc site skeleton with 4 starter guides (installation / first-draft / time-units / coordinate-system).
+- 5 P0 examples (hello-caption / image-slideshow-bgm / tiktok-keyword-highlight / easy-by-audio / keyframe-zoom-in).
+- Lightweight docs Worker (R2 reverse proxy + SPA path fallback).
+- GitHub Actions CI (lint + example validation + VitePress build + R2 upload + Worker deploy).
+- `scripts/validate-example.mjs` validator and `scripts/new-example.mjs` scaffold.
+- Caption / animation template presets.
+- Cursor / Claude / system-level cutcli prompts.

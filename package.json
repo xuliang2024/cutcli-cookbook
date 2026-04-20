@@ -13,7 +13,7 @@
   "type": "module",
   "scripts": {
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:build": "npm run build:llms && vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "lint": "node scripts/lint.mjs",
     "lint:cases": "node scripts/validate-example.mjs --all",
@@ -22,6 +22,7 @@
     "lint:i18n": "node scripts/check-i18n-pairs.mjs",
     "new:example": "node scripts/new-example.mjs",
     "build:gallery": "node scripts/build-gallery.mjs",
+    "build:llms": "node scripts/build-llms-txt.mjs",
     "r2:upload": "node scripts/upload-r2.mjs",
     "r2:gc": "node scripts/r2-gc.mjs",
     "worker:dev": "cd worker && npx wrangler dev",

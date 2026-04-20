@@ -166,6 +166,9 @@ export default defineConfig({
   cleanUrls: false,
   lastUpdated: true,
   ignoreDeadLinks: 'localhostLinks',
+  sitemap: {
+    hostname: 'https://docs.cutcli.com',
+  },
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],

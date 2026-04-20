@@ -90,6 +90,10 @@ function buildResponse(
     headers.set('Content-Type', 'text/javascript; charset=utf-8');
   } else if (key.endsWith('.woff2')) {
     headers.set('Content-Type', 'font/woff2');
+  } else if (key.endsWith('.txt')) {
+    headers.set('Content-Type', 'text/plain; charset=utf-8');
+  } else if (key.endsWith('.xml')) {
+    headers.set('Content-Type', 'application/xml; charset=utf-8');
   }
 
   return new Response(headOnly ? null : object.body, { status, headers });

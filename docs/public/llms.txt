@@ -1,0 +1,57 @@
+# cutcli
+
+> cutcli is a single-binary command-line tool that turns shell commands or JSON into a standard CapCut / Jianying (剪映) draft folder. The CapCut / Jianying desktop app opens the draft directly from its draft list — fully editable, with captions, animations, transitions, audio, keyframes, masks and effects intact.
+
+cutcli is designed to be driven by humans **and** by AI coding agents (Cursor, Claude Code, ChatGPT, Gemini, OpenClaw, MCP). This file is the AI-friendly entry point for the project — start here, then follow links into deeper context.
+
+Install: `curl -s https://cutcli.com/cli | bash`
+
+This repository ([github.com/xuliang2024/cutcli-cookbook](https://github.com/xuliang2024/cutcli-cookbook)) is the open-source cookbook: runnable examples, reusable JSON templates, AI prompts, and the documentation source for [docs.cutcli.com](https://docs.cutcli.com).
+
+## Getting Started
+
+- [Installation](https://docs.cutcli.com/guide/installation): one-line installer for macOS / Windows / Linux, plus how cutcli locates the CapCut / Jianying draft directory.
+- [Build your first draft in 30 minutes](https://docs.cutcli.com/guide/first-draft): the recommended starter walkthrough — covers `cutcli draft create`, `captions add`, `audios add`, `draft easy`.
+- [Time units (microseconds)](https://docs.cutcli.com/guide/time-units): cutcli uses microseconds everywhere; this page explains the conversion table and common pitfalls.
+- [Coordinate system & positioning](https://docs.cutcli.com/guide/coordinate-system): the normalized -1..1 coordinate space used by all visual elements.
+
+## AI Integration (essential reading for agents)
+
+- [AI tools integration](https://docs.cutcli.com/guide/ai-integration): how `cutcli setup cursor | claude | openclaw | all` installs the cutcli SKILL into your AI tool so the assistant can call cutcli commands directly.
+- [Prompts library](https://github.com/xuliang2024/cutcli-cookbook/tree/main/prompts): generic system prompts for ChatGPT / Gemini / Claude API, plus tool-specific prompts for Cursor and Claude Code.
+- [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md): the canonical "cutcli expert" system prompt — drop into any model that supports system messages.
+
+## Runnable examples
+
+Every example is a self-contained folder with `run.sh` + bilingual README + `meta.json` + sample inputs.
+
+- [01-hello-caption](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/01-hello-caption): one caption with a fade-in entrance animation (5 s)
+- [02-image-slideshow-bgm](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/02-image-slideshow-bgm): 3-image slideshow + transitions + background music (9 s)
+- [03-tiktok-keyword-highlight](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight): multiple captions with TikTok-style keyword highlighting (6 s)
+- [04-easy-by-audio](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/04-easy-by-audio): `cutcli draft easy --by-audio` auto-fits a caption track to an audio file (adaptive duration)
+- [05-keyframe-zoom-in](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in): image with a Ken Burns-style keyframe zoom (5 s)
+- [10-product-promo-30s](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s): full 30-second product promo template
+- [20-knowledge-science-card](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card): "knowledge card" / explainer-style short video
+- [30-vlog-day-in-life](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life): vlog template with multi-clip layout
+
+## Templates
+
+- [`templates/`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/templates): reusable JSON snippets for caption presets, in/out animations, and filter chains.
+
+## Reference
+
+- [CLI cheatsheet](https://docs.cutcli.com/reference/cli): every cutcli subcommand on one page.
+- [captions](https://docs.cutcli.com/reference/captions), [images](https://docs.cutcli.com/reference/images), [videos](https://docs.cutcli.com/reference/videos), [audios](https://docs.cutcli.com/reference/audios), [effects](https://docs.cutcli.com/reference/effects), [filters](https://docs.cutcli.com/reference/filters), [transitions](https://docs.cutcli.com/reference/transitions), [stickers](https://docs.cutcli.com/reference/stickers), [keyframes](https://docs.cutcli.com/reference/keyframes), [masks](https://docs.cutcli.com/reference/masks): per-feature reference pages with parameter tables and code samples.
+
+## Source & metadata
+
+- [GitHub repository](https://github.com/xuliang2024/cutcli-cookbook): MIT-licensed source for everything above.
+- [README (English)](https://github.com/xuliang2024/cutcli-cookbook/blob/main/README.md) · [README (简体中文)](https://github.com/xuliang2024/cutcli-cookbook/blob/main/README.zh.md)
+- [CHANGELOG](https://github.com/xuliang2024/cutcli-cookbook/blob/main/CHANGELOG.md)
+- [CONTRIBUTING](https://github.com/xuliang2024/cutcli-cookbook/blob/main/CONTRIBUTING.md)
+- [llms-full.txt](https://docs.cutcli.com/llms-full.txt): full text of the README, every guide, every example README, and the canonical cutcli system prompt — pre-aggregated for one-shot ingestion.
+
+## Optional
+
+- [简体中文文档站](https://docs.cutcli.com/zh/): the Chinese mirror of every page above.
+- [Issues & Discussions](https://github.com/xuliang2024/cutcli-cookbook/issues): bug reports, feature requests, community Q&A.
