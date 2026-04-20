@@ -1,12 +1,21 @@
 # cutcli-cookbook
 
-> 为 [cutcli](https://cutcli.com) —— 剪映 / CapCut 草稿命令行工具 —— 准备的开源案例库、模板库与文档站。
+> 为 [cutcli](https://cutcli.com) —— 剪映 / CapCut 草稿命令行工具 —— 准备的开源案例库、JSON 模板、AI 提示词与文档站。让你用代码、Cursor、Claude Code 或任意 MCP agent 生成可二次编辑的视频草稿。
 
 [English](README.md) · [简体中文](README.zh.md)
+
+<p align="center">
+  <a href="https://docs.cutcli.com">
+    <img src="docs/public/og.png" alt="cutcli —— 剪映 / CapCut 草稿 CLI 案例库，支持 Cursor、Claude Code 与 MCP agent" width="100%" />
+  </a>
+</p>
 
 [![docs](https://img.shields.io/badge/docs-docs.cutcli.com-blue)](https://docs.cutcli.com)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+[![GitHub stars](https://img.shields.io/github/stars/xuliang2024/cutcli-cookbook?style=flat&logo=github)](https://github.com/xuliang2024/cutcli-cookbook/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/xuliang2024/cutcli-cookbook)](https://github.com/xuliang2024/cutcli-cookbook/commits/main)
+[![Made for AI agents](https://img.shields.io/badge/made%20for-Cursor%20·%20Claude%20Code%20·%20MCP-ff5a36)](prompts/)
 
 cutcli 让你**用一行命令生成可被剪映直接打开的标准草稿**。这个仓库收录所有可一键运行的案例、可复用模板、AI 提示词、官方文档源码，欢迎社区贡献。
 
@@ -48,6 +57,34 @@ bash run.sh
 | [03-tiktok-keyword-highlight](examples/03-tiktok-keyword-highlight/) | 多条字幕 + 关键词高亮 | 6 s |
 | [04-easy-by-audio](examples/04-easy-by-audio/) | `cutcli draft easy` 按音频铺素材 | 自适应 |
 | [05-keyframe-zoom-in](examples/05-keyframe-zoom-in/) | 图片 + 关键帧缩放 | 5 s |
+
+## 常见问题
+
+### cutcli 是什么？
+
+cutcli 是一个单文件命令行工具，把 shell 命令或 JSON 直接转成**剪映 / CapCut 标准草稿目录**。打开剪映客户端，新草稿已经躺在草稿列表里——字幕、动画、转场、音频、关键帧全都可二次编辑。不是逆向 hack 的草稿格式，也不需要手动改 JSON。
+
+安装：`curl -s https://cutcli.com/cli | bash`
+
+### 这个仓库里有什么？
+
+- [`examples/`](examples/) —— 复制即跑的完整案例（一行字幕、图片轮播、关键词高亮、按音频铺素材、关键帧缩放）
+- [`templates/`](templates/) —— 可复用的字幕 / 动画 / 滤镜 JSON 片段
+- [`prompts/`](prompts/) —— 给 Cursor / Claude Code / ChatGPT / MCP agent 的系统提示词
+- [`docs/`](docs/) —— 文档站源码，部署到 [docs.cutcli.com](https://docs.cutcli.com)
+- [`worker/`](worker/) —— 文档站的 Cloudflare Worker（R2 反向代理 + SPA 路径回退）
+
+### 怎么用 Cursor / Claude Code / MCP 调用 cutcli？
+
+cutcli 就是一个 shell 命令，任何 AI 编程助手都能驱动。我们在 [`prompts/`](prompts/) 提供了开箱即用的系统提示词——丢给你的 agent，然后跟它说「在第 1 秒加一段 3 秒淡入字幕」「把这三张图拼成 9 秒带 BGM 的轮播」即可。Agent 会自动生成 `cutcli ...` 命令，跑完直接得到剪映草稿。完整集成指南见 <https://docs.cutcli.com/zh/guide/ai-integration>。
+
+### 同时支持 CapCut 国际版和剪映国内版吗？
+
+支持。两个客户端共享同一套草稿格式，cutcli 生成的草稿目录两边都能直接打开。
+
+### 和手写剪映草稿 JSON 有什么区别？
+
+手写草稿 JSON 要面对：微秒时间戳、未文档化的枚举值、归一化的 0–1 坐标、好几个必须保持同步的兄弟文件。cutcli 全都帮你处理，并提供一套稳定的 CLI（`cutcli draft create` / `captions add` / `draft easy` …），剪映客户端升级也不需要重写脚本。和「用 FFmpeg 而不是手写 MP4 box」是同一个理由。
 
 ## 加入贡献
 

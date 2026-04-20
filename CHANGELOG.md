@@ -6,6 +6,8 @@ All notable changes to this project are recorded in this file, following [Keep a
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-04-20
+
 ### Added
 - **Internationalization (i18n)**: docs.cutcli.com now defaults to English, with Chinese mirrored under `/zh/`. README, CONTRIBUTING, CHANGELOG, every example, every subpackage README, and the GitHub issue/PR templates are bilingual.
 - VitePress `locales` config with separate nav / sidebar / footer / search per language.
@@ -14,6 +16,7 @@ All notable changes to this project are recorded in this file, following [Keep a
 - `scripts/validate-example.mjs` enforces both English and Chinese README section sets when both files exist.
 - `scripts/new-example.mjs` scaffolds bilingual READMEs by default.
 - New lint `scripts/check-i18n-pairs.mjs` (run via `npm run lint:i18n`) enforces that bilingual file pairs stay in sync.
+- **SEO / GEO**: GitHub repository topics, Open Graph card (`docs/public/og.png`), README hero image, FAQ section structured for AI search engines, and full `og:image` / `twitter:card` meta on the docs site.
 
 ### Initial scaffolding (W1)
 - Repo skeleton: README / LICENSE / CONTRIBUTING / CODE_OF_CONDUCT / Issue + PR templates.

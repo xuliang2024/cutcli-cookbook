@@ -170,9 +170,19 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'theme-color', content: '#ff5a36' }],
-    ['meta', { property: 'og:title', content: 'cutcli — CapCut / Jianying draft CLI' }],
+    ['meta', { name: 'description', content: 'Cookbook, JSON templates, AI prompts and docs for cutcli — the CapCut / Jianying (剪映) draft CLI. Generate editable video drafts from code, Cursor, Claude Code or any MCP agent.' }],
+    ['meta', { name: 'keywords', content: 'cutcli, CapCut, Jianying, 剪映, draft CLI, video automation, AI video, Cursor, Claude Code, MCP, ChatGPT' }],
+    ['meta', { property: 'og:title', content: 'cutcli — CapCut / Jianying draft CLI cookbook' }],
+    ['meta', { property: 'og:description', content: 'Open-source cookbook, JSON templates and AI prompts for the CapCut / Jianying draft CLI. Drive video drafts from Cursor, Claude Code or any MCP agent.' }],
     ['meta', { property: 'og:url', content: 'https://docs.cutcli.com/' }],
     ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:image', content: 'https://docs.cutcli.com/og.png' }],
+    ['meta', { property: 'og:image:width', content: '1280' }],
+    ['meta', { property: 'og:image:height', content: '640' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title', content: 'cutcli — CapCut / Jianying draft CLI cookbook' }],
+    ['meta', { name: 'twitter:description', content: 'Generate editable CapCut / 剪映 video drafts from code, Cursor, Claude Code or any MCP agent.' }],
+    ['meta', { name: 'twitter:image', content: 'https://docs.cutcli.com/og.png' }],
   ],
 
   themeConfig: {
