@@ -44,6 +44,69 @@ const softwareApplicationLd = {
   ],
 };
 
+const howToFirstDraftLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Build your first CapCut / Jianying (剪映) draft in 30 minutes with cutcli',
+  description:
+    'Step-by-step walkthrough to create a CapCut / Jianying draft from the cutcli command line — covering draft creation, captions, images, background music, and a keyframe scale animation.',
+  totalTime: 'PT30M',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: '0' },
+  supply: [
+    { '@type': 'HowToSupply', name: 'A demo image (sunset.jpg or your own)' },
+    { '@type': 'HowToSupply', name: 'A short BGM MP3 file' },
+  ],
+  tool: [
+    { '@type': 'HowToTool', name: 'cutcli (curl -s https://cutcli.com/cli | bash)' },
+    { '@type': 'HowToTool', name: 'CapCut or Jianying (剪映) desktop app' },
+    { '@type': 'HowToTool', name: 'jq (optional, for piping draftId)' },
+  ],
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Create a draft',
+      text: 'Run "cutcli draft create --width 1080 --height 1920" to create a new vertical (1080×1920) CapCut draft. The command returns a draftId you will reuse in every following step.',
+      url: 'https://docs.cutcli.com/guide/first-draft#step-1-%C2%B7-create-a-draft',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Add a caption',
+      text: 'Run "cutcli captions add $DRAFT_ID --captions ..." with a JSON array describing the caption text, start/end (in microseconds), and entrance animation. The caption appears as an editable text track in CapCut.',
+      url: 'https://docs.cutcli.com/guide/first-draft#step-2-%C2%B7-add-a-caption',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Add a background image',
+      text: 'Run "cutcli images add $DRAFT_ID --image-infos ..." with imageUrl, width/height, and start/end. cutcli auto-downloads the image into the draft\'s resources/ folder so CapCut works offline.',
+      url: 'https://docs.cutcli.com/guide/first-draft#step-3-%C2%B7-add-a-background-image',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 4,
+      name: 'Add background music',
+      text: 'Run "cutcli audios add $DRAFT_ID --audio-infos ..." with audioUrl, duration, start/end, and volume. The music appears as an editable audio track aligned with the visual timeline.',
+      url: 'https://docs.cutcli.com/guide/first-draft#step-4-%C2%B7-add-background-music',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 5,
+      name: 'Animate scale with a keyframe',
+      text: 'Use "cutcli images list" to fetch the segmentId, then "cutcli keyframes add" with scale_x and scale_y values at offset 0 and offset 5000000 (5 seconds in microseconds) to produce a Ken Burns-style zoom-in effect.',
+      url: 'https://docs.cutcli.com/guide/first-draft#step-5-%C2%B7-add-a-keyframe-scale',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 6,
+      name: 'Inspect and share the draft',
+      text: 'Run "cutcli draft info --pretty" to verify what you built, then "cutcli draft upload" to get a public zip download URL you can share with anyone.',
+      url: 'https://docs.cutcli.com/guide/first-draft#step-7-%C2%B7-share-with-a-friend',
+    },
+  ],
+};
+
 const faqPageLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -97,6 +160,7 @@ const enThemeConfig: DefaultTheme.Config = {
     { text: 'Cookbook', link: '/cookbook/index' },
     { text: 'CLI Reference', link: '/reference/cli' },
     { text: 'Prompts', link: '/prompts/' },
+    { text: 'Blog', link: '/blog/why-cutcli' },
     {
       text: 'Related',
       items: [
@@ -154,6 +218,14 @@ const enThemeConfig: DefaultTheme.Config = {
         ],
       },
     ],
+    '/blog/': [
+      {
+        text: 'Blog',
+        items: [
+          { text: 'Stop hand-writing CapCut JSON', link: '/blog/why-cutcli' },
+        ],
+      },
+    ],
   },
   socialLinks: sharedSocialLinks,
   footer: {
@@ -175,6 +247,7 @@ const zhThemeConfig: DefaultTheme.Config = {
     { text: '案例', link: '/zh/cookbook/index' },
     { text: '命令参考', link: '/zh/reference/cli' },
     { text: '提示词', link: '/zh/prompts/' },
+    { text: '博客', link: '/zh/blog/why-cutcli' },
     {
       text: '相关',
       items: [
@@ -232,6 +305,14 @@ const zhThemeConfig: DefaultTheme.Config = {
         ],
       },
     ],
+    '/zh/blog/': [
+      {
+        text: '博客',
+        items: [
+          { text: '别再手写剪映 JSON 了', link: '/zh/blog/why-cutcli' },
+        ],
+      },
+    ],
   },
   socialLinks: sharedSocialLinks,
   footer: {
@@ -255,6 +336,23 @@ export default defineConfig({
   ignoreDeadLinks: 'localhostLinks',
   sitemap: {
     hostname: 'https://docs.cutcli.com',
+  },
+
+  transformPageData(pageData) {
+    // Inject the HowTo JSON-LD only on the "first draft" walkthrough pages
+    // (English + Chinese), so Google can render an "ordered steps" rich card
+    // for that single tutorial without polluting every other page.
+    const isFirstDraftPage =
+      pageData.relativePath === 'guide/first-draft.md' ||
+      pageData.relativePath === 'zh/guide/first-draft.md';
+    if (!isFirstDraftPage) return;
+
+    pageData.frontmatter.head ??= [];
+    pageData.frontmatter.head.push([
+      'script',
+      { type: 'application/ld+json' },
+      JSON.stringify(howToFirstDraftLd),
+    ]);
   },
 
   head: [
