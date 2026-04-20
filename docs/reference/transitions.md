@@ -1,6 +1,6 @@
-# Transitions
+# transitions
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> Stub — full reference will be filled in by the sync script (W2).
 
 ## Commands
 
@@ -10,9 +10,9 @@ cutcli query transitions --action search --keyword <kw>
 cutcli query transitions --action list --category <cat>
 ```
 
-Transitions are not their own command — they're a `transition` field on individual segments inside `images add` / `videos add`.
+Transitions aren't a standalone command — they're a `transition` field per segment in `images add` / `videos add`.
 
-## Use inside images / videos
+## In images / videos
 
 ```json
 [

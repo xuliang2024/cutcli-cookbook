@@ -1,38 +1,38 @@
 # TikTok-style short video
 
-The TikTok / Douyin viral caption rhythm: a new keyword every 2 s, strong visual contrast, bold + bordered text, exaggerated entrance animations.
+The TikTok / Douyin caption rhythm: a new keyword every 2 seconds, strong visual contrast, bold + outline, exaggerated entrance animation.
 
 Full code: [`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight) and [`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in).
 
 ## Five caption rules
 
-1. **≤ 12 characters**, no longer than 2 s
-2. **Always one keyword highlighted**, color-locked to 1-2 brand colors
-3. **White text + black border 1**, always legible
-4. **Entrance: slide-up or bounce-in**, never plain fade (too slow)
-5. **Position `--transform-y -0.55`**, slightly higher than traditional bottom captions (avoids the UI)
+1. **≤ 12 characters per line**, no longer than 2 seconds
+2. **One highlighted keyword per line**, color fixed to 1-2 across the whole video
+3. **White text + 1px black outline** — always legible
+4. **Use "向上滑入" (slide up) or "弹入跳动" (bounce in)** as entrance, never plain fade (too slow)
+5. **Position `--transform-y -0.55`** — slightly higher than the traditional bottom caption (avoids TikTok UI)
 
-## Command template
+## Template
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions '[
-  {"text":"Today I'\''ll share a secret","start":0,"end":2000000,
-   "keyword":"secret","keywordColor":"#FFD600",
+  {"text":"今天教大家一个秘密","start":0,"end":2000000,
+   "keyword":"秘密","keywordColor":"#FFD600",
    "inAnimation":"弹入跳动","inAnimationDuration":350000},
-  {"text":"This trick doubles your output","start":2000000,"end":4000000,
-   "keyword":"doubles","keywordColor":"#FF3A6E",
+  {"text":"用这个方法效率翻倍","start":2000000,"end":4000000,
+   "keyword":"翻倍","keywordColor":"#FF3A6E",
    "inAnimation":"弹入跳动","inAnimationDuration":350000},
-  {"text":"Like and save it","start":4000000,"end":6000000,
-   "keyword":"Like","keywordColor":"#FF6600",
+  {"text":"记得点赞收藏","start":4000000,"end":6000000,
+   "keyword":"点赞收藏","keywordColor":"#FF6600",
    "inAnimation":"弹入跳动","inAnimationDuration":350000,
    "outAnimation":"渐隐","outAnimationDuration":250000}
 ]' --font-size 9 --bold --text-color "#FFFFFF" \
    --border-color "#000000" --border-width 1 --transform-y -0.55
 ```
 
-## Visuals: image + keyframe push
+## Visuals: image + keyframe push-zoom
 
-Pair each caption with an image and a 1.0 → 1.15 zoom keyframe:
+Pair each caption with an image, animate scale 1.0 → 1.15:
 
 ```bash
 cutcli images add "$DRAFT_ID" --image-infos '[
@@ -41,7 +41,7 @@ cutcli images add "$DRAFT_ID" --image-infos '[
   {"imageUrl":"...","width":1080,"height":1920,"start":4000000,"end":6000000}
 ]'
 
-# Add a zoom to each image
+# Push-zoom for each image
 SEGS=$(cutcli images list "$DRAFT_ID" | jq -r '.[].segmentId')
 for SEG in $SEGS; do
   cutcli keyframes add "$DRAFT_ID" --keyframes "[
@@ -55,7 +55,7 @@ done
 
 ## Picking BGM
 
-TikTok-style BGM is rhythmic with a clear drop. Time the drop to your **first keyword** (typically 0.5-1 s in) and you get a free sync moment.
+TikTok hits usually have a strong drop. When picking, line up the **drop** with **the moment your first keyword appears** (typically 0.5-1 s in) — that "beat-sync" gives the video extra punch.
 
 ```bash
 cutcli audios add "$DRAFT_ID" --audio-infos '[
@@ -63,9 +63,9 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 ]'
 ```
 
-## Bilingual variant (CN + EN on screen)
+## Bilingual variant (CN + EN simultaneously)
 
-A different viral pattern: show CN and EN at the same time, offset by `transformY`:
+Another viral pattern: same time range, two captions, one Chinese and one English, offset on the Y axis:
 
 ```json
 [
@@ -78,9 +78,9 @@ A different viral pattern: show CN and EN at the same time, offset by `transform
 ]
 ```
 
-> Note: `transform_y` is a per-caption field; the global one is `--transform-y` (kebab-case CLI style).
+> Note: `transform_y` is a per-caption JSON field; the global flag is `--transform-y` (kebab-case).
 
 ## Full code
 
 - Keyword captions: [`examples/03-tiktok-keyword-highlight`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight)
-- Keyframe push: [`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)
+- Keyframe push-zoom: [`examples/05-keyframe-zoom-in`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in)

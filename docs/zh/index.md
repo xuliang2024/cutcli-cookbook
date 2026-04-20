@@ -11,10 +11,10 @@ hero:
   actions:
     - theme: brand
       text: 30 分钟上手
-      link: /guide/first-draft
+      link: /zh/guide/first-draft
     - theme: alt
       text: 安装
-      link: /guide/installation
+      link: /zh/guide/installation
     - theme: alt
       text: GitHub
       link: https://github.com/xuliang2024/cutcli-cookbook
@@ -56,7 +56,7 @@ bash run.sh
 
 ## 选一个起点
 
-- 第一次接触 cutcli？ → [30 分钟做第一个草稿](/guide/first-draft)
-- 想看完整可运行的案例？ → [案例总览](/cookbook/index)
-- 找命令的具体用法？ → [CLI 命令参考](/reference/cli)
-- 想让 AI 帮你写命令？ → [AI 工具集成](/guide/ai-integration)
+- 第一次接触 cutcli？ → [30 分钟做第一个草稿](/zh/guide/first-draft)
+- 想看完整可运行的案例？ → [案例总览](/zh/cookbook/index)
+- 找命令的具体用法？ → [CLI 命令参考](/zh/reference/cli)
+- 想让 AI 帮你写命令？ → [AI 工具集成](/zh/guide/ai-integration)

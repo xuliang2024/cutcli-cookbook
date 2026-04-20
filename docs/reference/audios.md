@@ -1,6 +1,6 @@
-# Audios
+# audios
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> Stub — full reference will be filled in by the sync script (W2).
 
 ## Commands
 
@@ -11,16 +11,16 @@ cutcli audios list <draftId>
 
 ## Main fields
 
-| Field | Type | Required | Description |
+| Field | Type | Required | Notes |
 |---|---|---|---|
 | `audioUrl` | string | yes | Audio URL (auto-downloaded) |
 | `duration` | number | yes | Audio duration (μs) |
 | `start` | number | yes | Start time (μs) |
 | `end` | number | yes | End time (μs) |
 | `volume` | number | no | Volume (0-1) |
-| `audioEffect` | string | no | Effect name |
+| `audioEffect` | string | no | Audio effect name |
 
-## Helper: get the audio duration
+## Tip: query a remote audio's duration
 
 ```bash
 cutcli query audio-duration --url https://example.com/bgm.mp3

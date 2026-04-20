@@ -1,6 +1,6 @@
-# Filters
+# filters
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> Stub — full reference will be filled in by the sync script (W2).
 
 ## Commands
 
@@ -11,9 +11,9 @@ cutcli query filters --action search --keyword <kw>
 
 ## Main fields
 
-| Field | Type | Required | Description |
+| Field | Type | Required | Notes |
 |---|---|---|---|
 | `filterId` | string | yes | Filter ID |
 | `start` | number | yes | Start time (μs) |
 | `end` | number | yes | End time (μs) |
-| `intensity` | number | no | Filter intensity (0-100) |
+| `intensity` | number | no | Strength (0-100) |

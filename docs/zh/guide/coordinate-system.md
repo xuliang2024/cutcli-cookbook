@@ -101,5 +101,5 @@ ui_y = (1 - transformY) / 2 * canvasHeight    ← 注意 Y 翻转
 
 ## 下一步
 
-- [关键帧详解](/reference/keyframes)
-- [字幕完整参数表](/reference/captions)
+- [关键帧详解](/zh/reference/keyframes)
+- [字幕完整参数表](/zh/reference/captions)

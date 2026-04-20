@@ -1,10 +1,10 @@
 # Coordinate system & positioning
 
-Understanding cutcli's coordinate system lets you place captions, images, and stickers exactly where you want.
+Knowing the coordinate system lets you place captions, images, and stickers exactly where you want.
 
 ## Normalized coordinates
 
-cutcli uses **normalized coordinates**: the screen center is the origin `(0, 0)`, X grows to the right, Y grows up. The whole canvas maps to `[-1, 1]` × `[-1, 1]`.
+cutcli uses **normalized coordinates**: the screen center is the origin `(0, 0)`, X is positive going right, Y is positive going up. The entire canvas maps to `[-1, 1] × [-1, 1]`.
 
 ```text
             (0, 1)        ← top of screen
@@ -16,31 +16,31 @@ cutcli uses **normalized coordinates**: the screen center is the origin `(0, 0)`
             (0, -1)       ← bottom of screen
 ```
 
-Concrete positions:
+Common spots:
 
 | Position | transformX | transformY |
 |---|---|---|
-| Dead center | 0 | 0 |
-| Top center | 0 | 0.8 |
-| Bottom center | 0 | -0.8 |
+| Center | 0 | 0 |
+| Top-center | 0 | 0.8 |
+| Bottom-center | 0 | -0.8 |
 | Bottom-left corner | -0.8 | -0.8 |
 | Top-right corner | 0.8 | 0.8 |
 
-> Don't push values to `±1` — that's the canvas edge and elements get clipped. Stick to `±0.7 ~ ±0.9`.
+> Avoid `±1` — that's the canvas edge and elements will be clipped. Use `±0.7 ~ ±0.9` for "near edge".
 
 ## Caption example
 
-Pin a caption to the bottom quarter (the typical short-video position):
+Pin a caption to the lower quarter (typical short-video position):
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions '[
-  {"text":"Caption near the bottom","start":0,"end":3000000}
+  {"text":"Bottom caption","start":0,"end":3000000}
 ]' --transform-y -0.7 --font-size 8
 ```
 
 ## Image example
 
-Scale an image to 50 % and place it in the top-right corner:
+Scale an image to 50 % and stick it to the top-right:
 
 ```bash
 cutcli images add "$DRAFT_ID" --image-infos '[
@@ -56,28 +56,28 @@ cutcli images add "$DRAFT_ID" --image-infos '[
 ]'
 ```
 
-## Scale & rotation
+## Scale and rotation
 
 | Field | Meaning | Default |
 |---|---|---|
-| `scaleX` | X scale, 1.0 = original | 1.0 |
-| `scaleY` | Y scale | 1.0 |
-| `rotation` | Clockwise rotation in degrees | 0 |
+| `scaleX` | Scale on X axis, 1.0 = original | 1.0 |
+| `scaleY` | Scale on Y axis | 1.0 |
+| `rotation` | Clockwise rotation, in degrees | 0 |
 
-> For uniform scaling, set `scaleX` and `scaleY` to the same value.
+> For uniform scale set X and Y to the same value.
 
-## Different canvas sizes
+## Canvases of different ratios
 
-Normalized coordinates are resolution-independent:
+Normalized coordinates are independent of resolution:
 
-- On a 1080×1920 portrait canvas, `(0, -0.8)` is bottom-center
-- On a 1920×1080 landscape canvas, `(0, -0.8)` is also bottom-center
+- On a 1080×1920 (portrait) canvas, `(0, -0.8)` = bottom-center
+- On a 1920×1080 (landscape) canvas, `(0, -0.8)` = bottom-center too
 
-But **pixel sizes** (`width` / `height`) need to be sized for your canvas — cutcli doesn't auto-rescale them.
+But pixel sizes (`width` / `height`) you must scale yourself; cutcli won't auto-fit.
 
 ## Position keyframes
 
-Keyframe `position_x` / `position_y` use the same normalized scale:
+Keyframe properties `position_x` / `position_y` use the same normalized coordinates:
 
 ```bash
 cutcli keyframes add "$DRAFT_ID" --keyframes '[
@@ -86,20 +86,20 @@ cutcli keyframes add "$DRAFT_ID" --keyframes '[
 ]'
 ```
 
-Effect: the image slides from the left to the right of the screen over 2 s.
+Effect: the image slides from the left edge to the right edge over 2 seconds.
 
-## Mapping to CapCut UI's pixel position
+## Cross-reference: CapCut UI "position"
 
-CapCut's UI shows positions in **pixels** (origin = top-left of canvas). Conversion:
+CapCut's UI shows position in **pixel coordinates** with origin at the canvas top-left. Conversion:
 
 ```text
 ui_x = (transformX + 1) / 2 * canvasWidth
-ui_y = (1 - transformY) / 2 * canvasHeight    ← Y is inverted
+ui_y = (1 - transformY) / 2 * canvasHeight    ← Y flipped
 ```
 
-Example: on a 1080×1920 canvas, `transformX=0, transformY=-0.7` corresponds to roughly `(540, 1632)` in the CapCut UI.
+Example: 1080×1920 canvas, cutcli's `(transformX=0, transformY=-0.7)` ≈ CapCut UI `(540, 1632)`.
 
-## Next
+## What's next
 
-- [Keyframes deep dive](/reference/keyframes)
+- [Keyframes detail](/reference/keyframes)
 - [Caption parameter reference](/reference/captions)

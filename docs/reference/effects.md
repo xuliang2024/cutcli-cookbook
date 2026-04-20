@@ -1,6 +1,6 @@
-# Effects
+# effects
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> Stub — full reference will be filled in by the sync script (W2).
 
 ## Commands
 
@@ -12,9 +12,9 @@ cutcli query effects --action search --keyword <kw>
 
 ## Main fields
 
-| Field | Type | Required | Description |
+| Field | Type | Required | Notes |
 |---|---|---|---|
-| `effectId` | string | yes | Effect ID (look it up via `query`) |
+| `effectId` | string | yes | Effect ID (look up via `query`) |
 | `start` | number | yes | Start time (μs) |
 | `end` | number | yes | End time (μs) |
 | `segmentId` | string | no | Apply to a specific segment |

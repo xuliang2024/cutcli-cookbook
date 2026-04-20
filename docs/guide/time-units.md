@@ -1,14 +1,14 @@
 # Time units (microseconds)
 
-Every time-related parameter in cutcli is in **microseconds (μs)** — captions, images, audios, keyframes, the lot.
+**Every time field in cutcli is microseconds (μs)** — captions, images, audios, keyframes, transitions, animations.
 
-## Conversion
+## The conversion
 
 ```text
 1 second = 1,000,000 microseconds
 ```
 
-| Desired duration | Value |
+| Wanted duration | Write |
 |---|---|
 | 0.1 s | `100000` |
 | 0.5 s | `500000` |
@@ -17,30 +17,30 @@ Every time-related parameter in cutcli is in **microseconds (μs)** — captions
 | 10 s | `10000000` |
 | 1 min | `60000000` |
 
-## Why microseconds?
+## Why microseconds
 
-- Matches CapCut's internal storage format with no precision loss
-- Keyframes / transitions / animations stay sample-accurate
-- No floating-point drift across platforms
+- Matches CapCut's internal storage format — no precision loss
+- Keyframes / transitions / animations can be controlled to the microsecond
+- Cross-platform safe, no float rounding
 
-## Understanding `start` and `end`
+## Reading start / end
 
 ```text
-Timeline →
+timeline →
 0           3,000,000           6,000,000        (microseconds)
-[ caption 1 ][   caption 2     ]
+[caption A  ][   caption B    ]
 start=0    end=3M  start=3M    end=6M
 ```
 
-`start` is when the segment begins on the **global timeline**; `end` is when it stops. Their difference is the segment duration.
+`start` is when the segment begins on the **overall timeline**; `end` is when it ends. The duration is `end - start`.
 
-::: warning No overlap on the same track
-Within the same caption / video / audio track, the `start` of the next segment must be ≥ the previous segment's `end`. Overlapping segments confuse CapCut.
+::: warning Don't overlap inside a single track
+Within one caption / video / audio track, neighboring segments must satisfy `start ≥ previous end`. Otherwise CapCut will render the timeline incorrectly.
 :::
 
-## Handy helpers
+## Helpful shell snippets
 
-Convert seconds to microseconds in bash:
+Convert seconds to microseconds:
 
 ```bash
 to_us() { echo $(( $1 * 1000000 )); }
@@ -50,7 +50,7 @@ END=$(to_us 3)          # 3000000
 echo "Caption from $START to $END"
 ```
 
-Convert decimals like `3.5` (3 s 500 ms):
+Decimal seconds (e.g. "3.5 s"):
 
 ```bash
 to_us_decimal() { python3 -c "print(int(float('$1') * 1000000))"; }
@@ -61,8 +61,8 @@ to_us_decimal 3.5    # 3500000
 
 | Symptom | Likely cause |
 |---|---|
-| Caption flashes for one frame | Wrote ms by mistake: `{"start":0,"end":3000}` should be `3000000` |
-| Keyframe animation finishes too fast | Same μs / ms confusion — keyframe `offset` is also in μs |
+| Caption flashes for one frame | You wrote ms: `{"start":0,"end":3000}` should be `3000000` |
+| Keyframe animation is way too fast | Same ms / μs confusion. Keyframe `offset` is also μs |
 | Entrance animation longer than the segment | `inAnimationDuration` + `outAnimationDuration` must be ≤ `end - start` |
 
 ## More

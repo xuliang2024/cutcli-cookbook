@@ -1,6 +1,6 @@
-# Stickers
+# stickers
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> Stub — full reference will be filled in by the sync script (W2).
 
 ## Commands
 
@@ -10,11 +10,11 @@ cutcli sticker list <draftId>
 cutcli query stickers --action search --keyword <kw>
 ```
 
-## Main parameters
+## Main flags
 
-| Option | Description |
+| Flag | Notes |
 |---|---|
-| `--sticker-id` | Sticker ID (look it up via `cutcli query stickers`) |
+| `--sticker-id` | Sticker ID (look up via `cutcli query stickers`) |
 | `--start <μs>` | Start time (μs) |
 | `--end <μs>` | End time (μs) |
-| `--scale <n>` | Scale factor |
+| `--scale <n>` | Scale ratio |

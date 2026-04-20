@@ -1,31 +1,31 @@
 # Build your first draft in 30 minutes
 
-After this page you'll be able to:
+After this page you can:
 
-- Create your first CapCut / Jianying draft
-- Add a caption, an image, and a piece of background music
-- Animate a zoom with keyframes
-- Package and share the draft with someone else
+- Create your first CapCut/Jianying draft
+- Add a caption, an image, and a music track
+- Animate scale with a keyframe
+- Pack the draft and share it with someone else
 
-No code required — just `cutcli` commands.
+No code required, just `cutcli` commands.
 
-## Prerequisites
+## Prep
 
-Confirm cutcli is installed:
+Make sure cutcli is installed:
 
 ```bash
 cutcli --version
 ```
 
-If this errors out, see [Installation](./installation.md).
+If that fails, see [Installation](./installation.md).
 
-## Step 1: Create the draft
+## Step 1 · Create a draft
 
 ```bash
 cutcli draft create --width 1080 --height 1920
 ```
 
-Output looks like:
+You get something like:
 
 ```json
 {
@@ -34,21 +34,21 @@ Output looks like:
 }
 ```
 
-Copy the `draftId`; every subsequent command needs it. Save it as an env var for convenience:
+Copy the `draftId`. Every following command uses it. Save it as an env var for convenience:
 
 ```bash
 DRAFT_ID="a1b2c3d4-e5f6-7890-abcd-1234567890ab"
 ```
 
-::: tip One-liner: capture draftId
+::: tip One-liner to capture draftId
 ```bash
 DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
 ```
 :::
 
-Open CapCut / Jianying and you'll see a new empty draft in the list.
+Open CapCut. A new empty draft should now show in the draft list.
 
-## Step 2: Add a caption
+## Step 2 · Add a caption
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions '[
@@ -57,13 +57,12 @@ cutcli captions add "$DRAFT_ID" --captions '[
 ]' --font-size 8 --bold --text-color "#FFFFFF"
 ```
 
-Notes:
+Things to know:
 
-- Time is in **microseconds**: `3000000` = 3 s, `500000` = 0.5 s. See [Time units](./time-units.md).
-- `inAnimation` is the entrance animation name. Run `cutcli query text-animations --type in --pretty` to list every option.
-- Animation names are Chinese strings shipped with CapCut (`渐显` = fade-in, `轻微放大` = subtle zoom, etc.). They work in every locale.
+- Time is **microseconds**: `3000000` = 3 s, `500000` = 0.5 s. See [Time units](./time-units.md)
+- `inAnimation` is the entrance animation name. List options with `cutcli query text-animations --type in --pretty`. The names are Chinese strings (CapCut's native naming, e.g. `渐显` = "fade in")
 
-## Step 3: Add a background image
+## Step 3 · Add a background image
 
 ```bash
 cutcli images add "$DRAFT_ID" --image-infos '[
@@ -79,9 +78,9 @@ cutcli images add "$DRAFT_ID" --image-infos '[
 ]'
 ```
 
-cutcli downloads the image into the draft's `resources/` folder, so the draft works offline once opened.
+cutcli auto-downloads the image into the draft's `resources/` folder, so CapCut works offline once opened.
 
-## Step 4: Add background music
+## Step 4 · Add background music
 
 ```bash
 cutcli audios add "$DRAFT_ID" --audio-infos '[
@@ -95,12 +94,12 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 ]'
 ```
 
-## Step 5: Animate a zoom with keyframes
+## Step 5 · Add a keyframe scale
 
-First grab the image's `segmentId` with `cutcli images list "$DRAFT_ID"`, then:
+First grab the segmentId of that image with `cutcli images list "$DRAFT_ID"`, then:
 
 ```bash
-SEG_ID="<the segmentId you just listed>"
+SEG_ID="<the segmentId you saw above>"
 
 cutcli keyframes add "$DRAFT_ID" --keyframes "[
   {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_x\",\"offset\":0,\"value\":1.0},
@@ -110,9 +109,9 @@ cutcli keyframes add "$DRAFT_ID" --keyframes "[
 ]"
 ```
 
-Refresh the draft inside CapCut (close and reopen) — the background slowly scales from 100 % to 130 % over 5 s.
+Refresh the draft in CapCut (close + reopen) — the background image now slowly zooms from 100 % to 130 % across 5 seconds.
 
-## Step 6: Inspect the result
+## Step 6 · Inspect what you built
 
 ```bash
 cutcli draft info "$DRAFT_ID" --pretty
@@ -135,17 +134,17 @@ You should see:
 }
 ```
 
-## Step 7: Share the draft
+## Step 7 · Share with a friend
 
 ```bash
 cutcli draft upload "$DRAFT_ID"
 ```
 
-The returned `downloadUrl` is a public zip link. The recipient unzips it into their own CapCut drafts directory and opens it directly.
+The returned `downloadUrl` is a public zip link. Your friend downloads, unzips into their own CapCut draft directory, and CapCut opens it directly.
 
-## Full script
+## Putting it all together
 
-Wire all the commands into a single `run.sh`:
+The same flow as one runnable `run.sh`:
 
 ```bash
 #!/usr/bin/env bash
@@ -173,8 +172,8 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 cutcli draft info "$DRAFT_ID" --pretty
 ```
 
-## Next
+## What's next
 
-- More involved [examples](/cookbook/index)
-- More on [keyframes](/reference/keyframes)
-- Drive cutcli from AI tools: [AI integrations](./ai-integration.md)
+- Browse fuller [examples](/cookbook/index)
+- Read more about [keyframes](/reference/keyframes)
+- Let AI write commands for you: [AI tools integration](./ai-integration.md)

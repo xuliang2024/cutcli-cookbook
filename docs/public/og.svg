@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff7a3a"/>
+      <stop offset="100%" stop-color="#ff3a6e"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.98"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.88"/>
+    </linearGradient>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff7a3a"/>
+      <stop offset="100%" stop-color="#ff3a6e"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="8" result="offsetblur"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="1280" height="640" fill="url(#bg)"/>
+
+  <!-- soft decorative circles -->
+  <circle cx="120" cy="560" r="180" fill="#ffffff" opacity="0.06"/>
+  <circle cx="1180" cy="80" r="140" fill="#ffffff" opacity="0.08"/>
+
+  <!-- LEFT: brand block -->
+  <g transform="translate(72,96)">
+    <!-- logo mark -->
+    <g>
+      <rect width="72" height="72" rx="16" fill="#ffffff"/>
+      <path d="M16 22h40v8H16zm0 14h28v8H16zm0 14h40v8H16z" fill="url(#logoGrad)"/>
+    </g>
+    <!-- repo name -->
+    <text x="92" y="32" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" fill="#ffffff" opacity="0.9">github.com/xuliang2024</text>
+    <text x="92" y="62" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="34" font-weight="800" fill="#ffffff">cutcli-cookbook</text>
+
+    <!-- main headline -->
+    <text x="0" y="170" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="60" font-weight="800" fill="#ffffff">CapCut / Jianying</text>
+    <text x="0" y="232" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="60" font-weight="800" fill="#ffffff">Draft CLI Cookbook</text>
+
+    <!-- subtitle -->
+    <text x="0" y="296" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="22" font-weight="400" fill="#ffffff" opacity="0.92">Generate editable video drafts from code,</text>
+    <text x="0" y="326" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="22" font-weight="400" fill="#ffffff" opacity="0.92">Cursor, Claude Code or any MCP agent.</text>
+
+    <!-- keyword chips -->
+    <g transform="translate(0,372)">
+      <g>
+        <rect width="100" height="34" rx="17" fill="#ffffff" opacity="0.18"/>
+        <text x="50" y="22" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">CapCut</text>
+      </g>
+      <g transform="translate(112,0)">
+        <rect width="110" height="34" rx="17" fill="#ffffff" opacity="0.18"/>
+        <text x="55" y="22" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">Jianying</text>
+      </g>
+      <g transform="translate(234,0)">
+        <rect width="92" height="34" rx="17" fill="#ffffff" opacity="0.18"/>
+        <text x="46" y="22" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">Cursor</text>
+      </g>
+      <g transform="translate(338,0)">
+        <rect width="138" height="34" rx="17" fill="#ffffff" opacity="0.18"/>
+        <text x="69" y="22" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">Claude Code</text>
+      </g>
+      <g transform="translate(488,0)">
+        <rect width="68" height="34" rx="17" fill="#ffffff" opacity="0.18"/>
+        <text x="34" y="22" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">MCP</text>
+      </g>
+    </g>
+
+    <!-- bottom tag line -->
+    <text x="0" y="442" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#ffffff" opacity="0.85">$ curl -s https://cutcli.com/cli | bash</text>
+  </g>
+
+  <!-- RIGHT: terminal-style card -->
+  <g transform="translate(740,124)" filter="url(#shadow)">
+    <rect width="468" height="392" rx="20" fill="url(#card)"/>
+    <!-- title bar dots -->
+    <g transform="translate(20,22)">
+      <circle cx="0" cy="0" r="6" fill="#ff5f57"/>
+      <circle cx="20" cy="0" r="6" fill="#febc2e"/>
+      <circle cx="40" cy="0" r="6" fill="#28c840"/>
+    </g>
+    <text x="234" y="26" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#666" text-anchor="middle">cutcli  capcut.draft</text>
+    <line x1="0" y1="48" x2="468" y2="48" stroke="#000" stroke-opacity="0.06"/>
+
+    <!-- terminal lines -->
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">
+      <text x="22" y="86" fill="#ff3a6e">$</text>
+      <text x="46" y="86" fill="#1a1a1a">cutcli draft create my-video</text>
+
+      <text x="22" y="118" fill="#ff3a6e">$</text>
+      <text x="46" y="118" fill="#1a1a1a">cutcli captions add @lines.json</text>
+
+      <text x="22" y="150" fill="#ff3a6e">$</text>
+      <text x="46" y="150" fill="#1a1a1a">cutcli images add cover.jpg \</text>
+      <text x="46" y="170" fill="#1a1a1a">    --duration 3000000</text>
+
+      <text x="22" y="202" fill="#ff3a6e">$</text>
+      <text x="46" y="202" fill="#1a1a1a">cutcli audios add bgm.mp3</text>
+
+      <text x="22" y="234" fill="#ff3a6e">$</text>
+      <text x="46" y="234" fill="#1a1a1a">cutcli draft easy --by-audio</text>
+
+      <text x="22" y="282" fill="#888">> draft saved to ~/JianyingPro/Drafts</text>
+      <text x="22" y="304" fill="#888">> open CapCut  ready to edit</text>
+    </g>
+
+    <!-- progress bars hint -->
+    <rect x="22" y="332" width="380" height="10" rx="5" fill="#ff5a36" opacity="0.85"/>
+    <rect x="22" y="350" width="240" height="10" rx="5" fill="#ff3a6e" opacity="0.7"/>
+  </g>
+
+  <!-- footer URL -->
+  <text x="640" y="600" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="18" font-weight="500" fill="#ffffff" text-anchor="middle" opacity="0.9">docs.cutcli.com  /  open-source examples / JSON templates / AI prompts</text>
+</svg>

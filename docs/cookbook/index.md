@@ -14,22 +14,22 @@ Each example is a **fully runnable** script with `run.sh`, JSON data, screenshot
 
 ## Scenario tutorials
 
-Walk-throughs organized by use case:
+Step-by-step write-ups grouped by scenario:
 
 - [Make a vlog](./make-a-vlog.md)
-- [Product promo (30 s)](./product-promo.md)
+- [Product promo (30s)](./product-promo.md)
 - [Knowledge science card](./knowledge-card.md)
 - [TikTok-style short video](./tiktok-style.md)
 
-## Submit your own example
+## Submit your example
 
-Open a PR! The flow is in [CONTRIBUTING.md](https://github.com/xuliang2024/cutcli-cookbook/blob/main/CONTRIBUTING.md).
+Pull requests welcome. Workflow in [CONTRIBUTING.md](https://github.com/xuliang2024/cutcli-cookbook/blob/main/CONTRIBUTING.md).
 
-The fastest path:
+The shortest path:
 
 ```bash
 git clone https://github.com/xuliang2024/cutcli-cookbook.git
 cd cutcli-cookbook
 node scripts/new-example.mjs my-cool-case
-# Edit examples/99-community/<handle>/my-cool-case/run.sh
+# Edit examples/99-community/<your-handle>/my-cool-case/run.sh
 ```

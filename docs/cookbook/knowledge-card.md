@@ -1,6 +1,6 @@
 # Knowledge science card
 
-The "3 minutes to understand X" portrait video format. Priorities: **legible captions, steady pacing, calm visuals**.
+The "3 minutes to learn X" portrait knowledge video. Three principles: **legible captions, steady pacing, visuals that don't compete**.
 
 Full code: [`examples/20-knowledge-science-card`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card).
 
@@ -8,15 +8,15 @@ Full code: [`examples/20-knowledge-science-card`](https://github.com/xuliang2024
 
 | Time | Content |
 |---|---|
-| 0-2 s | Title "3 minutes to understand X" |
-| 2-12 s | Point 1: one sentence + image + Ken Burns |
-| 12-30 s | Point 2 |
-| 30-50 s | Point 3 |
-| 50-60 s | Wrap-up + CTA |
+| 0-2s | Title "3 minutes to learn: X" |
+| 2-12s | Point 1: one sentence + image + Ken Burns |
+| 12-30s | Point 2 |
+| 30-50s | Point 3 |
+| 50-60s | Recap + CTA |
 
-## Caption background card (the signature look)
+## The signature visual: caption background card
 
-The signature visual of knowledge cards is the **rounded translucent black caption card**. cutcli covers it in one line:
+The defining look for educational portrait video is the **semi-transparent black rounded caption card**. cutcli does it in one CLI flag set:
 
 ```bash
 cutcli captions add "$DRAFT_ID" --captions @captions.json \
@@ -25,16 +25,16 @@ cutcli captions add "$DRAFT_ID" --captions @captions.json \
   --transform-y -0.6
 ```
 
-| Parameter | Meaning |
+| Flag | Meaning |
 |---|---|
 | `--bg-style 1` | Enable background fill (0 = none) |
 | `--bg-color "#000000"` | Background color |
-| `--bg-alpha 0.55` | Background transparency (0-1) |
+| `--bg-alpha 0.55` | Alpha (0-1) |
 | `--bg-round 8` | Corner radius |
 
-## Auto-Ken-Burns every image
+## Auto Ken Burns on every image
 
-Every image gets its own zoom for visual energy. Build the keyframes JSON in bash:
+Each image gets its own zoom. Build the keyframes JSON dynamically in bash:
 
 ```bash
 SEGMENTS=$(cutcli images list "$DRAFT_ID" | jq -r '.[].segmentId')
@@ -54,7 +54,7 @@ cutcli keyframes add "$DRAFT_ID" --keyframes "$KFS"
 
 ## Adding voice-over
 
-Knowledge videos usually have a real voice-over or AI narration:
+Knowledge videos almost always have a real voice-over or AI TTS:
 
 ```bash
 cutcli audios add "$DRAFT_ID" --audio-infos '[
@@ -63,7 +63,7 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 ]'
 ```
 
-BGM goes down to 0.25 to let the narration lead.
+BGM down to 0.25 so the narration owns the mix.
 
 ## Full code
 

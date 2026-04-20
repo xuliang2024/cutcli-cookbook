@@ -174,6 +174,6 @@ cutcli draft info "$DRAFT_ID" --pretty
 
 ## 接下来
 
-- 看更复杂的 [案例](/cookbook/index)
-- 学习 [关键帧的更多用法](/reference/keyframes)
+- 看更复杂的 [案例](/zh/cookbook/index)
+- 学习 [关键帧的更多用法](/zh/reference/keyframes)
 - 用 AI 帮你写命令：[AI 工具集成](./ai-integration.md)

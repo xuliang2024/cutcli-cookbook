@@ -1,6 +1,6 @@
-# Keyframes
+# keyframes
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> Stub — full reference will be filled in by the sync script (W2).
 
 ## Commands
 
@@ -11,18 +11,18 @@ cutcli keyframes list <draftId> --segment-id <id>
 
 ## Fields
 
-| Field | Type | Required | Description |
+| Field | Type | Required | Notes |
 |---|---|---|---|
 | `segmentId` | string | yes | Owning segment ID |
 | `property` | string | yes | Property name |
-| `offset` | number | yes | Offset within the segment (μs) |
+| `offset` | number | yes | Time offset within segment (μs) |
 | `value` | number | yes | Property value |
 
 ## Supported properties
 
 `position_x`, `position_y`, `scale_x`, `scale_y`, `rotation`, `opacity`
 
-## Example: zoom to 1.5× over 3 seconds
+## Example: zoom to 1.5x over 3 seconds
 
 ```bash
 cutcli keyframes add "$DRAFT_ID" --keyframes '[

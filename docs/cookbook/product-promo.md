@@ -1,25 +1,25 @@
-# Product promo (30 seconds)
+# Product promo (30s)
 
-A 30-second product promo template for ecommerce homepages, detail-page banners, and TikTok ads.
+The 30-second product promo template you'll see on e-commerce home pages, detail page banners, and TikTok ads.
 
 Full code: [`examples/10-product-promo-30s`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s).
 
-## The 30-second structure
+## Golden 30 seconds
 
 ```text
 0────3────────12────────24────30  (seconds)
-[title][3 product shots][3 selling pts][CTA]
+[title][product loop x3][benefits x3][CTA]
 ```
 
 | Time | Content |
 |---|---|
-| 0-3 s | Product name title, fade-in |
-| 3-12 s | 3 product shots, crossfade transitions |
-| 12-24 s | 3 selling-point captions, 4 s each, keyword highlight |
-| 24-30 s | "Learn more → cutcli.com" CTA, bounce-in |
-| Throughout | BGM at volume 0.5 |
+| 0-3s | Product name title, fade in |
+| 3-12s | 3 product images cycling, dissolve transitions |
+| 12-24s | 3 benefit captions, 4 s each, keyword highlight |
+| 24-30s | "Learn more → cutcli.com" CTA, bouncy entrance |
+| Whole | BGM at 0.5 volume |
 
-## Command sketch
+## Command set
 
 ```bash
 DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
@@ -33,27 +33,27 @@ cutcli audios   add "$DRAFT_ID" --audio-infos @audio.json
 
 ## Why these parameters
 
-| Parameter | Choice | Reason |
-|---|---|---|
-| Black border + white text | `--border-color "#000" --border-width 1` | Stays legible on any background |
-| Highlight colors yellow + pink | `#FFD600` / `#FF3A6E` | High contrast, only 1-2 brand colors |
-| Caption `--transform-y -0.55` | Below center but above the bottom | Avoids TikTok's bottom UI |
-| BGM at 0.5 | Volume | Leaves room for voice-over |
-| 4 s per selling-point caption | `start`/`end` 4 M μs apart | Slower than TikTok pace, easier to read |
+| Choice | Rationale |
+|---|---|
+| Black 1px border + white text | Readable on any background |
+| Highlight `#FFD600` and `#FF3A6E` | High-contrast accent, only 1-2 colors across the whole video |
+| Caption `--transform-y -0.55` | Slightly above bottom — avoids TikTok UI |
+| BGM 0.5 | Leaves headroom if you add VO in post |
+| 4 s per benefit caption | Slower than TikTok pacing — viewer has time to absorb |
 
 ## Variants
 
-### 60-second cut
+### 60 s edition
 
-Double every duration, add 2-3 more shots and selling points. Same structure.
+Double every `start` / `end` value. Add 2-3 more images and 2-3 more benefits. Structure unchanged.
 
-### Landscape 16:9 (Bilibili / YouTube)
+### 16:9 landscape (Bilibili / YouTube)
 
 ```bash
 cutcli draft create --width 1920 --height 1080
 ```
 
-Move captions to `--transform-y -0.4` (a bit lower for landscape).
+Move captions to `--transform-y -0.4` (landscape captions sit further down).
 
 ### Add a unifying filter
 

@@ -14,7 +14,7 @@
 
 ### Cursor / Claude Code
 
-跑一次 `cutcli setup cursor`（或 `claude`）即可，详见 [AI 工具集成](/guide/ai-integration)。
+跑一次 `cutcli setup cursor`（或 `claude`）即可，详见 [AI 工具集成](/zh/guide/ai-integration)。
 
 ### ChatGPT / Gemini / 其他
 

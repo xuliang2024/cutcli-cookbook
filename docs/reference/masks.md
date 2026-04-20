@@ -1,6 +1,6 @@
-# Masks
+# masks
 
-> Placeholder. The full parameter table will be filled in by the sync script in W2.
+> Stub — full reference will be filled in by the sync script (W2).
 
 ## Commands
 
@@ -9,13 +9,13 @@ cutcli masks add <draftId> --segment-ids <ids> [--name <type>] [options]
 cutcli masks list <draftId>
 ```
 
-## Main parameters
+## Main flags
 
-| Option | Description |
+| Flag | Notes |
 |---|---|
 | `--segment-ids` | Comma-separated segment IDs |
-| `--name` | Mask shape: linear / mirror / circle / rectangle / star / heart |
+| `--name` | Mask type: 线性 / 镜面 / 圆形 / 矩形 / 星形 / 爱心 (linear / mirror / circle / rectangle / star / heart) |
 | `--width` / `--height` | Size |
-| `--feather` | Feather amount |
-| `--rotation` | Rotation angle |
+| `--feather` | Feather radius |
+| `--rotation` | Rotation (deg) |
 | `--invert` | Invert the mask |

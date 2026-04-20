@@ -27,26 +27,26 @@ The script will:
 
 ## Alternative: npm
 
-If you already have Node.js (≥ 18), install via npm:
+If you already have Node.js (≥ 18), you can install the npm package:
 
 ```bash
 npm install -g cut_cli
 ```
 
-> Note the naming: the npm package is `cut_cli` (with underscore), and the command is `cutcli` (no space, no underscore).
+> Note the naming: the npm package is `cut_cli` (with underscore). The command itself is `cutcli` (no space, no underscore).
 
-## Verify installation
+## Verify
 
 ```bash
 cutcli --version
 cutcli --help
 ```
 
-The version number and command list confirm a successful install.
+If both print output, you're good.
 
-## Drafts directory
+## Configure the draft directory
 
-By default, cutcli writes drafts to the standard CapCut / Jianying drafts folder:
+By default cutcli writes drafts into the standard CapCut/Jianying draft directory:
 
 | OS | Default path |
 |---|---|
@@ -54,22 +54,22 @@ By default, cutcli writes drafts to the standard CapCut / Jianying drafts folder
 | Windows | `%USERPROFILE%\Movies\CapCut\User Data\Projects\com.lveditor.draft\` |
 | Linux | `~/.config/CapCut/Projects/com.lveditor.draft/` |
 
-That means **the draft you generate shows up immediately when you open the desktop app**.
+Which means **CapCut sees the new draft as soon as you open the app**.
 
-### Customize the drafts directory
+### Custom draft directory
 
-If you want to write drafts elsewhere (e.g. an external drive):
+If you want drafts stored elsewhere (e.g. an external drive):
 
 ```bash
-# Persist the change
+# Persistent
 cutcli config set-dir ~/Desktop/my-drafts
 
-# Or set per-process via env var
+# One-shot via env var (current process only)
 export CUT_DRAFTS_DIR=~/Desktop/my-drafts
 cutcli draft create
 ```
 
-Show the current configuration:
+Inspect the current config:
 
 ```bash
 cutcli config show --pretty
@@ -93,31 +93,31 @@ npm install -g cut_cli@latest
 
 ```bash
 sudo rm /usr/local/bin/cutcli
-# If installed via npm
+# Or for the npm install
 npm uninstall -g cut_cli
 ```
 
-## Next steps
+## What's next
 
 - [Build your first draft in 30 minutes](./first-draft.md)
 - [Time units (microseconds)](./time-units.md)
-- [AI integrations (Cursor / Claude / OpenClaw)](./ai-integration.md)
+- [AI tools integration (Cursor / Claude / OpenClaw)](./ai-integration.md)
 
 ## Troubleshooting
 
 ### `curl: command not found`
 
-Windows users — try PowerShell:
+On Windows use PowerShell:
 
 ```powershell
 iwr https://cutcli.com/cli -UseBasicParsing | iex
 ```
 
-Or run the install script in Git Bash.
+Or run the script in Git Bash.
 
 ### `command not found: cutcli`
 
-Re-open your terminal, or add the install dir to PATH manually:
+Re-open your terminal, or add it to PATH manually:
 
 ```bash
 echo 'export PATH=$PATH:/usr/local/bin' >> ~/.zshrc
@@ -126,4 +126,4 @@ source ~/.zshrc
 
 ### CapCut can't see the generated draft
 
-Make sure `cutcli config show` returns the same directory as CapCut's "Settings → Draft location". If they differ, run `cutcli config set-dir <path-from-capcut>` to align them.
+Make sure the path printed by `cutcli config show` matches the "Draft location" in CapCut's settings. If not, fix it with `cutcli config set-dir <path-shown-by-capcut>`.
