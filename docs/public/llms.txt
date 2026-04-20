@@ -54,4 +54,5 @@ Every example is a self-contained folder with `run.sh` + bilingual README + `met
 ## Optional
 
 - [简体中文文档站](https://docs.cutcli.com/zh/): the Chinese mirror of every page above.
+- [Chinese llms.txt](https://docs.cutcli.com/zh/llms.txt) · [Chinese llms-full.txt](https://docs.cutcli.com/zh/llms-full.txt): same content as this file, in 简体中文.
 - [Issues & Discussions](https://github.com/xuliang2024/cutcli-cookbook/issues): bug reports, feature requests, community Q&A.

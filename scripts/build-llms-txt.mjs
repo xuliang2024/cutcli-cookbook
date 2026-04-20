@@ -2,19 +2,20 @@
 /**
  * build-llms-txt.mjs
  *
- * Aggregates the project's English documentation into a single text file:
- *   docs/public/llms-full.txt
+ * Aggregates the project's English + Chinese documentation into two
+ * single-file snapshots that AI search engines can ingest in one shot:
  *
- * Following the llmstxt.org "llms-full.txt" pattern: one pre-flattened file
- * that AI search engines (ChatGPT, Claude, Perplexity, Gemini, …) can ingest
- * in one shot, instead of crawling the docs site page by page.
+ *   docs/public/llms-full.txt        (English)
+ *   docs/public/zh/llms-full.txt     (简体中文)
  *
- * Sources (in order):
- *   - README.md
- *   - docs/guide/<page>.md
- *   - examples/<id>/README.md
- *   - prompts/system/cutcli-expert.md
- *   - CHANGELOG.md
+ * Pattern follows llmstxt.org's "llms-full.txt" convention.
+ *
+ * Sources per language (in order):
+ *   - README
+ *   - docs/<locale>/guide/<page>.md
+ *   - examples/<id>/README<.zh>.md
+ *   - prompts/system/cutcli-expert<.zh>.md
+ *   - CHANGELOG
  *
  * Run via:  npm run build:llms
  * (auto-invoked by `npm run docs:build`)
@@ -29,30 +30,49 @@ const root = path.resolve(__dir, '..');
 
 const REPO = 'https://github.com/xuliang2024/cutcli-cookbook';
 const DOCS = 'https://docs.cutcli.com';
-const OUT = path.join(root, 'docs/public/llms-full.txt');
-
-const sources = [
-  { rel: 'README.md', url: `${REPO}/blob/main/README.md` },
-  { rel: 'docs/guide/installation.md', url: `${DOCS}/guide/installation` },
-  { rel: 'docs/guide/first-draft.md', url: `${DOCS}/guide/first-draft` },
-  { rel: 'docs/guide/time-units.md', url: `${DOCS}/guide/time-units` },
-  { rel: 'docs/guide/coordinate-system.md', url: `${DOCS}/guide/coordinate-system` },
-  { rel: 'docs/guide/ai-integration.md', url: `${DOCS}/guide/ai-integration` },
-  { rel: 'examples/01-hello-caption/README.md', url: `${REPO}/blob/main/examples/01-hello-caption/README.md` },
-  { rel: 'examples/02-image-slideshow-bgm/README.md', url: `${REPO}/blob/main/examples/02-image-slideshow-bgm/README.md` },
-  { rel: 'examples/03-tiktok-keyword-highlight/README.md', url: `${REPO}/blob/main/examples/03-tiktok-keyword-highlight/README.md` },
-  { rel: 'examples/04-easy-by-audio/README.md', url: `${REPO}/blob/main/examples/04-easy-by-audio/README.md` },
-  { rel: 'examples/05-keyframe-zoom-in/README.md', url: `${REPO}/blob/main/examples/05-keyframe-zoom-in/README.md` },
-  { rel: 'examples/10-product-promo-30s/README.md', url: `${REPO}/blob/main/examples/10-product-promo-30s/README.md` },
-  { rel: 'examples/20-knowledge-science-card/README.md', url: `${REPO}/blob/main/examples/20-knowledge-science-card/README.md` },
-  { rel: 'examples/30-vlog-day-in-life/README.md', url: `${REPO}/blob/main/examples/30-vlog-day-in-life/README.md` },
-  { rel: 'prompts/system/cutcli-expert.md', url: `${REPO}/blob/main/prompts/system/cutcli-expert.md` },
-  { rel: 'CHANGELOG.md', url: `${REPO}/blob/main/CHANGELOG.md` },
-];
 
 const today = new Date().toISOString().slice(0, 10);
 
-const header = `# cutcli — full documentation snapshot for AI ingestion
+const exampleIds = [
+  '01-hello-caption',
+  '02-image-slideshow-bgm',
+  '03-tiktok-keyword-highlight',
+  '04-easy-by-audio',
+  '05-keyframe-zoom-in',
+  '10-product-promo-30s',
+  '20-knowledge-science-card',
+  '30-vlog-day-in-life',
+];
+
+const guidePages = [
+  'installation',
+  'first-draft',
+  'time-units',
+  'coordinate-system',
+  'ai-integration',
+];
+
+function buildSources({ readme, guideDir, exampleSuffix, expertFile, changelog, guideUrlPrefix, exampleUrlPrefix }) {
+  return [
+    { rel: readme, url: `${REPO}/blob/main/${readme}` },
+    ...guidePages.map((page) => ({
+      rel: `${guideDir}/${page}.md`,
+      url: `${DOCS}${guideUrlPrefix}/${page}`,
+    })),
+    ...exampleIds.map((id) => ({
+      rel: `examples/${id}/README${exampleSuffix}.md`,
+      url: `${REPO}/blob/main/examples/${id}/README${exampleSuffix}.md`,
+    })),
+    { rel: expertFile, url: `${REPO}/blob/main/${expertFile}` },
+    { rel: changelog, url: `${REPO}/blob/main/${changelog}` },
+  ];
+}
+
+const targets = [
+  {
+    lang: 'en',
+    out: 'docs/public/llms-full.txt',
+    header: `# cutcli — full documentation snapshot for AI ingestion
 
 > Pre-aggregated, single-file snapshot of the cutcli English documentation.
 > cutcli turns shell commands or JSON into a standard CapCut / Jianying (剪映)
@@ -66,7 +86,45 @@ const header = `# cutcli — full documentation snapshot for AI ingestion
 > Install cutcli: curl -s https://cutcli.com/cli | bash
 
 ---
-`;
+`,
+    sources: buildSources({
+      readme: 'README.md',
+      guideDir: 'docs/guide',
+      exampleSuffix: '',
+      expertFile: 'prompts/system/cutcli-expert.md',
+      changelog: 'CHANGELOG.md',
+      guideUrlPrefix: '/guide',
+      exampleUrlPrefix: '',
+    }),
+  },
+  {
+    lang: 'zh',
+    out: 'docs/public/zh/llms-full.txt',
+    header: `# cutcli — AI 抓取友好的全文文档快照（简体中文）
+
+> 这是 cutcli 中文文档的预聚合单文件快照。
+> cutcli 是一个命令行工具，把 shell 命令或 JSON 直接转成剪映 / CapCut 标准草稿目录，
+> 客户端直接打开即可二次编辑。本文件供 AI 搜索引擎和编码 agent 一次性抓取使用。
+>
+> 生成时间：${today}
+> 仓库：${REPO}
+> 文档站：${DOCS}/zh/
+> 简短索引（llms.txt）：${DOCS}/zh/llms.txt
+> 安装 cutcli：curl -s https://cutcli.com/cli | bash
+
+---
+`,
+    sources: buildSources({
+      readme: 'README.zh.md',
+      guideDir: 'docs/zh/guide',
+      exampleSuffix: '.zh',
+      expertFile: 'prompts/system/cutcli-expert.zh.md',
+      changelog: 'CHANGELOG.zh.md',
+      guideUrlPrefix: '/zh/guide',
+      exampleUrlPrefix: '',
+    }),
+  },
+];
 
 async function readSafely(rel) {
   const abs = path.join(root, rel);
@@ -78,31 +136,38 @@ async function readSafely(rel) {
   }
 }
 
-const chunks = [header];
-let included = 0;
-let totalChars = header.length;
+async function buildOne({ lang, out, header, sources }) {
+  const chunks = [header];
+  let included = 0;
+  let totalChars = header.length;
 
-for (const src of sources) {
-  const body = await readSafely(src.rel);
-  if (body == null) continue;
-  const block = [
-    '',
-    `<!-- ============================================================ -->`,
-    `## File: ${src.rel}`,
-    `Source: ${src.url}`,
-    `<!-- ============================================================ -->`,
-    '',
-    body.trimEnd(),
-    '',
-  ].join('\n');
-  chunks.push(block);
-  included++;
-  totalChars += block.length;
+  for (const src of sources) {
+    const body = await readSafely(src.rel);
+    if (body == null) continue;
+    const block = [
+      '',
+      `<!-- ============================================================ -->`,
+      `## File: ${src.rel}`,
+      `Source: ${src.url}`,
+      `<!-- ============================================================ -->`,
+      '',
+      body.trimEnd(),
+      '',
+    ].join('\n');
+    chunks.push(block);
+    included++;
+    totalChars += block.length;
+  }
+
+  const outAbs = path.join(root, out);
+  await fs.mkdir(path.dirname(outAbs), { recursive: true });
+  await fs.writeFile(outAbs, chunks.join('\n'), 'utf8');
+
+  console.log(
+    `[build-llms-txt] (${lang}) wrote ${out}: ${included} files, ${totalChars.toLocaleString()} chars (~${Math.round(totalChars / 1024)} KB)`,
+  );
 }
 
-await fs.mkdir(path.dirname(OUT), { recursive: true });
-await fs.writeFile(OUT, chunks.join('\n'), 'utf8');
-
-console.log(
-  `[build-llms-txt] wrote ${path.relative(root, OUT)}: ${included} files, ${totalChars.toLocaleString()} chars (~${Math.round(totalChars / 1024)} KB)`,
-);
+for (const target of targets) {
+  await buildOne(target);
+}

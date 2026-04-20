@@ -4,6 +4,93 @@ const sharedSocialLinks: DefaultTheme.SocialLink[] = [
   { icon: 'github', link: 'https://github.com/xuliang2024/cutcli-cookbook' },
 ];
 
+const softwareApplicationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'cutcli',
+  alternateName: ['CapCut draft CLI', 'Jianying draft CLI', '剪映草稿命令行'],
+  applicationCategory: 'DeveloperApplication',
+  applicationSubCategory: 'VideoEditing',
+  operatingSystem: 'macOS, Windows, Linux',
+  description:
+    'cutcli is a single-binary command-line tool that turns shell commands or JSON into a standard CapCut / Jianying (剪映) draft folder. The CapCut / Jianying desktop app opens the draft directly from its draft list — fully editable, with captions, animations, transitions, audio, keyframes, masks and effects intact.',
+  url: 'https://cutcli.com',
+  sameAs: [
+    'https://github.com/xuliang2024/cutcli-cookbook',
+    'https://docs.cutcli.com',
+  ],
+  downloadUrl: 'https://cutcli.com/cli',
+  installUrl: 'https://cutcli.com/cli',
+  softwareVersion: '0.1.0',
+  releaseNotes: 'https://github.com/xuliang2024/cutcli-cookbook/releases/tag/v0.1.0',
+  license: 'https://opensource.org/licenses/MIT',
+  isAccessibleForFree: true,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  author: {
+    '@type': 'Organization',
+    name: 'cutcli',
+    url: 'https://cutcli.com',
+  },
+  featureList: [
+    'Generate CapCut / Jianying drafts from shell commands or JSON',
+    'AI agent integration (Cursor, Claude Code, ChatGPT, Gemini, OpenClaw, MCP)',
+    'Captions, animations, transitions, audio, keyframes, masks, effects',
+    'Cross-platform: macOS, Windows, Linux',
+    'Open source under MIT license',
+  ],
+};
+
+const faqPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is cutcli?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'cutcli is a single-binary command-line tool that turns shell commands or JSON into a standard CapCut / Jianying (剪映) draft folder. Open CapCut on desktop and the draft is already in your draft list — fully editable, with captions, animations, transitions, audio and keyframes intact. Install with: curl -s https://cutcli.com/cli | bash',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I use cutcli with Cursor, Claude Code or an MCP agent?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Run "cutcli setup cursor" (or claude / openclaw / all) to install the cutcli SKILL into your AI tool. The assistant can then call cutcli commands directly. For ChatGPT / Gemini and other models, copy prompts/system/cutcli-expert.md into the model\'s system prompt. Full guide: https://docs.cutcli.com/guide/ai-integration',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does cutcli work with both CapCut (international) and Jianying (剪映 Chinese)?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. The draft format is the same on both apps; cutcli writes drafts that either client can open directly from its draft folder.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How is cutcli different from manually editing CapCut JSON?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Hand-writing CapCut draft JSON means dealing with microsecond timestamps, undocumented enums, normalized 0–1 coordinates and a half-dozen sibling files that must stay in sync. cutcli handles all of that and exposes a stable CLI surface (cutcli draft create, cutcli captions add, cutcli draft easy, …) that survives CapCut version bumps.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Where can I find runnable examples?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The cutcli-cookbook repository at https://github.com/xuliang2024/cutcli-cookbook ships 8 ready-to-run examples under examples/ — one caption with fade-in, image slideshow with BGM, TikTok-style keyword highlighting, audio-driven layout, keyframe zoom, 30-second product promo, knowledge science card, and vlog template.',
+      },
+    },
+  ],
+};
+
 const enThemeConfig: DefaultTheme.Config = {
   nav: [
     { text: 'Guide', link: '/guide/installation' },
@@ -186,6 +273,8 @@ export default defineConfig({
     ['meta', { name: 'twitter:title', content: 'cutcli — CapCut / Jianying draft CLI cookbook' }],
     ['meta', { name: 'twitter:description', content: 'Generate editable CapCut / 剪映 video drafts from code, Cursor, Claude Code or any MCP agent.' }],
     ['meta', { name: 'twitter:image', content: 'https://docs.cutcli.com/og.png' }],
+    ['script', { type: 'application/ld+json' }, JSON.stringify(softwareApplicationLd)],
+    ['script', { type: 'application/ld+json' }, JSON.stringify(faqPageLd)],
   ],
 
   themeConfig: {

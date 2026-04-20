@@ -1,0 +1,1538 @@
+# cutcli — AI 抓取友好的全文文档快照（简体中文）
+
+> 这是 cutcli 中文文档的预聚合单文件快照。
+> cutcli 是一个命令行工具，把 shell 命令或 JSON 直接转成剪映 / CapCut 标准草稿目录，
+> 客户端直接打开即可二次编辑。本文件供 AI 搜索引擎和编码 agent 一次性抓取使用。
+>
+> 生成时间：2026-04-20
+> 仓库：https://github.com/xuliang2024/cutcli-cookbook
+> 文档站：https://docs.cutcli.com/zh/
+> 简短索引（llms.txt）：https://docs.cutcli.com/zh/llms.txt
+> 安装 cutcli：curl -s https://cutcli.com/cli | bash
+
+---
+
+
+<!-- ============================================================ -->
+## File: README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/README.zh.md
+<!-- ============================================================ -->
+
+# cutcli-cookbook
+
+> 为 [cutcli](https://cutcli.com) —— 剪映 / CapCut 草稿命令行工具 —— 准备的开源案例库、JSON 模板、AI 提示词与文档站。让你用代码、Cursor、Claude Code 或任意 MCP agent 生成可二次编辑的视频草稿。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+<p align="center">
+  <a href="https://docs.cutcli.com">
+    <img src="docs/public/og.png" alt="cutcli —— 剪映 / CapCut 草稿 CLI 案例库，支持 Cursor、Claude Code 与 MCP agent" width="100%" />
+  </a>
+</p>
+
+[![docs](https://img.shields.io/badge/docs-docs.cutcli.com-blue)](https://docs.cutcli.com)
+[![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+[![GitHub stars](https://img.shields.io/github/stars/xuliang2024/cutcli-cookbook?style=flat&logo=github)](https://github.com/xuliang2024/cutcli-cookbook/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/xuliang2024/cutcli-cookbook)](https://github.com/xuliang2024/cutcli-cookbook/commits/main)
+[![Made for AI agents](https://img.shields.io/badge/made%20for-Cursor%20·%20Claude%20Code%20·%20MCP-ff5a36)](prompts/)
+
+cutcli 让你**用一行命令生成可被剪映直接打开的标准草稿**。这个仓库收录所有可一键运行的案例、可复用模板、AI 提示词、官方文档源码，欢迎社区贡献。
+
+---
+
+## 30 秒上手
+
+```bash
+# 1. 安装 cutcli
+curl -s https://cutcli.com/cli | bash
+
+# 2. 跑一个最简单的案例
+git clone https://github.com/xuliang2024/cutcli-cookbook.git
+cd cutcli-cookbook/examples/01-hello-caption
+bash run.sh
+
+# 3. 打开剪映，案例草稿已自动出现在草稿列表里
+```
+
+完整入门：<https://docs.cutcli.com/guide/installation>
+
+## 仓库内容
+
+| 目录 | 内容 |
+|---|---|
+| [`examples/`](examples/) | 一键可运行的完整案例（每个含 `run.sh` + `README.md` + `preview.gif`） |
+| [`templates/`](templates/) | 可复用的 JSON 片段（字幕预设、动画预设、滤镜组合） |
+| [`prompts/`](prompts/) | 给 Cursor / Claude / ChatGPT 用的 cutcli 提示词 |
+| [`docs/`](docs/) | 官方文档站源码（VitePress，部署到 docs.cutcli.com） |
+| [`showcase/`](showcase/) | 社区精选作品月刊 |
+| [`worker/`](worker/) | 文档站的 Cloudflare Worker（R2 反向代理 + SPA fallback） |
+
+## P0 案例速览
+
+| 案例 | 演示 | 时长 |
+|---|---|---|
+| [01-hello-caption](examples/01-hello-caption/) | 一行字幕 + 入场动画 | 5 s |
+| [02-image-slideshow-bgm](examples/02-image-slideshow-bgm/) | 3 图轮播 + 转场 + BGM | 9 s |
+| [03-tiktok-keyword-highlight](examples/03-tiktok-keyword-highlight/) | 多条字幕 + 关键词高亮 | 6 s |
+| [04-easy-by-audio](examples/04-easy-by-audio/) | `cutcli draft easy` 按音频铺素材 | 自适应 |
+| [05-keyframe-zoom-in](examples/05-keyframe-zoom-in/) | 图片 + 关键帧缩放 | 5 s |
+
+## 常见问题
+
+### cutcli 是什么？
+
+cutcli 是一个单文件命令行工具，把 shell 命令或 JSON 直接转成**剪映 / CapCut 标准草稿目录**。打开剪映客户端，新草稿已经躺在草稿列表里——字幕、动画、转场、音频、关键帧全都可二次编辑。不是逆向 hack 的草稿格式，也不需要手动改 JSON。
+
+安装：`curl -s https://cutcli.com/cli | bash`
+
+### 这个仓库里有什么？
+
+- [`examples/`](examples/) —— 复制即跑的完整案例（一行字幕、图片轮播、关键词高亮、按音频铺素材、关键帧缩放）
+- [`templates/`](templates/) —— 可复用的字幕 / 动画 / 滤镜 JSON 片段
+- [`prompts/`](prompts/) —— 给 Cursor / Claude Code / ChatGPT / MCP agent 的系统提示词
+- [`docs/`](docs/) —— 文档站源码，部署到 [docs.cutcli.com](https://docs.cutcli.com)
+- [`worker/`](worker/) —— 文档站的 Cloudflare Worker（R2 反向代理 + SPA 路径回退）
+
+### 怎么用 Cursor / Claude Code / MCP 调用 cutcli？
+
+cutcli 就是一个 shell 命令，任何 AI 编程助手都能驱动。我们在 [`prompts/`](prompts/) 提供了开箱即用的系统提示词——丢给你的 agent，然后跟它说「在第 1 秒加一段 3 秒淡入字幕」「把这三张图拼成 9 秒带 BGM 的轮播」即可。Agent 会自动生成 `cutcli ...` 命令，跑完直接得到剪映草稿。完整集成指南见 <https://docs.cutcli.com/zh/guide/ai-integration>。
+
+### 同时支持 CapCut 国际版和剪映国内版吗？
+
+支持。两个客户端共享同一套草稿格式，cutcli 生成的草稿目录两边都能直接打开。
+
+### 和手写剪映草稿 JSON 有什么区别？
+
+手写草稿 JSON 要面对：微秒时间戳、未文档化的枚举值、归一化的 0–1 坐标、好几个必须保持同步的兄弟文件。cutcli 全都帮你处理，并提供一套稳定的 CLI（`cutcli draft create` / `captions add` / `draft easy` …），剪映客户端升级也不需要重写脚本。和「用 FFmpeg 而不是手写 MP4 box」是同一个理由。
+
+## 加入贡献
+
+我们欢迎任何形式的贡献：
+
+- 提一个新案例（最简单，0 配置直接复制目录改）
+- 翻译文档到英文
+- 修一个 bug
+- 在 `showcase/` 投稿你的作品
+
+详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+## 相关链接
+
+- 官网：<https://cutcli.com>
+- 文档：<https://docs.cutcli.com>
+- 安装命令：`curl -s https://cutcli.com/cli | bash`
+- 反馈与讨论：[Issues](https://github.com/xuliang2024/cutcli-cookbook/issues) / [Discussions](https://github.com/xuliang2024/cutcli-cookbook/discussions)
+
+## License
+
+[MIT](LICENSE) © 2026 m007 and cutcli-cookbook contributors
+
+
+<!-- ============================================================ -->
+## File: docs/zh/guide/installation.md
+Source: https://docs.cutcli.com/zh/guide/installation
+<!-- ============================================================ -->
+
+# 安装与配置
+
+cutcli 提供独立二进制（推荐，无需 Node 环境）和 npm 包两种安装方式。
+
+## 推荐：一行脚本安装
+
+```bash
+curl -s https://cutcli.com/cli | bash
+```
+
+这条命令会：
+
+1. 探测你的系统（macOS Intel / Apple Silicon / Linux x86_64 / Linux arm64 / Windows）
+2. 从 CDN 下载对应平台的二进制
+3. 安装到 `/usr/local/bin/cutcli`（或同等用户路径）
+4. 验证 `cutcli --version` 是否能跑
+
+### 平台覆盖
+
+| 系统 | 架构 | 状态 |
+|---|---|---|
+| macOS | Apple Silicon (arm64) | 支持 |
+| macOS | Intel (x86_64) | 支持 |
+| Linux | x86_64 | 支持 |
+| Linux | arm64 | 支持 |
+| Windows | x86_64 | 支持（请用 PowerShell 或 Git Bash） |
+
+## 备选：npm
+
+如果你已经有 Node.js (≥ 18)，也可以装 npm 包：
+
+```bash
+npm install -g cut_cli
+```
+
+> 注意命令名：npm 包名为 `cut_cli`（带下划线），命令名为 `cutcli`（无空格、无下划线）。
+
+## 验证安装
+
+```bash
+cutcli --version
+cutcli --help
+```
+
+输出当前版本号和命令列表说明安装成功。
+
+## 草稿目录配置
+
+cutcli 默认把生成的草稿写到剪映桌面端的标准草稿目录：
+
+| 操作系统 | 默认路径 |
+|---|---|
+| macOS | `~/Movies/CapCut/User Data/Projects/com.lveditor.draft/` |
+| Windows | `%USERPROFILE%\Movies\CapCut\User Data\Projects\com.lveditor.draft\` |
+| Linux | `~/.config/CapCut/Projects/com.lveditor.draft/` |
+
+也就是说**生成完直接打开剪映就能看见**。
+
+### 自定义草稿目录
+
+如果你想把草稿写到别处（例如外接硬盘）：
+
+```bash
+# 一次性设置（永久生效）
+cutcli config set-dir ~/Desktop/my-drafts
+
+# 或临时通过环境变量（仅本次进程）
+export CUT_DRAFTS_DIR=~/Desktop/my-drafts
+cutcli draft create
+```
+
+查看当前配置：
+
+```bash
+cutcli config show --pretty
+```
+
+## 升级到最新版
+
+重新跑安装命令即可：
+
+```bash
+curl -s https://cutcli.com/cli | bash
+```
+
+或用 npm：
+
+```bash
+npm install -g cut_cli@latest
+```
+
+## 卸载
+
+```bash
+sudo rm /usr/local/bin/cutcli
+# npm 安装的话
+npm uninstall -g cut_cli
+```
+
+## 下一步
+
+- [30 分钟做第一个草稿](./first-draft.md)
+- [时间单位（微秒）](./time-units.md)
+- [AI 工具集成（Cursor / Claude / OpenClaw）](./ai-integration.md)
+
+## 故障排查
+
+### `curl: command not found`
+
+Windows 用户请用 PowerShell：
+
+```powershell
+iwr https://cutcli.com/cli -UseBasicParsing | iex
+```
+
+或下载到 Git Bash 中执行。
+
+### `command not found: cutcli`
+
+重新打开终端，或手动加 PATH：
+
+```bash
+echo 'export PATH=$PATH:/usr/local/bin' >> ~/.zshrc
+source ~/.zshrc
+```
+
+### 剪映找不到生成的草稿
+
+确认 `cutcli config show` 输出的目录与剪映「设置 → 草稿位置」一致。如果不一致，用 `cutcli config set-dir <剪映显示的路径>` 修正。
+
+
+<!-- ============================================================ -->
+## File: docs/zh/guide/first-draft.md
+Source: https://docs.cutcli.com/zh/guide/first-draft
+<!-- ============================================================ -->
+
+# 30 分钟做第一个草稿
+
+读完这篇，你能：
+
+- 创建第一个剪映草稿
+- 加一行字幕、一张图片、一段背景音乐
+- 用关键帧做缩放动画
+- 把草稿打包发给别人
+
+全程不需要写代码，只用 `cutcli` 命令。
+
+## 准备
+
+确认 cutcli 已经装好：
+
+```bash
+cutcli --version
+```
+
+如果报错请先看 [安装与配置](./installation.md)。
+
+## 第 1 步：创建草稿
+
+```bash
+cutcli draft create --width 1080 --height 1920
+```
+
+输出类似：
+
+```json
+{
+  "draftId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+  "filePath": "/Users/you/Movies/CapCut/.../a1b2c3d4-..."
+}
+```
+
+复制 `draftId`，下面所有命令都要用它。为了方便，我们把它存成环境变量：
+
+```bash
+DRAFT_ID="a1b2c3d4-e5f6-7890-abcd-1234567890ab"
+```
+
+::: tip 一行获取 draftId
+```bash
+DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
+```
+:::
+
+打开剪映，应该能在草稿列表看到一个新的空白草稿。
+
+## 第 2 步：加一行字幕
+
+```bash
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"我的第一个 cutcli 草稿","start":0,"end":3000000,
+   "inAnimation":"渐显","inAnimationDuration":500000}
+]' --font-size 8 --bold --text-color "#FFFFFF"
+```
+
+要点：
+
+- 时间单位是**微秒**：`3000000` 表示 3 秒，`500000` 表示 0.5 秒。详见 [时间单位](./time-units.md)
+- `inAnimation` 是入场动画名。可以跑 `cutcli query text-animations --type in --pretty` 列出所有可选名
+
+## 第 3 步：加一张图片背景
+
+```bash
+cutcli images add "$DRAFT_ID" --image-infos '[
+  {
+    "imageUrl":"https://cutcli.com/assets/demo/sunset.jpg",
+    "width":1080,
+    "height":1920,
+    "start":0,
+    "end":5000000,
+    "inAnimation":"轻微放大",
+    "inAnimationDuration":1000000
+  }
+]'
+```
+
+cutcli 会自动把图片下载到草稿的 `resources/` 目录，剪映打开后无需联网即可使用。
+
+## 第 4 步：加背景音乐
+
+```bash
+cutcli audios add "$DRAFT_ID" --audio-infos '[
+  {
+    "audioUrl":"https://cutcli.com/assets/demo/bgm-light.mp3",
+    "duration":5000000,
+    "start":0,
+    "end":5000000,
+    "volume":0.5
+  }
+]'
+```
+
+## 第 5 步：用关键帧做缩放
+
+先用 `cutcli images list "$DRAFT_ID"` 拿到刚才那张图片的 `segmentId`，然后：
+
+```bash
+SEG_ID="刚才列出来的图片 segmentId"
+
+cutcli keyframes add "$DRAFT_ID" --keyframes "[
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_x\",\"offset\":0,\"value\":1.0},
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_x\",\"offset\":5000000,\"value\":1.3},
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_y\",\"offset\":0,\"value\":1.0},
+  {\"segmentId\":\"$SEG_ID\",\"property\":\"scale_y\",\"offset\":5000000,\"value\":1.3}
+]"
+```
+
+刷新剪映里的草稿（关闭再打开），背景图会出现 5 秒内从 100% 缓慢放大到 130% 的效果。
+
+## 第 6 步：检查成果
+
+```bash
+cutcli draft info "$DRAFT_ID" --pretty
+```
+
+应该看到：
+
+```json
+{
+  "canvasWidth": 1080,
+  "canvasHeight": 1920,
+  "duration": 5000000,
+  "trackSummary": [...],
+  "materialSummary": {
+    "videos": 0,
+    "audios": 1,
+    "texts": 1,
+    "images": 1
+  }
+}
+```
+
+## 第 7 步：打包分享给别人
+
+```bash
+cutcli draft upload "$DRAFT_ID"
+```
+
+返回的 `downloadUrl` 是一个公开的 zip 下载链接，对方下载后解压到自己的剪映草稿目录就能直接打开。
+
+## 完整脚本版
+
+把所有命令拼成一个 `run.sh`：
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
+echo "Draft: $DRAFT_ID"
+
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"我的第一个 cutcli 草稿","start":0,"end":3000000,
+   "inAnimation":"渐显","inAnimationDuration":500000}
+]' --font-size 8 --bold
+
+cutcli images add "$DRAFT_ID" --image-infos '[
+  {"imageUrl":"https://cutcli.com/assets/demo/sunset.jpg",
+   "width":1080,"height":1920,"start":0,"end":5000000,
+   "inAnimation":"轻微放大","inAnimationDuration":1000000}
+]'
+
+cutcli audios add "$DRAFT_ID" --audio-infos '[
+  {"audioUrl":"https://cutcli.com/assets/demo/bgm-light.mp3",
+   "duration":5000000,"start":0,"end":5000000,"volume":0.5}
+]'
+
+cutcli draft info "$DRAFT_ID" --pretty
+```
+
+## 接下来
+
+- 看更复杂的 [案例](/zh/cookbook/index)
+- 学习 [关键帧的更多用法](/zh/reference/keyframes)
+- 用 AI 帮你写命令：[AI 工具集成](./ai-integration.md)
+
+
+<!-- ============================================================ -->
+## File: docs/zh/guide/time-units.md
+Source: https://docs.cutcli.com/zh/guide/time-units
+<!-- ============================================================ -->
+
+# 时间单位（微秒）
+
+cutcli 中**所有时间参数都是微秒（μs）**，不论是字幕、图片、音频还是关键帧。
+
+## 换算公式
+
+```text
+1 秒 = 1,000,000 微秒
+```
+
+| 期望时长 | 写法 |
+|---|---|
+| 0.1 秒 | `100000` |
+| 0.5 秒 | `500000` |
+| 1 秒 | `1000000` |
+| 3 秒 | `3000000` |
+| 10 秒 | `10000000` |
+| 1 分钟 | `60000000` |
+
+## 为什么用微秒？
+
+- 与剪映的内部存储格式一致，无精度损失
+- 关键帧、转场、动画时长都能精确到微秒级
+- 跨平台无浮点数误差
+
+## start 与 end 怎么理解
+
+```text
+时间线 →
+0           3,000,000           6,000,000        (微秒)
+[第一段字幕  ][   第二段字幕   ]
+start=0    end=3M  start=3M    end=6M
+```
+
+`start` 是片段在**总时间线**上的开始时刻；`end` 是结束时刻。两者相减就是片段时长。
+
+::: warning 同一轨道不要重叠
+同一条字幕轨 / 视频轨内，相邻片段的 `start` 必须 ≥ 上一段的 `end`，否则剪映会出现混乱。
+:::
+
+## 实用脚本
+
+把秒转成微秒：
+
+```bash
+to_us() { echo $(( $1 * 1000000 )); }
+
+START=$(to_us 0)        # 0
+END=$(to_us 3)          # 3000000
+echo "字幕从 $START 到 $END"
+```
+
+把"3 秒 500 毫秒"这种小数转换：
+
+```bash
+to_us_decimal() { python3 -c "print(int(float('$1') * 1000000))"; }
+to_us_decimal 3.5    # 3500000
+```
+
+## 常见错误
+
+| 现象 | 可能原因 |
+|---|---|
+| 字幕只闪一帧 | 写的是毫秒：`{"start":0,"end":3000}` 应为 `3000000` |
+| 关键帧动画太快 | 同样的微秒/毫秒混淆，关键帧 offset 也是微秒 |
+| 入场动画时长比片段还长 | `inAnimationDuration` + `outAnimationDuration` 必须 ≤ `end - start` |
+
+## 更多
+
+- [坐标系与位置](./coordinate-system.md)
+
+
+<!-- ============================================================ -->
+## File: docs/zh/guide/coordinate-system.md
+Source: https://docs.cutcli.com/zh/guide/coordinate-system
+<!-- ============================================================ -->
+
+# 坐标系与位置
+
+理解 cutcli 的坐标系，可以让你精确控制字幕、图片、贴纸的位置。
+
+## 归一化坐标
+
+cutcli 使用**归一化坐标**：屏幕中心为原点 `(0, 0)`，X 正方向向右，Y 正方向向上。整个画布映射到 `[-1, 1]` × `[-1, 1]`。
+
+```text
+            (0, 1)        ← 屏幕最上
+              ↑
+              |
+(-1, 0) ←   (0,0)   → (1, 0)
+              |
+              ↓
+            (0, -1)       ← 屏幕最下
+```
+
+举几个具体位置：
+
+| 位置 | transformX | transformY |
+|---|---|---|
+| 屏幕正中 | 0 | 0 |
+| 顶部居中 | 0 | 0.8 |
+| 底部居中 | 0 | -0.8 |
+| 左下角 | -0.8 | -0.8 |
+| 右上角 | 0.8 | 0.8 |
+
+> 不要把值设到 `±1`，那是画布边界，元素会被部分裁切。常用 `±0.7 ~ ±0.9`。
+
+## 字幕示例
+
+把字幕固定在底部 1/4 位置（短视频常见的位置）：
+
+```bash
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"底部居中字幕","start":0,"end":3000000}
+]' --transform-y -0.7 --font-size 8
+```
+
+## 图片示例
+
+把图片缩到 50%、放到屏幕右上角：
+
+```bash
+cutcli images add "$DRAFT_ID" --image-infos '[
+  {
+    "imageUrl":"https://cutcli.com/assets/demo/logo.png",
+    "width":400,"height":400,
+    "start":0,"end":3000000,
+    "transformX":0.6,
+    "transformY":0.7,
+    "scaleX":0.5,
+    "scaleY":0.5
+  }
+]'
+```
+
+## 缩放与旋转
+
+| 字段 | 含义 | 默认 |
+|---|---|---|
+| `scaleX` | X 方向缩放，1.0 = 原始 | 1.0 |
+| `scaleY` | Y 方向缩放 | 1.0 |
+| `rotation` | 顺时针旋转角度（度） | 0 |
+
+> 想等比缩放，X 与 Y 同时设为相同值。
+
+## 不同画布的注意事项
+
+归一化坐标不依赖具体分辨率：
+
+- 在 1080×1920（竖屏）画布上 `(0, -0.8)` 是底部居中
+- 在 1920×1080（横屏）画布上 `(0, -0.8)` 同样是底部居中
+
+但**像素尺寸**（`width` / `height`）需要根据画布比例自己换算，cutcli 不会自动缩放。
+
+## 关键帧中的位置动画
+
+关键帧的 `position_x` / `position_y` 也用同一套归一化坐标：
+
+```bash
+cutcli keyframes add "$DRAFT_ID" --keyframes '[
+  {"segmentId":"...","property":"position_x","offset":0,"value":-0.5},
+  {"segmentId":"...","property":"position_x","offset":2000000,"value":0.5}
+]'
+```
+
+效果：图片 2 秒内从屏幕左侧滑到右侧。
+
+## 进阶：与剪映 UI 中的"位置"对照
+
+剪映 UI 上显示的位置是**像素坐标**（参考画布左上角为原点）。换算关系：
+
+```text
+ui_x = (transformX + 1) / 2 * canvasWidth
+ui_y = (1 - transformY) / 2 * canvasHeight    ← 注意 Y 翻转
+```
+
+举例：画布 1080×1920，cutcli 中 `(transformX=0, transformY=-0.7)` 在剪映 UI 上显示约 `(540, 1632)`。
+
+## 下一步
+
+- [关键帧详解](/zh/reference/keyframes)
+- [字幕完整参数表](/zh/reference/captions)
+
+
+<!-- ============================================================ -->
+## File: docs/zh/guide/ai-integration.md
+Source: https://docs.cutcli.com/zh/guide/ai-integration
+<!-- ============================================================ -->
+
+# AI 工具集成
+
+cutcli 提供一键集成命令，自动给 Cursor / Claude Code / OpenClaw 安装专用 SKILL 配置。安装后，AI 助手就能在对话中直接帮你写 cutcli 命令。
+
+## 一键安装
+
+```bash
+# Cursor IDE
+cutcli setup cursor
+
+# Claude Code (CLI 版)
+cutcli setup claude
+
+# OpenClaw (龙虾)
+cutcli setup openclaw
+
+# 全部
+cutcli setup all
+```
+
+## 已经安装过？
+
+加 `--force` 覆盖：
+
+```bash
+cutcli setup cursor --force
+```
+
+## 验证
+
+打开你的 AI 工具，问：
+
+> 帮我用 cutcli 做一个 5 秒的字幕"Hello"，加渐显动画
+
+AI 应该返回类似的命令：
+
+```bash
+DRAFT_ID=$(cutcli draft create --width 1080 --height 1920 | jq -r '.draftId')
+cutcli captions add "$DRAFT_ID" --captions '[
+  {"text":"Hello","start":0,"end":5000000,
+   "inAnimation":"渐显","inAnimationDuration":500000}
+]' --font-size 8 --bold
+```
+
+## 自定义提示词
+
+如果你想用 ChatGPT / Gemini 等不在内置列表里的 AI 工具，仓库里 [`prompts/system/cutcli-expert.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.md) 是一份完整的"cutcli 专家"系统提示词，复制粘贴即可。
+
+更多提示词模板见 [Prompts 库](/zh/prompts/)。
+
+## 工作原理
+
+`cutcli setup` 做的事情很简单：
+
+1. 在 `~/.cursor/skills/cut-draft/`（或 Claude / OpenClaw 对应目录）写入一个 `SKILL.md` 文件
+2. 该文件包含 cutcli 的命令清单、参数表、典型用法
+3. AI 工具下次启动时会自动加载这个 skill
+
+你可以随时 `cat ~/.cursor/skills/cut-draft/SKILL.md` 查看具体内容。
+
+
+<!-- ============================================================ -->
+## File: examples/01-hello-caption/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/01-hello-caption/README.zh.md
+<!-- ============================================================ -->
+
+# 01 · Hello Caption
+
+> 最小可运行的 cutcli 案例：一行字幕 + 渐显 / 渐隐动画。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交（CI 会强制要求，本地跑 `bash record.sh` 后录制）。在那之前，参考下方截图想象效果。
+
+## 适用场景
+
+- 第一次跑 cutcli，验证安装是否成功
+- 看下"创建草稿 → 加字幕 → 检查"的最小闭环
+- 作为更复杂案例的脚手架
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+跑完打开剪映，在草稿列表里找到名为 `hello-caption` 的新草稿。
+
+## 关键参数解释
+
+| 参数 | 值 | 为什么 |
+|---|---|---|
+| `start: 0` | 从 0 开始 | 时间线起点 |
+| `end: 5000000` | 5 秒 | 1 秒 = 1,000,000 微秒，5 秒足够看清入/出场动画 |
+| `inAnimation: "渐显"` | 默认入场 | 用 `cutcli query text-animations --type in` 列出所有可选 |
+| `inAnimationDuration: 500000` | 0.5 秒 | 入场出场各 0.5s，剩 4s 留给字幕主体显示 |
+| `--font-size 9` | 9 号 | cutcli 的字号是相对单位，竖屏推荐 7-10 |
+| `--bold` | 加粗 | 短视频字幕几乎都加粗才清晰 |
+| `--transform-y -0.6` | 偏下 60% | 短视频字幕传统位置，避开顶部状态栏 |
+
+## 进阶改造
+
+### 改成英文 + 不同字体
+
+```bash
+cutcli captions add "$DRAFT_ID" \
+  --captions @data/captions.json \
+  --font "Times New Roman" \
+  --font-size 10 --bold
+```
+
+### 改成关键词高亮（看 case 03）
+
+把 `data/captions.json` 改成：
+
+```json
+[
+  {"text":"Hello cutcli","start":0,"end":5000000,
+   "keyword":"cutcli","keywordColor":"#FF6600"}
+]
+```
+
+### 加循环动画
+
+在 `data/captions.json` 中加：
+
+```json
+"loopAnimation": "波浪",
+"loopAnimationDuration": 1000000
+```
+
+## 用到的 cutcli 能力
+
+- `cutcli draft create` — 创建竖屏 1080×1920 草稿
+- `cutcli captions add` — 加字幕、设入场/出场动画
+- `cutcli draft info` — 验证草稿内容
+
+## 校验
+
+```bash
+node ../../scripts/validate-example.mjs .
+```
+
+
+<!-- ============================================================ -->
+## File: examples/02-image-slideshow-bgm/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/02-image-slideshow-bgm/README.zh.md
+<!-- ============================================================ -->
+
+# 02 · Image Slideshow with BGM
+
+> 3 张图竖屏轮播，每张 3 秒，叠化 / 推移转场，配背景音乐。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交（CI 会强制要求）。
+
+## 适用场景
+
+- 旅行 / 美食 / 风景 类相册短视频
+- 产品图轮播（电商首页）
+- 任何"图 + 配乐"的场景模版
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+## 关键参数解释
+
+| 参数 | 值 | 为什么 |
+|---|---|---|
+| 每张图 3 秒 | `start`/`end` 间隔 3,000,000μs | 短视频常见单图停留时长 |
+| `transition: "叠化"` | 第 1→2 张 | 默认温和，适合相册流 |
+| `transition: "推移"` | 第 2→3 张 | 节奏稍微变化，避免单调 |
+| `transitionDuration: 500000` | 0.5 秒 | 转场不能超过最短片段时长的 1/3 |
+| `volume: 0.6` | 60% | BGM 不抢戏，给后期可能加的旁白留空间 |
+
+## 进阶改造
+
+### 想要更快的节奏？
+
+把每张图改成 2 秒：
+
+```json
+"start": 0, "end": 2000000
+"start": 2000000, "end": 4000000
+"start": 4000000, "end": 6000000
+```
+
+记得同步把 `audio.json` 的 `duration` 和 `end` 也改成 `6000000`。
+
+### 想加图 Ken Burns 缩放效果？
+
+参考 [`05-keyframe-zoom-in`](../05-keyframe-zoom-in/) — 用关键帧给每张图加 `scale_x` / `scale_y` 的缓慢变化。
+
+### 想用自己的图？
+
+把 `data/images.json` 中的 `imageUrl` 换成你的 CDN 链接。注意：
+- 必须是公开可访问的 HTTPS URL
+- `width` / `height` 要填你图片的真实尺寸（cutcli 不会自动检测）
+- 推荐 CDN：jsdelivr / GitHub Raw / 自建 R2
+
+## 用到的 cutcli 能力
+
+- `cutcli draft create` — 创建竖屏画布
+- `cutcli images add` — 批量加图、配置时间和转场
+- `cutcli audios add` — 加 BGM、设音量
+
+
+<!-- ============================================================ -->
+## File: examples/03-tiktok-keyword-highlight/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/03-tiktok-keyword-highlight/README.zh.md
+<!-- ============================================================ -->
+
+# 03 · TikTok Keyword Highlight
+
+> TikTok / 抖音风格的多段字幕：关键词彩色高亮 + 入场动画。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交（CI 会强制要求）。
+
+## 适用场景
+
+- 短视频博主"3 句话讲完一件事"模板
+- 知识科普 / 美妆 / 美食教程
+- 任何需要快节奏字幕、关键词突出的场景
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+## 关键参数解释
+
+| 参数 | 值 | 为什么 |
+|---|---|---|
+| 每条字幕 2 秒 | `start`/`end` 间隔 2,000,000μs | 抖音节奏：每条信息密度 = 1 关键词 / 2 秒 |
+| `keyword: "秘密"` | 关键词字段 | cutcli 会自动给该词 + 关键词颜色，无需手动拆 |
+| `keywordColor: "#FFD600"` | 黄色 | 高对比度，主体白色 + 强调黄/红 |
+| `inAnimation: "向上滑入"` | 抖音常见入场 | 配合短促节奏 |
+| `inAnimationDuration: 300000` | 0.3 秒 | 短才有力度；超过 0.5 秒会显得拖沓 |
+| `--border-color "#000000"` `--border-width 1` | 黑描边 | 无论背景什么颜色都能看清 |
+| `--transform-y -0.55` | 偏下 55% | 比传统字幕位置稍高，避开抖音底部 UI |
+
+## 进阶改造
+
+### 多个关键词
+
+```json
+{"text":"今天分享一个超好用的技巧",
+ "keyword":"超好用|技巧",
+ "keywordColor":"#FF6600"}
+```
+
+`keyword` 字段用 `|` 分隔多个词。
+
+### 不同关键词不同颜色
+
+cutcli 一条字幕只支持一种 keywordColor。需要不同色就拆成多条。
+
+### 改成抖音爆款的"双语"风格
+
+```json
+[
+  {"text":"今天教大家一个秘密","start":0,"end":2000000,
+   "keyword":"秘密","keywordColor":"#FFD600","fontSize":9,
+   "transform_y":-0.5},
+  {"text":"This is a secret","start":0,"end":2000000,
+   "keyword":"secret","keywordColor":"#FFD600","fontSize":7,
+   "transform_y":-0.6}
+]
+```
+
+> 两条字幕同 start/end，叠在一起，靠 `transform_y` 错开位置。
+
+### 加循环动画让字幕"呼吸"
+
+```json
+"loopAnimation": "心跳",
+"loopAnimationDuration": 800000
+```
+
+## 用到的 cutcli 能力
+
+- `cutcli captions add` — 多条字幕 + 关键词字段 + 入/出场动画
+- 全局样式：描边、加粗、位置偏移
+
+
+<!-- ============================================================ -->
+## File: examples/04-easy-by-audio/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/04-easy-by-audio/README.zh.md
+<!-- ============================================================ -->
+
+# 04 · Easy by Audio Duration
+
+> 用 `cutcli draft easy` 一行命令，按音频时长自动铺图片 + 字幕 + BGM。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交（CI 会强制要求）。
+
+## 适用场景
+
+- 旁白先录好，需要快速按旁白时长配视觉
+- 念诗 / 读书 / 播客剪辑
+- 任何"我有一段音频，给我铺好底图就行"的场景
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+`draft easy` 命令会：
+
+1. 下载音频，自动检测时长
+2. 用图片铺满整个时长
+3. 字幕铺满整个时长
+4. 自动对齐结束时间
+
+## 关键参数解释
+
+| 参数 | 说明 |
+|---|---|
+| `--audio-url` | 必填，决定整段视频的总时长 |
+| `--img-url` | 可选，背景图 |
+| `--video-url` | 可选，背景视频（与 img-url 二选一） |
+| `--text` | 可选，标题字幕 |
+
+## 进阶改造
+
+### 想要多张图轮播？
+
+`draft easy` 只支持单张图。需要多张请用 `images add`，参考 [`02-image-slideshow-bgm`](../02-image-slideshow-bgm/)。
+
+### 用本地音频
+
+cutcli 也接受本地路径：
+
+```bash
+cutcli draft easy "$DRAFT_ID" \
+  --audio-url ~/Music/my-narration.mp3 \
+  --img-url https://cutcli.com/assets/demo/scene-01.jpg
+```
+
+### 把字幕拆成多句
+
+也得换用 `captions add`：
+
+```bash
+DURATION=$(cutcli query audio-duration --url "$AUDIO_URL" | jq -r '.duration')
+HALF=$((DURATION / 2))
+
+cutcli captions add "$DRAFT_ID" --captions "[
+  {\"text\":\"前半段标题\",\"start\":0,\"end\":$HALF},
+  {\"text\":\"后半段标题\",\"start\":$HALF,\"end\":$DURATION}
+]"
+```
+
+## 用到的 cutcli 能力
+
+- `cutcli draft easy` — 一行命令快速铺素材
+- `cutcli query audio-duration` — 拿音频时长
+
+
+<!-- ============================================================ -->
+## File: examples/05-keyframe-zoom-in/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/05-keyframe-zoom-in/README.zh.md
+<!-- ============================================================ -->
+
+# 05 · Keyframe Zoom-in (Ken Burns)
+
+> 图片 + 关键帧 `scale_x` / `scale_y`，5 秒内从 1.0 缓慢放大到 1.3，经典 Ken Burns 效果。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交（CI 会强制要求）。
+
+## 适用场景
+
+- 想让静态照片"动起来"，避免画面无聊
+- 旅行 / 风景 / 人像照片视频
+- 纪录片片头模板
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+`run.sh` 做的事：
+
+1. 创建竖屏草稿
+2. 加一张 5 秒的图
+3. **用 `cutcli images list` 查刚才那张图的 segmentId**
+4. 用 jq 把 `keyframes.template.json` 中的 `__SEG_ID__` 替换为真实 ID
+5. `cutcli keyframes add` 写入关键帧
+
+## 关键参数解释
+
+| 参数 | 值 | 为什么 |
+|---|---|---|
+| `property: "scale_x"` + `"scale_y"` | 必须同时设 | 否则会变形 |
+| `offset: 0, value: 1.0` | 起点 | 原始大小 |
+| `offset: 5000000, value: 1.3` | 终点 | 5 秒后放大到 1.3 倍，幅度温和不抢戏 |
+| 缓动 | 默认线性 | Ken Burns 用线性最自然；想加缓动改 `easing` 字段 |
+
+## 为什么需要拆 segmentId？
+
+cutcli 的关键帧绑定到具体片段，所以**必须先添加片段再加关键帧**。脚本里我们用模板 + jq 替换的方式自动化这一步，避免你手动复制 ID。
+
+## 进阶改造
+
+### 改成"放大 + 平移"
+
+加 `position_x` 关键帧：
+
+```json
+{"segmentId": "...", "property": "position_x", "offset": 0,       "value": -0.1},
+{"segmentId": "...", "property": "position_x", "offset": 5000000, "value":  0.1}
+```
+
+效果：画面在放大的同时从左轻微平移到右。
+
+### 改成"放大 + 旋转"
+
+```json
+{"segmentId": "...", "property": "rotation", "offset": 0,       "value": 0},
+{"segmentId": "...", "property": "rotation", "offset": 5000000, "value": 5}
+```
+
+效果：缓慢右倾 5 度，给画面加一点动态张力。
+
+### 改成"先放大再缩小"
+
+加中间关键帧：
+
+```json
+{"segmentId": "...", "property": "scale_x", "offset": 0,       "value": 1.0},
+{"segmentId": "...", "property": "scale_x", "offset": 2500000, "value": 1.4},
+{"segmentId": "...", "property": "scale_x", "offset": 5000000, "value": 1.0}
+```
+
+## 用到的 cutcli 能力
+
+- `cutcli images add` — 加图片
+- `cutcli images list` — 拿到刚才片段的 ID
+- `cutcli keyframes add` — 加关键帧
+- 模板 + jq 替换技巧（任何关键帧案例都用得上）
+
+
+<!-- ============================================================ -->
+## File: examples/10-product-promo-30s/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/10-product-promo-30s/README.zh.md
+<!-- ============================================================ -->
+
+# 10 · Product Promo (30s)
+
+> 30 秒电商产品宣传片：开场标题 → 3 段产品图轮播 → 卖点关键词高亮 → 结尾 CTA。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交，CI 会强制要求。
+
+## 适用场景
+
+- 电商首页产品视频、详情页 banner
+- 抖音 / 视频号 / 小红书 投流素材
+- 任何"30 秒讲完一个产品"的模板需求
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+## 关键参数解释
+
+| 参数 | 值 | 为什么 |
+|---|---|---|
+| 总时长 30s | `end: 30000000` | 主流投流平台单条上限刚好够 |
+| 开场 0-3s | 标题 + 第一张图 | 黄金 3 秒保留率 |
+| 中段 3-12s | 3 张图 ×3s 叠化 | 让用户看清产品多面 |
+| 中后段 12-24s | 卖点 ×3 关键词高亮 | 每条 4s，节奏稍慢便于看完 |
+| 结尾 24-30s | CTA | 留 6s 让 CTA 信息进脑 |
+| `volume: 0.5` | BGM 50% | 给后期可能的旁白留空间 |
+| 字幕 `--transform-y -0.55` | 偏下 55% | 避开抖音底部 UI |
+| 描边宽 1 + 黑色 | 永远清晰 | 不论背景什么颜色都能看清 |
+| 关键词色 `#FFD600` / `#FF3A6E` | 高对比 | 选 1-2 种主色，全片统一 |
+
+## 进阶改造
+
+### 想要 60s 版本？
+
+把所有 `start` / `end` × 2，再加 2-3 张图、2-3 句卖点。
+
+### 替换素材
+
+把 `data/images.json` 中的 `imageUrl` 换成你的产品图（必须公开 https URL，且 `width` / `height` 与图片实际尺寸匹配）。
+
+### 加个滤镜统一色调
+
+```bash
+cutcli filters add "$DRAFT_ID" --filter-infos '[
+  {"filterId":"REPLACE_BY_QUERY","start":0,"end":30000000,"intensity":60}
+]'
+```
+
+先 `cutcli query filters --action search --keyword "暖色" --pretty` 找一个适合的滤镜 ID。
+
+### 加产品 Logo 贴纸
+
+参考 [05-keyframe-zoom-in](../05-keyframe-zoom-in/) 加一个右上角 Logo + 关键帧动画。
+
+## 用到的 cutcli 能力
+
+- `cutcli draft create` — 竖屏画布
+- `cutcli images add` — 多张图 + 转场 + 入场动画
+- `cutcli captions add` — 多段字幕 + 关键词高亮 + 入场动画
+- `cutcli audios add` — BGM 音量控制
+- 文件 + JSON 协作模式（用 `--captions @data/captions.json`）
+
+
+<!-- ============================================================ -->
+## File: examples/20-knowledge-science-card/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/20-knowledge-science-card/README.zh.md
+<!-- ============================================================ -->
+
+# 20 · Knowledge Science Card (60s)
+
+> 60 秒竖屏知识科普视频：标题 → 3 要点 → 总结。每段配图自动 Ken Burns 推近，字幕带半透明背景卡。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交，CI 会强制要求。
+
+## 适用场景
+
+- "3 分钟讲懂 XX" 类知识博主
+- 教程类竖屏内容
+- 图文 / 公众号文章衍生短视频
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+## 关键参数解释
+
+| 参数 | 值 | 为什么 |
+|---|---|---|
+| 总时长 60s | 4 段图 + 5 条字幕 | 知识类视频常见时长 |
+| 字幕背景卡 `--bg-color #000 --bg-alpha 0.55 --bg-round 8` | 半透明黑色圆角 | 知识科普标志性视觉，字幕在任何画面都清晰 |
+| `--bg-style 1` | 填充 | 0=无背景；1=填充 |
+| 图片 Ken Burns 缩放 1.0 → 1.15 | 10s 内 | 防止静态画面无聊；每段图独立计算 segmentId |
+| 关键词色 `#FFD600` / `#FF3A6E` | 主题色固定 | 全片只用 1-2 种强调色 |
+| `volume: 0.4` | 较低 | 知识类视频通常自配旁白，BGM 不能抢 |
+
+## 进阶改造
+
+### 加旁白
+
+把 `data/audio.json` 改成两条：BGM + 旁白。
+
+```json
+[
+  {"audioUrl":"https://cutcli.com/assets/demo/bgm-light.mp3","duration":60000000,"start":0,"end":60000000,"volume":0.25},
+  {"audioUrl":"https://your-cdn.com/narration.mp3","duration":60000000,"start":0,"end":60000000,"volume":1.0}
+]
+```
+
+### 字幕换字体
+
+加全局选项：
+
+```bash
+cutcli captions add "$DRAFT_ID" --captions @data/captions.json \
+  --font "PingFang SC" --font-size 9 ...
+```
+
+### 加进度条贴纸
+
+`cutcli sticker add` 加一个底部进度条贴纸 + 关键帧让 `scale_x` 从 0 → 1。
+
+## 用到的 cutcli 能力
+
+- `cutcli draft create` — 竖屏画布
+- `cutcli images add` + `images list` — 加图、回查 segmentId
+- `cutcli keyframes add` — 多段图独立 Ken Burns
+- `cutcli captions add` — 字幕背景卡 + 关键词高亮
+- `cutcli audios add` — 多音频混音
+- bash 循环动态构造 JSON
+
+
+<!-- ============================================================ -->
+## File: examples/30-vlog-day-in-life/README.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/examples/30-vlog-day-in-life/README.zh.md
+<!-- ============================================================ -->
+
+# 30 · Vlog: A Day in My Life (30s)
+
+> 30 秒 Vlog "我的一天" 模板：早 → 午 → 晚 三段，配时间标签字幕。
+
+[English](README.md) · [简体中文](README.zh.md)
+
+![preview](preview.gif)
+
+> `preview.gif` 暂未提交，CI 会强制要求。
+
+## 适用场景
+
+- 个人 Vlog "我的一天 / 我的一周" 系列
+- 旅行 / 美食日常
+- 任何"按时间线串场景"的内容
+
+## 一行运行
+
+```bash
+bash run.sh
+```
+
+## 关键参数解释
+
+| 参数 | 值 | 为什么 |
+|---|---|---|
+| 三段时间标签 | `AM 7:00 / PM 1:00 / PM 8:00` | Vlog 经典节奏：早 → 午 → 晚 |
+| 转场 `向右擦除` | 替代叠化 | 给 Vlog 加一点节奏感，类似翻页 |
+| 第一段 Ken Burns 1.0 → 1.1 | 10s 内 | 开场画面有动感 |
+| 字幕 `--transform-y -0.7` | 偏下 70% | 比短视频字幕更靠下，留出画面欣赏空间 |
+| 关键词色 黄/橙/粉 | 跟早/午/晚气氛 | 早=黄(暖)、午=橙(活力)、晚=粉(柔) |
+
+## 进阶改造
+
+### 全部三段都加 Ken Burns
+
+把 `run.sh` 中的 `SEG_FIRST` 替换为 for 循环，对每个 segmentId 都加关键帧（参考 [`20-knowledge-science-card`](../20-knowledge-science-card/) 的写法）。
+
+### 加节拍贴纸 / 装饰
+
+```bash
+cutcli query stickers --action search --keyword "时钟" --pretty
+cutcli sticker add "$DRAFT_ID" --sticker-id "<id>" --start 0 --end 30000000 --scale 0.6
+```
+
+### 一键多版
+
+把 run.sh 复制成 `run-summer.sh` / `run-winter.sh`，只换 `data/images.json` 中的素材 URL，结构完全复用。
+
+## 用到的 cutcli 能力
+
+- `cutcli draft create` — 竖屏
+- `cutcli images add` — 多图 + 擦除转场
+- `cutcli keyframes add` — Ken Burns 推近
+- `cutcli captions add` — 时间标签 + 关键词高亮
+- `cutcli audios add` — BGM
+
+
+<!-- ============================================================ -->
+## File: prompts/system/cutcli-expert.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.zh.md
+<!-- ============================================================ -->
+
+---
+title: cutcli 专家系统提示
+author: m007
+target: chatgpt | gemini | claude | openai-api
+tags: [system, all-purpose]
+license: MIT
+---
+
+# cutcli 专家系统提示
+
+[English](cutcli-expert.md) · [简体中文](cutcli-expert.zh.md)
+
+你是一位 **cutcli 专家**。cutcli 是一个命令行工具，用代码生成 CapCut / 剪映可直接打开的标准草稿。
+
+## 核心知识
+
+### 安装与命令名
+
+- 安装：`curl -s https://cutcli.com/cli | bash`
+- 命令名：**`cutcli`**（不是 `cut`，避免与 Unix 系统命令冲突）
+- 文档：<https://docs.cutcli.com>
+
+### 工作模式
+
+1. 用 `cutcli draft create` 创建草稿，得到 `draftId`
+2. 用 `cutcli <module> add <draftId> ...` 往草稿里加内容
+3. 同一个草稿可以被多次操作，逐步构建
+4. 草稿自动写到剪映的标准草稿目录，打开剪映就能看到
+
+### 时间单位（极重要）
+
+- **所有时间字段都是微秒（μs）**：`1 秒 = 1,000,000`
+- 常见错：`{"start":0,"end":3000}` 这是 3 毫秒，应为 `3000000`
+
+### 坐标系
+
+- 屏幕中心 `(0,0)`，X 向右、Y 向上
+- 范围 `[-1, 1]`，常用 `±0.5 ~ ±0.9`，不要贴到 `±1`
+
+## 命令参考
+
+### 草稿
+
+```bash
+cutcli draft create [--width 1080] [--height 1920]   # 默认竖屏
+cutcli draft list
+cutcli draft info <draftId> [--pretty]
+cutcli draft easy <draftId> --audio-url <url> [--img-url <url>] [--text <s>]
+cutcli draft zip <draftId> [--output <path>]
+cutcli draft upload <draftId>
+```
+
+### 内容（每个都是 `add` 子命令）
+
+```bash
+cutcli captions add <draftId> --captions <json> [全局样式]
+cutcli images   add <draftId> --image-infos <json>
+cutcli videos   add <draftId> --video-infos <json>
+cutcli audios   add <draftId> --audio-infos <json>
+cutcli effects  add <draftId> --effect-infos <json>
+cutcli filters  add <draftId> --filter-infos <json>
+cutcli sticker  add <draftId> --sticker-id <id> --start N --end N
+cutcli keyframes add <draftId> --keyframes <json>
+cutcli masks    add <draftId> --segment-ids <ids> [选项]
+```
+
+### 查询（用来挑动画 / 滤镜 / 特效 / 贴纸）
+
+```bash
+cutcli query image-animations  --type in|out|loop
+cutcli query text-animations   --type in|out|loop
+cutcli query stickers     --action search|categories|list --keyword <kw>
+cutcli query effects      --action search|categories|list --keyword <kw>
+cutcli query filters      --action search|categories|list --keyword <kw>
+cutcli query transitions  --action search|categories|list --keyword <kw>
+cutcli query audio-duration --url <mp3-url>
+```
+
+## 关键 JSON 结构
+
+### 字幕
+
+```json
+[
+  {
+    "text": "Hello",
+    "start": 0,
+    "end": 3000000,
+    "keyword": "Hello",
+    "keywordColor": "#FF6600",
+    "inAnimation": "渐显",
+    "outAnimation": "渐隐",
+    "inAnimationDuration": 500000,
+    "outAnimationDuration": 500000
+  }
+]
+```
+
+字幕全局样式选项：`--font-size`（推荐 6-12）、`--text-color`、`--bold`、`--italic`、`--alignment`、`--transform-x`、`--transform-y`、`--border-color`、`--border-width`。
+
+### 图片
+
+```json
+[
+  {
+    "imageUrl": "https://cutcli.com/assets/demo/scene-01.jpg",
+    "width": 1080,
+    "height": 1920,
+    "start": 0,
+    "end": 3000000,
+    "transformX": 0,
+    "transformY": 0,
+    "scaleX": 1.0,
+    "scaleY": 1.0,
+    "inAnimation": "轻微放大",
+    "transition": "叠化",
+    "transitionDuration": 500000
+  }
+]
+```
+
+`width` / `height` **必填**，cutcli 不会自动检测图像尺寸。
+
+### 视频
+
+类似图片，多了 `videoUrl` / `duration`（视频原始时长，必填）/ `volume`。
+
+### 音频
+
+```json
+[
+  {
+    "audioUrl": "https://cutcli.com/assets/demo/bgm.mp3",
+    "duration": 30000000,
+    "start": 0,
+    "end": 30000000,
+    "volume": 0.6
+  }
+]
+```
+
+要拿真实音频时长，跑 `cutcli query audio-duration --url <url>`。
+
+### 关键帧
+
+关键帧绑定到具体片段，**必须先添加片段、用 `<module> list` 拿 segmentId、再加关键帧**。
+
+```json
+[
+  {"segmentId": "<segId>", "property": "scale_x", "offset": 0, "value": 1.0},
+  {"segmentId": "<segId>", "property": "scale_x", "offset": 5000000, "value": 1.3}
+]
+```
+
+支持属性：`position_x`、`position_y`、`scale_x`、`scale_y`、`rotation`、`opacity`。
+
+## 输出规范（你应当遵守）
+
+1. **总是输出可直接执行的 bash 脚本**，不要伪代码
+2. 顶部加 `set -euo pipefail`
+3. 用 `DRAFT_ID=$(cutcli draft create ... | jq -r '.draftId')` 捕获 ID
+4. 复杂 JSON 用 `--captions @data/captions.json` 文件引用，避免 shell 转义噩梦
+5. 时间用整数微秒，**绝不写毫秒或浮点秒**
+6. 命令名严格用 `cutcli`，不要写 `cut`
+
+## 典型回答模板
+
+当用户说"帮我做一个 X 风格的视频"时，你的回复结构：
+
+```text
+1. 简要确认我的理解（1 句话）
+2. 完整可运行 bash 脚本（关键命令组合）
+3. 关键参数解释表（为什么用这些数字）
+4. 进阶改造提示（2-3 个常见变体）
+```
+
+## 安全与约束
+
+- 不写 `--force` / `--overwrite` 这种破坏性 flag，除非用户明确要求
+- 不要建议用户 `rm -rf ~/Movies/CapCut`
+- 引用素材时优先用 `https://cutcli.com/assets/demo/` 公开 URL，避免私链
+- 不要假设 `cutcli` 命令带过去版本没有的参数；不确定就提醒用户用 `cutcli <cmd> --help` 查
+
+
+<!-- ============================================================ -->
+## File: CHANGELOG.zh.md
+Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/CHANGELOG.zh.md
+<!-- ============================================================ -->
+
+# Changelog
+
+[English](CHANGELOG.md) · [简体中文](CHANGELOG.zh.md)
+
+所有显著的变更都会记录在此文件，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
+
+## [Unreleased]
+
+## [0.1.0] - 2026-04-20
+
+### Added
+- 仓库初始化骨架（W1）：README / LICENSE / CONTRIBUTING / CODE_OF_CONDUCT / Issue + PR 模板
+- VitePress 文档站骨架与 4 篇入门文档（installation / first-draft / time-units / coordinate-system）
+- 5 个 P0 案例（hello-caption / image-slideshow-bgm / tiktok-keyword-highlight / easy-by-audio / keyframe-zoom-in）
+- 轻量 docs Worker（R2 反向代理 + SPA 路径回退）
+- GitHub Actions CI（lint + 案例校验 + VitePress 构建 + R2 上传 + Worker 部署）
+- 案例校验脚本 `scripts/validate-example.mjs` 与脚手架 `scripts/new-example.mjs`
+- 字幕 / 动画 模板预设
+- Cursor / Claude / 系统级 cutcli prompts
+- **国际化**：docs.cutcli.com 默认英文，中文镜像在 `/zh/` 路径；README、CONTRIBUTING、CHANGELOG、所有案例和模板 README、GitHub Issue/PR 模板均双语化
+- **SEO / GEO**：GitHub 仓库 topics、Open Graph 分享卡（`docs/public/og.png`）、README 顶部 hero 图、面向 AI 搜索引擎的 FAQ 问句结构，以及文档站全套 `og:image` / `twitter:card` meta 标签

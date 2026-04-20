@@ -1,0 +1,57 @@
+# cutcli
+
+> cutcli 是一个单文件命令行工具，把 shell 命令或 JSON 直接转成剪映 / CapCut 标准草稿目录。打开剪映 / CapCut 客户端，新草稿已经躺在草稿列表里——字幕、动画、转场、音频、关键帧、遮罩、特效全都可二次编辑。
+
+cutcli 同时面向人类工程师**和** AI 编码 agent（Cursor、Claude Code、ChatGPT、Gemini、OpenClaw、MCP）。本文件是项目的 AI 友好入口——从这里开始，按链接深入。
+
+安装：`curl -s https://cutcli.com/cli | bash`
+
+本仓库（[github.com/xuliang2024/cutcli-cookbook](https://github.com/xuliang2024/cutcli-cookbook)）是开源案例库：可一键运行的案例、可复用的 JSON 模板、AI 提示词、文档站源码（[docs.cutcli.com](https://docs.cutcli.com/zh/)）。
+
+## 入门
+
+- [安装与配置](https://docs.cutcli.com/zh/guide/installation): macOS / Windows / Linux 的一行安装命令，以及 cutcli 如何定位剪映 / CapCut 草稿目录。
+- [30 分钟做第一个草稿](https://docs.cutcli.com/zh/guide/first-draft): 推荐的入门教程，覆盖 `cutcli draft create`、`captions add`、`audios add`、`draft easy`。
+- [时间单位（微秒）](https://docs.cutcli.com/zh/guide/time-units): cutcli 内部全部使用微秒，本页解释换算表与常见坑。
+- [坐标系与位置](https://docs.cutcli.com/zh/guide/coordinate-system): 所有视觉元素使用的归一化 -1..1 坐标空间。
+
+## AI 集成（agent 必读）
+
+- [AI 工具集成](https://docs.cutcli.com/zh/guide/ai-integration): 如何用 `cutcli setup cursor | claude | openclaw | all` 把 cutcli SKILL 安装进 AI 工具，让助手直接调用 cutcli 命令。
+- [提示词库](https://github.com/xuliang2024/cutcli-cookbook/tree/main/prompts): 通用的 ChatGPT / Gemini / Claude API 系统提示词，以及 Cursor 和 Claude Code 的工具特定提示词。
+- [`prompts/system/cutcli-expert.zh.md`](https://github.com/xuliang2024/cutcli-cookbook/blob/main/prompts/system/cutcli-expert.zh.md): 中文版"cutcli 专家"系统提示词，丢给任何支持 system message 的模型即可。
+
+## 可一键运行的案例
+
+每个案例都是独立目录，包含 `run.sh` + 双语 README + `meta.json` + 示例输入。
+
+- [01-hello-caption](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/01-hello-caption): 一行字幕 + 渐显入场动画（5 秒）
+- [02-image-slideshow-bgm](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/02-image-slideshow-bgm): 3 张图轮播 + 转场 + 背景音乐（9 秒）
+- [03-tiktok-keyword-highlight](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/03-tiktok-keyword-highlight): 多句字幕 + TikTok 风关键词高亮（6 秒）
+- [04-easy-by-audio](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/04-easy-by-audio): `cutcli draft easy --by-audio` 自动按音频铺字幕轨（自适应长度）
+- [05-keyframe-zoom-in](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/05-keyframe-zoom-in): 图片 + Ken Burns 风格关键帧缩放（5 秒）
+- [10-product-promo-30s](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/10-product-promo-30s): 30 秒产品宣传片完整模板
+- [20-knowledge-science-card](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/20-knowledge-science-card): "知识卡片" / 科普风短视频
+- [30-vlog-day-in-life](https://github.com/xuliang2024/cutcli-cookbook/tree/main/examples/30-vlog-day-in-life): Vlog 模板，多片段排版
+
+## 模板
+
+- [`templates/`](https://github.com/xuliang2024/cutcli-cookbook/tree/main/templates): 字幕预设、入/出场动画、滤镜链的可复用 JSON 片段。
+
+## 命令参考
+
+- [CLI 速查](https://docs.cutcli.com/zh/reference/cli): 所有 cutcli 子命令汇总在一页。
+- [captions 字幕](https://docs.cutcli.com/zh/reference/captions)、[images 图片](https://docs.cutcli.com/zh/reference/images)、[videos 视频](https://docs.cutcli.com/zh/reference/videos)、[audios 音频](https://docs.cutcli.com/zh/reference/audios)、[effects 特效](https://docs.cutcli.com/zh/reference/effects)、[filters 滤镜](https://docs.cutcli.com/zh/reference/filters)、[transitions 转场](https://docs.cutcli.com/zh/reference/transitions)、[stickers 贴纸](https://docs.cutcli.com/zh/reference/stickers)、[keyframes 关键帧](https://docs.cutcli.com/zh/reference/keyframes)、[masks 遮罩](https://docs.cutcli.com/zh/reference/masks): 每个子命令的参数表和示例。
+
+## 源码与元信息
+
+- [GitHub 仓库](https://github.com/xuliang2024/cutcli-cookbook): 上述全部内容的 MIT 开源源码。
+- [README（简体中文）](https://github.com/xuliang2024/cutcli-cookbook/blob/main/README.zh.md) · [README（English）](https://github.com/xuliang2024/cutcli-cookbook/blob/main/README.md)
+- [更新日志](https://github.com/xuliang2024/cutcli-cookbook/blob/main/CHANGELOG.zh.md)
+- [贡献指南](https://github.com/xuliang2024/cutcli-cookbook/blob/main/CONTRIBUTING.zh.md)
+- [llms-full.txt](https://docs.cutcli.com/zh/llms-full.txt): README、所有指南、所有案例 README、cutcli 系统提示词的中文全文聚合——一次抓取就能拿全。
+
+## 可选
+
+- [English documentation](https://docs.cutcli.com/): 上述每一页的英文镜像。
+- [Issues 与 Discussions](https://github.com/xuliang2024/cutcli-cookbook/issues): bug 反馈、功能请求、社区问答。
