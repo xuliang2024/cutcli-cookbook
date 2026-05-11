@@ -4,7 +4,7 @@ layout: home
 hero:
   name: cutcli
   text: 用一行命令生成剪映草稿
-  tagline: CapCut / 剪映 草稿命令行工具 — 字幕、图片、视频、音频、特效、关键帧，全部脚本化
+  tagline: CapCut / 剪映 草稿命令行工具 - 本地脚本化生成草稿，并可上传到云端渲染
   image:
     src: /hero.svg
     alt: cutcli
@@ -29,6 +29,9 @@ features:
   - icon: 🧩
     title: 全场景覆盖
     details: 字幕 / 图片 / 视频 / 音频 / 特效 / 滤镜 / 贴纸 / 关键帧 / 遮罩 全部脚本化
+  - icon: ☁️
+    title: 云渲染
+    details: 保存 API Key 后可上传草稿 zip、提交渲染任务，并从命令行查询队列和结果
   - icon: 🤖
     title: AI 友好
     details: 一键集成 Cursor / Claude Code / OpenClaw，自然语言生成视频
@@ -54,9 +57,18 @@ bash run.sh
 
 打开剪映，新草稿已经在草稿列表里。
 
+把已有草稿提交到云端渲染：
+
+```bash
+cutcli auth set --api-key cut_live_xxx_yyy
+cutcli cloud render <draftId> --pretty
+cutcli timer render --count 1 --pretty
+```
+
 ## 选一个起点
 
 - 第一次接触 cutcli？ → [30 分钟做第一个草稿](/zh/guide/first-draft)
 - 想看完整可运行的案例？ → [案例总览](/zh/cookbook/index)
 - 找命令的具体用法？ → [CLI 命令参考](/zh/reference/cli)
+- 要自动化云渲染？ → [API 参考](/zh/reference/api)
 - 想让 AI 帮你写命令？ → [AI 工具集成](/zh/guide/ai-integration)

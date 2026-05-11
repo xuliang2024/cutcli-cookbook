@@ -40,6 +40,25 @@ Override via `cutcli config set-dir <path>` or the env var `CUT_DRAFTS_DIR`.
 
 When you call `cutcli images add` / `videos add` / `audios add`, every URL you pass is downloaded into the draft's `resources/` folder. The project JSON references the local file, not the URL — so CapCut works fully offline once the draft is created.
 
+## Cloud rendering
+
+Starting with cutcli v1.3.9, a local draft can be zipped, uploaded, and submitted to the cutcli.com cloud render queue without changing the local draft format.
+
+```bash
+cutcli auth set --api-key cut_live_xxx_yyy
+cutcli cloud render <draftId> --pretty
+cutcli cloud jobs --status queued --pretty
+cutcli cloud job <renderJobId> --pretty
+```
+
+For automated checks or scheduled samples, `cutcli timer render` creates a draft, adds an optional default caption, uploads it, and submits a cloud render job on a fixed interval:
+
+```bash
+cutcli timer render --count 1 --pretty
+```
+
+See [CLI cheatsheet](/reference/cli) and [Node.js SDK overview](/reference/api) for command and SDK examples.
+
 ## Time = microseconds
 
 Every time field is microseconds (μs). `1 second = 1,000,000`.

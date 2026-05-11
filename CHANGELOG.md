@@ -6,6 +6,11 @@ All notable changes to this project are recorded in this file, following [Keep a
 
 ## [Unreleased]
 
+### Added
+- Documented cutcli v1.3.9 cloud rendering commands: `auth`, `cloud render`, `cloud jobs`, `cloud job`, `cloud result`, and `timer render`.
+- Synced the Chinese CLI/API/core-concepts references from the source repo, including cloud render SDK methods and scheduler helpers.
+- Added cloud rendering entry points to the README, docs home page, FAQ metadata, and reference sidebar.
+
 ## [0.1.0] - 2026-04-20
 
 ### Added

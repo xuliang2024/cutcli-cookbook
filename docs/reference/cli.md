@@ -25,6 +25,16 @@ cutcli [global options] <command> [subcommand options]
 
 ## Commands by category
 
+### Cloud authentication
+
+Cloud upload/rendering commands need a cutcli.com API key. You can save it locally once with `cutcli auth set`, or provide it per process with `CUTCLI_API_KEY`.
+
+| Command | Purpose |
+|---|---|
+| `cutcli auth set --api-key <key> [--api-base <url>]` | Save the cloud API key |
+| `cutcli auth whoami` | Show the account attached to the current API key |
+| `cutcli auth clear` | Remove the locally saved API key |
+
 ### Draft management
 
 | Command | Purpose |
@@ -35,6 +45,22 @@ cutcli [global options] <command> [subcommand options]
 | `cutcli draft easy <draftId> --audio-url <url>` | Auto-fit assets to the audio length |
 | `cutcli draft zip <draftId> [--output <path>]` | Zip the draft |
 | `cutcli draft upload <draftId>` | Zip + upload, returns a download URL |
+
+### Cloud rendering
+
+| Command | Purpose |
+|---|---|
+| `cutcli cloud render <draftId> [--zip <path>]` | Upload a draft zip and create a cloud render job |
+| `cutcli cloud jobs [--status <status>]` | List cloud render jobs, optionally filtered by status |
+| `cutcli cloud job <jobId>` | Show one cloud render job with events |
+| `cutcli cloud result <jobId>` | Alias for `cloud job`, useful when looking up final output |
+
+### Scheduled rendering
+
+| Command | Purpose |
+|---|---|
+| `cutcli timer render [--interval <minutes>] [--count <n>]` | Create/upload/render drafts on a fixed interval |
+| `cutcli timer render --count 1 --pretty` | Run a single upload/render cycle for smoke testing |
 
 ### Adding content
 
@@ -98,6 +124,23 @@ cutcli audios add "$DRAFT_ID" --audio-infos '[
 
 # Inspect
 cutcli draft info "$DRAFT_ID" --pretty
+```
+
+## Cloud render workflow
+
+```bash
+# Save credentials once, or export CUTCLI_API_KEY for the current shell
+cutcli auth set --api-key cut_live_xxx_yyy
+
+# Zip, upload, and submit a local draft to the cloud render queue
+cutcli cloud render "$DRAFT_ID" --pretty
+
+# Track queue status and retrieve the final video URL
+cutcli cloud jobs --status queued --pretty
+cutcli cloud job <renderJobId> --pretty
+
+# Optional: run the built-in scheduler once, useful for CI/smoke checks
+cutcli timer render --count 1 --pretty
 ```
 
 ## Where the full reference lives

@@ -4,7 +4,7 @@ layout: home
 hero:
   name: cutcli
   text: One command to a CapCut draft
-  tagline: CapCut / Jianying draft CLI — script captions, images, videos, audios, effects, and keyframes
+  tagline: CapCut / Jianying draft CLI - script drafts locally, then upload and render in the cloud
   image:
     src: /hero.svg
     alt: cutcli
@@ -29,6 +29,9 @@ features:
   - icon: 🧩
     title: Full coverage
     details: Captions / images / videos / audios / effects / filters / stickers / keyframes / masks all scripted.
+  - icon: ☁️
+    title: Cloud rendering
+    details: Authenticate once, upload a draft zip, submit render jobs, and inspect queue/results from the CLI.
   - icon: 🤖
     title: AI-friendly
     details: One-line setup for Cursor / Claude Code / OpenClaw — turn natural language into video.
@@ -54,11 +57,20 @@ bash run.sh
 
 Open CapCut / Jianying — your new draft is already in the list.
 
+Cloud render an existing draft:
+
+```bash
+cutcli auth set --api-key cut_live_xxx_yyy
+cutcli cloud render <draftId> --pretty
+cutcli timer render --count 1 --pretty
+```
+
 ## Pick a starting point
 
 - New to cutcli? → [Build your first draft in 30 minutes](/guide/first-draft)
 - Want runnable examples? → [Cookbook overview](/cookbook/index)
 - Looking up a command? → [CLI reference](/reference/cli)
+- Automating cloud renders? → [Node.js SDK overview](/reference/api)
 - Want AI to write commands for you? → [AI integrations](/guide/ai-integration)
 
 > 中文用户请前往 [docs.cutcli.com/zh/](/zh/)。

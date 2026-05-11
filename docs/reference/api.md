@@ -19,7 +19,14 @@ npm install cut_cli
 ## Minimal example
 
 ```typescript
-import { createDraft, addCaptions, addImages, addAudios } from 'cut_cli';
+import {
+  createDraft,
+  addCaptions,
+  addImages,
+  addAudios,
+  renderDraft,
+  getCloudJob,
+} from 'cut_cli';
 
 const draft = await createDraft({ width: 1080, height: 1920 });
 
@@ -51,6 +58,10 @@ await addAudios({
     volume: 0.5,
   }],
 });
+
+const submitted = await renderDraft({ draftId: draft.draftId });
+const detail = await getCloudJob({ id: submitted.renderJob.id });
+console.log(detail.renderJob.status, detail.renderJob.video_url);
 ```
 
 ## Available functions
@@ -65,6 +76,12 @@ The SDK mirrors the CLI surface 1:1. Function names are camelCase versions of th
 | `cutcli draft easy` | `easyCreateMaterial({ draftId, audioUrl, imgUrl?, videoUrl?, text? })` |
 | `cutcli draft zip` | `zipDraft({ draftId, output? })` |
 | `cutcli draft upload` | `uploadDraft({ draftId })` |
+| `cutcli cloud render` | `renderDraft({ draftId, zipPath? })` |
+| `cutcli cloud jobs` | `getCloudJobs({ status? })` |
+| `cutcli cloud job` | `getCloudJob({ id })` |
+| `cutcli cloud result` | `getCloudJob({ id })` |
+| `cutcli timer render --count 1` | `runScheduledRenderOnce(options?, runNumber?)` |
+| `cutcli timer render` | `startScheduledDraftRendering(options?)` |
 | `cutcli captions add` | `addCaptions({ draftId, captions, ...style })` |
 | `cutcli captions list` | `getCaptions({ draftId })` |
 | `cutcli images add` | `addImages({ draftId, imageInfos })` |
@@ -83,6 +100,40 @@ The SDK mirrors the CLI surface 1:1. Function names are camelCase versions of th
 | `cutcli masks list` | `getMasks({ draftId, segmentId? })` |
 | `cutcli filters add` | `addFilters({ draftId, filterInfos })` |
 | `cutcli text-style` | `addTextStyle({ text, keyword, ...style })` |
+
+## Cloud rendering
+
+The cloud SDK helpers use the same credentials as the CLI. Save them with `cutcli auth set --api-key <key>`, or set `CUTCLI_API_KEY` in the environment before running your Node.js process.
+
+```typescript
+import {
+  renderDraft,
+  getCloudJobs,
+  getCloudJob,
+  runScheduledRenderOnce,
+  startScheduledDraftRendering,
+} from 'cut_cli';
+
+const submitted = await renderDraft({ draftId: 'abc123' });
+console.log(submitted.renderJob.id, submitted.downloadUrl);
+
+const queued = await getCloudJobs({ status: 'queued' });
+console.log(queued.length);
+
+const detail = await getCloudJob({ id: submitted.renderJob.id });
+console.log(detail.renderJob.video_url);
+
+await runScheduledRenderOnce({
+  namePrefix: 'smoke_test',
+  captionText: 'Cloud render smoke test {time}',
+});
+
+await startScheduledDraftRendering({
+  intervalMs: 5 * 60 * 1000,
+  count: 1,
+  onEvent: (event) => console.log(event.type),
+});
+```
 
 ## Field shapes
 

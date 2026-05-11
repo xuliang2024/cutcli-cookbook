@@ -37,6 +37,27 @@ bash run.sh
 
 Full guide: <https://docs.cutcli.com/guide/installation>
 
+## New in cutcli v1.3.9: cloud rendering
+
+cutcli can now upload a local draft zip and submit it to the cutcli.com cloud renderer. Use it for smoke tests, preview rendering, or scheduled draft generation without opening CapCut locally.
+
+```bash
+# Save your cloud API key once
+cutcli auth set --api-key cut_live_xxx_yyy
+
+# Render an existing local draft in the cloud
+cutcli cloud render <draftId> --pretty
+
+# Inspect queue/results
+cutcli cloud jobs --status queued --pretty
+cutcli cloud job <renderJobId> --pretty
+
+# Run one scheduled render cycle for automation checks
+cutcli timer render --count 1 --pretty
+```
+
+Reference: <https://docs.cutcli.com/reference/cli>
+
 ## What's inside
 
 | Directory | Purpose |
@@ -65,6 +86,10 @@ Full guide: <https://docs.cutcli.com/guide/installation>
 cutcli is a single-binary command-line tool that turns shell commands or JSON into a standard **CapCut / Jianying (剪映) draft folder**. Open CapCut on desktop and the draft is already in your draft list — fully editable, with captions, animations, transitions, audio and keyframes intact. No reverse-engineered file format, no manual JSON patching.
 
 Install: `curl -s https://cutcli.com/cli | bash`
+
+### Can cutcli render drafts in the cloud?
+
+Yes. Since cutcli v1.3.9, `cutcli cloud render <draftId>` can zip, upload, and submit a local draft to the cloud renderer. `cutcli cloud jobs`, `cutcli cloud job`, and `cutcli cloud result` show queue status and final video URLs. `cutcli timer render` can run the same flow on an interval for automation checks.
 
 ### What's in this cookbook?
 

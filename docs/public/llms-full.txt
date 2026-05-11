@@ -5,7 +5,7 @@
 > draft folder that the desktop app opens directly. This file is intended for
 > AI search engines and coding agents to ingest in one shot.
 >
-> Generated: 2026-04-20
+> Generated: 2026-05-11
 > Source repository: https://github.com/xuliang2024/cutcli-cookbook
 > Docs site: https://docs.cutcli.com
 > Short index (llms.txt): https://docs.cutcli.com/llms.txt
@@ -58,6 +58,27 @@ bash run.sh
 
 Full guide: <https://docs.cutcli.com/guide/installation>
 
+## New in cutcli v1.3.9: cloud rendering
+
+cutcli can now upload a local draft zip and submit it to the cutcli.com cloud renderer. Use it for smoke tests, preview rendering, or scheduled draft generation without opening CapCut locally.
+
+```bash
+# Save your cloud API key once
+cutcli auth set --api-key cut_live_xxx_yyy
+
+# Render an existing local draft in the cloud
+cutcli cloud render <draftId> --pretty
+
+# Inspect queue/results
+cutcli cloud jobs --status queued --pretty
+cutcli cloud job <renderJobId> --pretty
+
+# Run one scheduled render cycle for automation checks
+cutcli timer render --count 1 --pretty
+```
+
+Reference: <https://docs.cutcli.com/reference/cli>
+
 ## What's inside
 
 | Directory | Purpose |
@@ -86,6 +107,10 @@ Full guide: <https://docs.cutcli.com/guide/installation>
 cutcli is a single-binary command-line tool that turns shell commands or JSON into a standard **CapCut / Jianying (剪映) draft folder**. Open CapCut on desktop and the draft is already in your draft list — fully editable, with captions, animations, transitions, audio and keyframes intact. No reverse-engineered file format, no manual JSON patching.
 
 Install: `curl -s https://cutcli.com/cli | bash`
+
+### Can cutcli render drafts in the cloud?
+
+Yes. Since cutcli v1.3.9, `cutcli cloud render <draftId>` can zip, upload, and submit a local draft to the cloud renderer. `cutcli cloud jobs`, `cutcli cloud job`, and `cutcli cloud result` show queue status and final video URLs. `cutcli timer render` can run the same flow on an interval for automation checks.
 
 ### What's in this cookbook?
 
@@ -1526,6 +1551,11 @@ Source: https://github.com/xuliang2024/cutcli-cookbook/blob/main/CHANGELOG.md
 All notable changes to this project are recorded in this file, following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+
+### Added
+- Documented cutcli v1.3.9 cloud rendering commands: `auth`, `cloud render`, `cloud jobs`, `cloud job`, `cloud result`, and `timer render`.
+- Synced the Chinese CLI/API/core-concepts references from the source repo, including cloud render SDK methods and scheduler helpers.
+- Added cloud rendering entry points to the README, docs home page, FAQ metadata, and reference sidebar.
 
 ## [0.1.0] - 2026-04-20
 

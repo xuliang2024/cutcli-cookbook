@@ -37,6 +37,7 @@ const softwareApplicationLd = {
   },
   featureList: [
     'Generate CapCut / Jianying drafts from shell commands or JSON',
+    'Cloud render queue submission, job status lookup, and scheduled render checks',
     'AI agent integration (Cursor, Claude Code, ChatGPT, Gemini, OpenClaw, MCP)',
     'Captions, animations, transitions, audio, keyframes, masks, effects',
     'Cross-platform: macOS, Windows, Linux',
@@ -117,6 +118,14 @@ const faqPageLd = {
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'cutcli is a single-binary command-line tool that turns shell commands or JSON into a standard CapCut / Jianying (剪映) draft folder. Open CapCut on desktop and the draft is already in your draft list — fully editable, with captions, animations, transitions, audio and keyframes intact. Install with: curl -s https://cutcli.com/cli | bash',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can cutcli render drafts in the cloud?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Since cutcli v1.3.9, run "cutcli auth set --api-key <key>" once, then "cutcli cloud render <draftId>" to zip, upload, and submit a local draft to the cloud render queue. Use "cutcli cloud jobs", "cutcli cloud job", or "cutcli cloud result" to inspect status and output URLs. "cutcli timer render" can run the same flow on an interval for automation checks.',
       },
     },
     {
@@ -205,6 +214,8 @@ const enThemeConfig: DefaultTheme.Config = {
         text: 'Reference',
         items: [
           { text: 'CLI cheatsheet', link: '/reference/cli' },
+          { text: 'Node.js SDK overview', link: '/reference/api' },
+          { text: 'Core concepts', link: '/reference/concepts' },
           { text: 'captions', link: '/reference/captions' },
           { text: 'images', link: '/reference/images' },
           { text: 'videos', link: '/reference/videos' },
@@ -292,6 +303,8 @@ const zhThemeConfig: DefaultTheme.Config = {
         text: '命令参考',
         items: [
           { text: 'CLI 速查', link: '/zh/reference/cli' },
+          { text: 'API 参考', link: '/zh/reference/api' },
+          { text: '核心概念', link: '/zh/reference/concepts' },
           { text: 'captions 字幕', link: '/zh/reference/captions' },
           { text: 'images 图片', link: '/zh/reference/images' },
           { text: 'videos 视频', link: '/zh/reference/videos' },
@@ -330,7 +343,7 @@ const zhThemeConfig: DefaultTheme.Config = {
 
 export default defineConfig({
   title: 'cutcli',
-  description: 'CapCut / Jianying draft CLI — official docs & cookbook',
+  description: 'CapCut / Jianying draft CLI - official docs, cookbook, and cloud render workflows',
   cleanUrls: false,
   lastUpdated: true,
   ignoreDeadLinks: 'localhostLinks',
@@ -358,10 +371,10 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'theme-color', content: '#ff5a36' }],
-    ['meta', { name: 'description', content: 'Cookbook, JSON templates, AI prompts and docs for cutcli — the CapCut / Jianying (剪映) draft CLI. Generate editable video drafts from code, Cursor, Claude Code or any MCP agent.' }],
+    ['meta', { name: 'description', content: 'Cookbook, JSON templates, AI prompts, cloud render workflows, and docs for cutcli - the CapCut / Jianying (剪映) draft CLI.' }],
     ['meta', { name: 'keywords', content: 'cutcli, CapCut, Jianying, 剪映, draft CLI, video automation, AI video, Cursor, Claude Code, MCP, ChatGPT' }],
     ['meta', { property: 'og:title', content: 'cutcli — CapCut / Jianying draft CLI cookbook' }],
-    ['meta', { property: 'og:description', content: 'Open-source cookbook, JSON templates and AI prompts for the CapCut / Jianying draft CLI. Drive video drafts from Cursor, Claude Code or any MCP agent.' }],
+    ['meta', { property: 'og:description', content: 'Open-source cookbook, JSON templates, AI prompts, and cloud render workflows for the CapCut / Jianying draft CLI.' }],
     ['meta', { property: 'og:url', content: 'https://docs.cutcli.com/' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:image', content: 'https://docs.cutcli.com/og.png' }],
@@ -369,7 +382,7 @@ export default defineConfig({
     ['meta', { property: 'og:image:height', content: '640' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:title', content: 'cutcli — CapCut / Jianying draft CLI cookbook' }],
-    ['meta', { name: 'twitter:description', content: 'Generate editable CapCut / 剪映 video drafts from code, Cursor, Claude Code or any MCP agent.' }],
+    ['meta', { name: 'twitter:description', content: 'Generate editable CapCut / 剪映 drafts from code, then upload and render them in the cloud.' }],
     ['meta', { name: 'twitter:image', content: 'https://docs.cutcli.com/og.png' }],
     ['script', { type: 'application/ld+json' }, JSON.stringify(softwareApplicationLd)],
     ['script', { type: 'application/ld+json' }, JSON.stringify(faqPageLd)],

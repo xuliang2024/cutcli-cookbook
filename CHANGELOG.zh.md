@@ -6,6 +6,11 @@
 
 ## [Unreleased]
 
+### Added
+- 补充 cutcli v1.3.9 云渲染命令文档：`auth`、`cloud render`、`cloud jobs`、`cloud job`、`cloud result`、`timer render`。
+- 从源码仓库同步中文 CLI / API / 核心概念参考，覆盖云渲染 SDK 方法和定时渲染辅助函数。
+- 在 README、文档首页、FAQ 元数据和参考页侧边栏增加云渲染入口。
+
 ## [0.1.0] - 2026-04-20
 
 ### Added

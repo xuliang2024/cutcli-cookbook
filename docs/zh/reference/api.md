@@ -12,7 +12,10 @@ lastUpdated: true
 
 ```typescript
 import {
-  createDraft, getDraftInfo, easyCreateMaterial,
+  createDraft, getDraftInfo, listDrafts, easyCreateMaterial,
+  zipDraft, uploadDraft,
+  renderDraft, getCloudJob, getCloudJobs,
+  runScheduledRenderOnce, startScheduledDraftRendering,
   addCaptions, getCaptions,
   addImages, getImages,
   addVideos, getVideos,
@@ -43,6 +46,8 @@ import {
 |------|------|------|--------|------|
 | `width` | number | 否 | 1080 | 画布宽度（像素） |
 | `height` | number | 否 | 1920 | 画布高度（像素） |
+| `name` | string | 否 | 自动生成 | 草稿名称 |
+| `userId` | string | 否 | - | 用户 ID |
 
 **返回** `Promise<CreateDraftOutput>`
 
@@ -92,6 +97,30 @@ console.log(`时长: ${info.duration / 1000000}秒`);
 
 ---
 
+### `listDrafts()`
+
+列出当前草稿目录下的所有剪映草稿，按修改时间倒序返回。
+
+**返回** `Promise<DraftListItem[]>`
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `draftId` | string | 草稿 ID 或草稿目录名 |
+| `filePath` | string | 草稿文件夹路径 |
+| `name` | string | 草稿名称 |
+| `duration` | number | 草稿总时长（μs） |
+| `canvasWidth` / `canvasHeight` | number | 画布尺寸 |
+| `createdAt` / `modifiedAt` | number | 创建和修改时间戳 |
+
+**示例**
+
+```typescript
+const drafts = await listDrafts();
+console.log(drafts[0]?.draftId);
+```
+
+---
+
 ### `easyCreateMaterial(params)`
 
 按音频时长自动铺设素材，将图片/视频/文字铺满整个音频时长。传入的媒体 URL 会自动下载到草稿的 `resources/` 目录。
@@ -124,6 +153,215 @@ await easyCreateMaterial({
   audioUrl: 'https://example.com/audio.mp3',
   imgUrl: 'https://example.com/bg.jpg',
   text: '欢迎观看',
+});
+```
+
+---
+
+### `zipDraft(params)`
+
+将本地剪映草稿文件夹打包为 zip。
+
+**参数** `ZipDraftInput`
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `draftId` | string | 是 | 草稿 ID 或草稿名称 |
+| `outputPath` | string | 否 | 输出 zip 路径；不传则写到草稿目录同级 |
+
+**返回** `Promise<ZipDraftOutput>`
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `message` | string | 状态信息 |
+| `zipPath` | string | zip 文件路径 |
+| `size` | number | zip 文件大小（字节） |
+
+**示例**
+
+```typescript
+const zip = await zipDraft({ draftId: 'abc123' });
+console.log(zip.zipPath);
+```
+
+---
+
+### `uploadDraft(params)`
+
+打包并上传草稿 zip，返回云端下载链接。需要先通过 `cutcli auth set` 保存 API Key，或在当前进程设置 `CUTCLI_API_KEY`。
+
+**参数** `UploadDraftInput`
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `draftId` | string | 是 | 草稿 ID 或草稿名称 |
+| `zipPath` | string | 否 | 已有 zip 路径；不传则自动调用 `zipDraft` |
+
+**返回** `Promise<UploadDraftOutput>`
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `message` | string | 状态信息 |
+| `draftUploadId` | string | 云端草稿上传记录 ID |
+| `downloadUrl` | string | 草稿 zip 下载链接 |
+| `zipPath` | string | 本地 zip 路径 |
+| `size` | number | zip 文件大小（字节） |
+
+**示例**
+
+```typescript
+const upload = await uploadDraft({ draftId: 'abc123' });
+console.log(upload.downloadUrl);
+```
+
+---
+
+## 云渲染
+
+### `renderDraft(params)`
+
+上传草稿并创建云渲染任务。未传 `zipPath` 时会自动打包草稿。
+
+**参数** `RenderDraftInput`
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `draftId` | string | 是 | 草稿 ID 或草稿名称 |
+| `zipPath` | string | 否 | 已有 zip 路径 |
+
+**返回** `Promise<RenderDraftOutput>`
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `message` | string | 状态信息 |
+| `draftUploadId` | string | 云端草稿上传记录 ID |
+| `downloadUrl` | string | 草稿 zip 下载链接 |
+| `renderJob` | `RenderJob` | 云渲染任务对象 |
+
+**示例**
+
+```typescript
+const result = await renderDraft({ draftId: 'abc123' });
+console.log(result.renderJob.id, result.renderJob.status);
+```
+
+---
+
+### `getCloudJobs(params?)`
+
+查询当前用户的云渲染任务列表。
+
+**参数** `{ status?: string }`
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `status` | string | 否 | 按状态筛选，如 `queued`、`rendering`、`completed`、`failed` |
+
+**返回** `Promise<RenderJob[]>`
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `id` | string | 任务 ID |
+| `status` | string | 任务状态 |
+| `draft_upload_id` | string | 草稿上传记录 ID |
+| `draft_download_url` | string | 草稿 zip 下载链接 |
+| `video_url` | string | 渲染完成后的成片地址 |
+| `failure_reason` | string | 失败原因 |
+
+**示例**
+
+```typescript
+const jobs = await getCloudJobs({ status: 'queued' });
+console.log(jobs.length);
+```
+
+---
+
+### `getCloudJob(params)`
+
+查询单个云渲染任务详情和事件记录。
+
+**参数** `{ id: string }`
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `id` | string | 是 | 云渲染任务 ID |
+
+**返回** `Promise<RenderJobDetail>`
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `renderJob` | `RenderJob` | 任务详情 |
+| `events` | `Array<Record<string, unknown>>` | 任务事件记录 |
+
+**示例**
+
+```typescript
+const detail = await getCloudJob({ id: 'job_xxx' });
+console.log(detail.renderJob.video_url);
+```
+
+---
+
+### `runScheduledRenderOnce(options?, runNumber?)`
+
+创建一个草稿、可选添加默认字幕、上传并提交一次云渲染。适合把定时逻辑交给外部调度系统时调用。
+
+**常用参数** `ScheduledRenderOptions`
+
+| 字段 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `width` / `height` | number | `1080` / `1920` | 画布尺寸 |
+| `namePrefix` | string | `auto_render` | 草稿名称前缀 |
+| `caption` | boolean | `true` | 是否添加默认字幕 |
+| `captionText` | string | `Auto render #{count}\n{time}` | 字幕模板，支持 `{count}`、`{run}`、`{time}`、`{iso}`、`{draftId}` |
+| `durationSeconds` | number | `5` | 默认字幕时长 |
+| `fontSize` | number | `12` | 默认字幕字号 |
+| `textColor` | string | `#ffffff` | 默认字幕颜色 |
+| `onEvent` | function | - | 监听草稿创建、任务提交等事件 |
+
+**示例**
+
+```typescript
+const run = await runScheduledRenderOnce({
+  namePrefix: 'smoke_test',
+  captionText: 'Render #{count} {time}',
+});
+console.log(run.renderJob.id);
+```
+
+---
+
+### `startScheduledDraftRendering(options?)`
+
+启动内置定时循环，按固定间隔创建草稿、上传并提交云渲染。默认立即执行一次，然后每 5 分钟执行一次。
+
+**常用参数** `ScheduledRenderOptions`
+
+| 字段 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `intervalMs` | number | `300000` | 执行间隔，单位毫秒 |
+| `count` | number | 无限 | 执行次数 |
+| `immediate` | boolean | `true` | 是否立即执行第一次 |
+| `signal` | `AbortSignal` | - | 用于停止定时循环 |
+| `onEvent` | function | - | 监听 `scheduler-started`、`run-started`、`render-submitted`、`run-failed` 等事件 |
+
+**返回** `Promise<ScheduledRenderSummary>`
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `completedRuns` | number | 已完成次数 |
+| `successfulRuns` | number | 成功次数 |
+| `failedRuns` | number | 失败次数 |
+| `startedAt` / `stoppedAt` | string | 开始和停止时间 |
+
+**示例**
+
+```typescript
+await startScheduledDraftRendering({
+  intervalMs: 5 * 60 * 1000,
+  count: 1,
+  onEvent: (event) => console.log(event.type),
 });
 ```
 

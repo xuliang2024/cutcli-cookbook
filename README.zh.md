@@ -37,6 +37,27 @@ bash run.sh
 
 完整入门：<https://docs.cutcli.com/guide/installation>
 
+## v1.3.9 新增：云渲染和定时渲染
+
+cutcli 现在可以把本地草稿打包上传到 cutcli.com 云端渲染队列，适合连通性巡检、自动化样片、预览渲染，或不打开本地剪映时提交渲染任务。
+
+```bash
+# 首次保存云端 API Key
+cutcli auth set --api-key cut_live_xxx_yyy
+
+# 把本地草稿提交到云渲染
+cutcli cloud render <draftId> --pretty
+
+# 查询队列和单个结果
+cutcli cloud jobs --status queued --pretty
+cutcli cloud job <renderJobId> --pretty
+
+# 执行一次定时渲染流程，适合自动化检查
+cutcli timer render --count 1 --pretty
+```
+
+命令参考：<https://docs.cutcli.com/zh/reference/cli>
+
 ## 仓库内容
 
 | 目录 | 内容 |
@@ -65,6 +86,10 @@ bash run.sh
 cutcli 是一个单文件命令行工具，把 shell 命令或 JSON 直接转成**剪映 / CapCut 标准草稿目录**。打开剪映客户端，新草稿已经躺在草稿列表里——字幕、动画、转场、音频、关键帧全都可二次编辑。不是逆向 hack 的草稿格式，也不需要手动改 JSON。
 
 安装：`curl -s https://cutcli.com/cli | bash`
+
+### cutcli 支持云渲染吗？
+
+支持。v1.3.9 开始，`cutcli cloud render <draftId>` 可以自动打包、上传并提交本地草稿到云端渲染队列。`cutcli cloud jobs`、`cutcli cloud job`、`cutcli cloud result` 用于查看队列状态、成片地址和失败原因；`cutcli timer render` 可按固定间隔执行同一流程。
 
 ### 这个仓库里有什么？
 
